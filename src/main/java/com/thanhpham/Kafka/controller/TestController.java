@@ -41,4 +41,14 @@ public class TestController {
         iTopicService.increasePartition(topicName, partitionNum);
         return "Partition of topic was adjusted!";
     }
+
+    @GetMapping("/message")
+    public void getMessage(@RequestParam("topicName") String topicName){
+        iTopicService.readMessage(topicName);
+    }
+
+    @GetMapping("/group")
+    public void getMessage() throws ExecutionException, InterruptedException {
+        iTopicService.getAllConsumerGroups();
+    }
 }

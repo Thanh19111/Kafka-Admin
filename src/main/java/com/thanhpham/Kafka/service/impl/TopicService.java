@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
