@@ -1,6 +1,8 @@
 package com.thanhpham.Kafka.service.impl;
 
+import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.service.ITopicService;
+import com.thanhpham.Kafka.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,13 @@ public class TopicService implements ITopicService {
     }
 
     @Override
-    public void createNewTopic(String topicName, int partitionNum, int replicaFNum) throws ExecutionException, InterruptedException {
-        NewTopic newTopic = new NewTopic(topicName, partitionNum, (short) replicaFNum);
+    public String createNewTopic(TopicCreateRequest request) throws ExecutionException, InterruptedException {
+        System.out.println(request.toString());
+        NewTopic newTopic = new NewTopic(request.getTopicName(), request.getPartitionNum(), request.getReplicaFNum())
+                .configs(request.getConfig());
+
         adminClient.createTopics(Collections.singleton(newTopic)).all().get();
+        return "Topic " + request.getTopicName() + " đã được tạo!";
     }
 
     @Override
@@ -49,20 +55,20 @@ public class TopicService implements ITopicService {
     }
 
     @Override
-    public void deleteTopic(String topicName) throws ExecutionException, InterruptedException, TimeoutException {
+    public String deleteTopic(String topicName) throws ExecutionException, InterruptedException, TimeoutException {
         DeleteTopicsResult result = adminClient.deleteTopics(Collections.singleton(topicName));
-        result.all().get(120, TimeUnit.SECONDS);
-        System.out.println("Đã xóa thành công topic: " + topicName);
+        result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
+        return "Đã xóa thành công topic: " + topicName;
     }
 
     @Override
-    public void increasePartition(String topicName, int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
+    public String increasePartition(String topicName, int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
         Map<String, NewPartitions> newPartitions = Collections.singletonMap(
                 topicName,
                 NewPartitions.increaseTo(partitionNum)
         );
         CreatePartitionsResult result = adminClient.createPartitions(newPartitions);
-        result.all().get(120, TimeUnit.SECONDS);
-        System.out.println("Đã tăng partition của topic " + topicName + " lên " + partitionNum);
+        result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
+        return "Đã tăng partition của topic " + topicName + " lên " + partitionNum;
     }
 }

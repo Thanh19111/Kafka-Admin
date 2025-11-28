@@ -9,8 +9,6 @@ import java.util.Map;
 public class TopicCreateRequest {
     private String topicName;
     private int partitionNum;
-    private int replicaFNum;
-    private int retainTime;
-    private int maxSize;
+    private short replicaFNum;
     private Map<String, String> config = new HashMap<>();
 }

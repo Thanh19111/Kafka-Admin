@@ -29,21 +29,18 @@ public class TestController {
     }
 
     @PostMapping
-    public String createNewTopic(@RequestParam("topicName") String topicName, @RequestParam("partitionNum") int partitionNum, @RequestParam("replicaFNum") int  replicaFNum) throws ExecutionException, InterruptedException {
-        iTopicService.createNewTopic(topicName, partitionNum, replicaFNum);
-        return "New topic was created!";
+    public String createNewTopic(@RequestBody TopicCreateRequest request) throws ExecutionException, InterruptedException {
+        return iTopicService.createNewTopic(request);
     }
 
     @DeleteMapping
     public String deleteTopic(@RequestParam("topicName") String topicName) throws ExecutionException, InterruptedException, TimeoutException {
-        iTopicService.deleteTopic(topicName);
-        return "Topic was deleted!";
+        return iTopicService.deleteTopic(topicName);
     }
 
     @PostMapping("/adjust")
     public String increatePartition(@RequestParam("topicName") String topicName, @RequestParam("partitionNum") int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
-        iTopicService.increasePartition(topicName, partitionNum);
-        return "Partition of topic was adjusted!";
+        return iTopicService.increasePartition(topicName, partitionNum);
     }
 
     @GetMapping("/message")
