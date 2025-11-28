@@ -10,7 +10,7 @@ import java.util.Properties;
 
 @Configuration
 public class KafkaAdminConfig {
-    @Bean
+    @Bean(destroyMethod = "close")
     public AdminClient initKafkaAdmin(){
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.BOOTSTRAP_SERVERS);

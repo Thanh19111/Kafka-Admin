@@ -1,12 +1,14 @@
 package com.thanhpham.Kafka.controller;
 
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
+import com.thanhpham.Kafka.dto.response.TopicDescribeResponse;
 import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -19,13 +21,8 @@ public class TestController {
     private final IConsumerService iConsumerService;
 
     @GetMapping
-    public Set<String> test() throws ExecutionException, InterruptedException {
-        return iTopicService.getList();
-    }
-
-    @GetMapping("/all")
-    public void getAll() throws ExecutionException, InterruptedException {
-        iTopicService.getAllTopicDetail();
+    public Set<String> getAllListTopic() throws ExecutionException, InterruptedException {
+        return iTopicService.getAllListTopic();
     }
 
     @PostMapping
@@ -39,7 +36,7 @@ public class TestController {
     }
 
     @PostMapping("/adjust")
-    public String increatePartition(@RequestParam("topicName") String topicName, @RequestParam("partitionNum") int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
+    public String increasePartition(@RequestParam("topicName") String topicName, @RequestParam("partitionNum") int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
         return iTopicService.increasePartition(topicName, partitionNum);
     }
 
@@ -48,10 +45,6 @@ public class TestController {
         iConsumerService.readMessage(topicName);
     }
 
-    @GetMapping("/group")
-    public void getMessage() throws ExecutionException, InterruptedException {
-        iConsumerService.getAllConsumerGroups();
-    }
 
     @GetMapping("/check")
     public void checkLag() throws ExecutionException, InterruptedException {
@@ -61,5 +54,15 @@ public class TestController {
     @PostMapping("/config")
     public void checkLag(@RequestBody TopicCreateRequest request){
         System.out.println(request.toString());
+    }
+
+    @GetMapping("/group")
+    public void getAllGroup() throws ExecutionException, InterruptedException {
+        iTopicService.getAllConsumerGroups();
+    }
+
+    @GetMapping("/group-csm")
+    public void getAllConsumerGroups() throws ExecutionException, InterruptedException {
+        iConsumerService.getAllConsumerGroups();
     }
 }

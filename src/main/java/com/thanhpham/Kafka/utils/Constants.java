@@ -1,6 +1,6 @@
 package com.thanhpham.Kafka.utils;
 
-// tất cả đều đon vị là miliseconds
+// tất cả đều đon vị là mili seconds
 public class Constants {
     public static final String BOOTSTRAP_SERVERS = "localhost:9092";
     public static final int REQUEST_TIMEOUT_MS_CONFIG = 30000;
