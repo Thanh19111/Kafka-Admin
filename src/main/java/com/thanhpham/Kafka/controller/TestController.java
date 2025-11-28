@@ -1,6 +1,9 @@
 package com.thanhpham.Kafka.controller;
 
+import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
+import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.service.ITopicService;
+import com.thanhpham.Kafka.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,7 @@ import java.util.concurrent.TimeoutException;
 @RequiredArgsConstructor
 public class TestController {
     private final ITopicService iTopicService;
+    private final IConsumerService iConsumerService;
 
     @GetMapping
     public Set<String> test() throws ExecutionException, InterruptedException {
@@ -44,11 +48,21 @@ public class TestController {
 
     @GetMapping("/message")
     public void getMessage(@RequestParam("topicName") String topicName){
-        iTopicService.readMessage(topicName);
+        iConsumerService.readMessage(topicName);
     }
 
     @GetMapping("/group")
     public void getMessage() throws ExecutionException, InterruptedException {
-        iTopicService.getAllConsumerGroups();
+        iConsumerService.getAllConsumerGroups();
+    }
+
+    @GetMapping("/check")
+    public void checkLag() throws ExecutionException, InterruptedException {
+        iConsumerService.checkLag(Constants.BOOTSTRAP_SERVERS, "thanh", "thanh-group");
+    }
+
+    @PostMapping("/config")
+    public void checkLag(@RequestBody TopicCreateRequest request){
+        System.out.println(request.toString());
     }
 }

@@ -1,15 +1,12 @@
 package com.thanhpham.Kafka.service.impl;
 
+import ch.qos.logback.core.joran.sanity.Pair;
 import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.utils.Constants;
 import com.thanhpham.Kafka.utils.InitConsumerProps;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.GroupListing;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.clients.admin.*;
+import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.GroupState;
 import org.apache.kafka.common.GroupType;
 import org.apache.kafka.common.PartitionInfo;
@@ -47,7 +44,7 @@ public class ConsumerService implements IConsumerService {
         Properties consumerProps = InitConsumerProps.initProps();
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerProps)) {
             // 1. Lấy thông tin partition của topic
-            List<TopicPartition> topicPartitions =  getListTopicPart(consumer, topicName);
+            List<TopicPartition> topicPartitions =  getListTopicPartition(consumer, topicName);
 
             // 2. Gán thủ công các partition (không dùng subscribe)
             consumer.assign(topicPartitions);
@@ -85,7 +82,7 @@ public class ConsumerService implements IConsumerService {
         }
     }
 
-    private List<TopicPartition> getListTopicPart (KafkaConsumer<String, String> consumer, String topicName){
+    private List<TopicPartition> getListTopicPartition (KafkaConsumer<String, String> consumer, String topicName){
         List<PartitionInfo> partitionInfos = consumer.partitionsFor(topicName);
         if (partitionInfos == null || partitionInfos.isEmpty()) {
             System.out.println("Topic không tồn tại hoặc chưa có partition!");
@@ -97,49 +94,29 @@ public class ConsumerService implements IConsumerService {
                 .collect(Collectors.toList());
     }
 
-    private void lagChecker() throws ExecutionException, InterruptedException {
-        List<GroupListing> groups = getAllConsumerGroups();
-        System.out.println("=== TỔNG SỐ CONSUMER GROUP: " + groups.size() + " ===\n");
-        for (GroupListing group : groups) {
-            String groupId = group.groupId();
-            try {
-                // 2. Lấy committed offset của group này
-                Map<TopicPartition, OffsetAndMetadata> committed = adminClient
-                        .listConsumerGroupOffsets(groupId)
-                        .partitionsToOffsetAndMetadata()
-                        .get();
+    @Override
+    public void checkLag(String bootstrapServers, String topicName, String groupId) throws ExecutionException, InterruptedException {
+        // lay nhieu partition hon
+        Map<TopicPartition, OffsetSpec> req = Map.of(
+                new TopicPartition("thanh", 0), OffsetSpec.latest(),
+                new TopicPartition("thanh", 1), OffsetSpec.latest()
+        );
 
-                if (committed.isEmpty()) {
-                    System.out.printf("Group %s: không có committed offset (có thể chưa consume)%n%n", groupId);
-                    continue;
-                }
+        ListOffsetsResult latestResult = adminClient.listOffsets(req);
 
-                // 3. Lấy end offset (log-end-offset) của các partition đó
-                Set<TopicPartition> partitions = committed.keySet();
-                Map<TopicPartition, Long> endOffsets = admin.endOffsets(partitions).get();
-                // 4. Tính lag và in ra
-                System.out.printf("Consumer Group: %s%n", groupId);
-                System.out.println("Topic                    | Partition | Committed | End Offset | Lag");
-                System.out.println("-------------------------+-----------+-----------+------------+-----------");
+        for (TopicPartition tp : req.keySet()) {
+            long latest = latestResult.partitionResult(tp).get().offset();
 
-                long totalLag = 0;
-                for (TopicPartition tp : partitions) {
-                    long committedOffset = committed.get(tp).offset();
-                    long endOffset = endOffsets.get(tp);
-                    long lag = endOffset - committedOffset;
-                    totalLag += lag;
+            long committed = adminClient
+                    .listConsumerGroupOffsets("thanh-group")
+                    .partitionsToOffsetAndMetadata()
+                    .get()
+                    .get(tp)
+                    .offset();
 
-                    System.out.printf("%-24s | %9d | %9d | %10d | %8d%n",
-                            tp.topic(),
-                            tp.partition(),
-                            committedOffset,
-                            endOffset,
-                            lag);
-                }
-                System.out.printf("%nTổng lag của group %s = %,d message%n%n", groupId, totalLag);
-            } catch (Exception e) {
-                System.out.printf("Không thể lấy offset cho group %s: %s%n%n", groupId, e.getMessage());
-            }
+            long lag = latest - committed;
+
+            System.out.println(tp + " offset = " + committed + " " + tp + "\\ lag = " + lag);
         }
     }
 }
