@@ -1,11 +1,15 @@
 package com.thanhpham.Kafka.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * class nay dung trong uscase xem thong tin partiton ma group dang assign
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GroupPartitionResponse {
     private String partitionId;
     private long commitedOffset;

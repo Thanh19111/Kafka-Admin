@@ -1,7 +1,7 @@
 package com.thanhpham.Kafka.controller;
 
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
-import com.thanhpham.Kafka.dto.response.TopicDescribeResponse;
+import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.service.ITopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +17,12 @@ public class TopicController {
     private final ITopicService iTopicService;
 
     @GetMapping("/{topicName}")
-    public TopicDescribeResponse getTopicDetail(@PathVariable("topicName") String topicName) throws ExecutionException, InterruptedException {
+    public TopicDetailResponse getTopicDetail(@PathVariable("topicName") String topicName) throws ExecutionException, InterruptedException {
         return iTopicService.getATopicDetail(topicName);
     }
 
     @GetMapping
-    public List<TopicDescribeResponse> getAllTopicDetail() throws ExecutionException, InterruptedException {
+    public List<TopicDetailResponse> getAllTopicDetail() throws ExecutionException, InterruptedException {
         return iTopicService.getAllTopicDetail();
     }
 

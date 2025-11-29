@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TopicDescribeResponse {
+public class TopicDetailResponse {
     private String topicName;
     private String topicId;
     private int partitionCount;
-    private List<PartitionDetailResponse> partitions;
+    private List<PartitionSpecsResponse> partitions;
 }

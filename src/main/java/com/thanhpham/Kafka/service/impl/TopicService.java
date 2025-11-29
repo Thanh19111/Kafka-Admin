@@ -1,8 +1,11 @@
 package com.thanhpham.Kafka.service.impl;
 
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
-import com.thanhpham.Kafka.dto.response.TopicDescribeResponse;
-import com.thanhpham.Kafka.mapper.TopicDescribeMapper;
+import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
+import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
+import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
+import com.thanhpham.Kafka.mapper.GroupDetailMapper;
+import com.thanhpham.Kafka.mapper.TopicDetailMapper;
 import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.utils.Constants;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +25,6 @@ import java.util.concurrent.TimeoutException;
 public class TopicService implements ITopicService {
     private final AdminClient adminClient;
 
-    @Override
     public Set<String> getAllListTopic() throws ExecutionException, InterruptedException {
         return adminClient.listTopics().names().get();
     }
@@ -38,71 +40,24 @@ public class TopicService implements ITopicService {
     }
 
     @Override
-    public List<TopicDescribeResponse> getAllTopicDetail() throws ExecutionException, InterruptedException {
-        List<TopicDescribeResponse> res = new ArrayList<>();
+    public List<TopicDetailResponse> getAllTopicDetail() throws ExecutionException, InterruptedException {
+        List<TopicDetailResponse> res = new ArrayList<>();
         List<String> topicNames = new ArrayList<>(getAllListTopic());
         DescribeTopicsResult describeResult = adminClient.describeTopics(topicNames);
         Map<String, KafkaFuture<TopicDescription>> desc = describeResult.topicNameValues();
         for (String topic : desc.keySet()) {
             TopicDescription detail = desc.get(topic).get();
-            res.add(TopicDescribeMapper.format(detail));
+            res.add(TopicDetailMapper.toResponse(detail));
         }
         return res;
     }
 
     @Override
-    public TopicDescribeResponse getATopicDetail(String topicName) throws ExecutionException, InterruptedException {
+    public TopicDetailResponse getATopicDetail(String topicName) throws ExecutionException, InterruptedException {
         List<String> topicNames = new ArrayList<>(List.of(topicName));
         DescribeTopicsResult describeResult = adminClient.describeTopics(topicNames);
         TopicDescription t = describeResult.topicNameValues().get(topicName).get();
-        return TopicDescribeMapper.format(t);
-    }
-
-    @Override
-    public void getAllConsumerGroups() throws ExecutionException, InterruptedException {
-        ListGroupsResult result = adminClient.listGroups();
-        List<String> groupNames = result.all().get().stream().map(GroupListing::groupId).toList();
-
-        DescribeConsumerGroupsResult desc = adminClient.describeConsumerGroups(groupNames);
-
-        desc.all().get().forEach((groupId, description) -> {
-            System.out.println("Group ID: " + groupId);
-            System.out.println("Coordinator: " + description.coordinator());
-            System.out.println("Members: ");
-            description.members().forEach(member -> {
-                System.out.println("\tMember ID: " + member.consumerId());
-                System.out.println("\tClient ID: " + member.clientId());
-                System.out.println("\tHost: " + member.host());
-                System.out.println("\tAssigned Partitions: " + member.assignment().topicPartitions());
-            });
-        });
-
-        ListConsumerGroupOffsetsResult offsetsResult = adminClient.listConsumerGroupOffsets("thanh-group1");
-        Map<TopicPartition, OffsetAndMetadata> offsets = offsetsResult.partitionsToOffsetAndMetadata().get();
-
-        Map<TopicPartition, Long> endOffsets = adminClient.listOffsets(
-                        offsets.keySet().stream().collect(
-                                HashMap::new,
-                                (m, tp) -> m.put(tp, OffsetSpec.latest()),
-                                HashMap::putAll
-                        )
-                ).all().get().entrySet().stream()
-                .collect(HashMap::new,
-                        (m, e) -> m.put(e.getKey(), e.getValue().offset()),
-                        HashMap::putAll);
-
-        // 4️⃣ In thông tin offset và lag
-        offsets.forEach((tp, offsetAndMeta) -> {
-            long committed = offsetAndMeta.offset();
-            long latest = endOffsets.getOrDefault(tp, committed);
-            long lag = latest - committed;
-
-            System.out.println("TopicPartition: " + tp);
-            System.out.println("\tCommitted offset: " + committed);
-            System.out.println("\tLatest offset: " + latest);
-            System.out.println("\tLag: " + lag);
-        });
-
+        return TopicDetailMapper.toResponse(t);
     }
 
     @Override

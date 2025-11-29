@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class GroupMemberDetailResponse {
+public class GroupMemberResponse {
     private String memberId;
     private String clientId;
     private String host;
-    List<String> assignPartitions;
+    List<AssignedPartitionResponse> assignPartitions;
 }

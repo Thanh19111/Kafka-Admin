@@ -1,0 +1,12 @@
+package com.thanhpham.Kafka.service;
+
+import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
+import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+public interface IGroupConsumerService {
+    List<GroupDetailResponse> getAllConsumerGroups() throws ExecutionException, InterruptedException;
+    List<GroupPartitionResponse> checkLagByGroupName(String groupId) throws ExecutionException, InterruptedException;
+}
