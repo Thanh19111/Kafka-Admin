@@ -12,8 +12,8 @@ public class GroupMemberDetailMapper {
         detail.setMemberId(des.consumerId());
         detail.setClientId(des.clientId());
         detail.setHost(des.host());
-        List<AssignedPartitionResponse> assinged = des.assignment().topicPartitions().stream().map(AssignedPartitionMapper::toResponse).toList();
-        detail.setAssignPartitions(assinged);
+        List<AssignedPartitionResponse> assigned = des.assignment().topicPartitions().stream().map(AssignedPartitionMapper::toResponse).toList();
+        detail.setAssignPartitions(assigned);
         return detail;
     }
 }

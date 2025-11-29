@@ -3,7 +3,6 @@ package com.thanhpham.Kafka.service.impl;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.mapper.GroupDetailMapper;
-import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.service.IGroupConsumerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
@@ -37,7 +36,7 @@ public class GroupConsumerService implements IGroupConsumerService {
     }
 
     @Override
-    public List<GroupPartitionResponse> checkLagByGroupName(String groupId) throws ExecutionException, InterruptedException {
+    public List<GroupPartitionResponse> checkLagByGroupId(String groupId) throws ExecutionException, InterruptedException {
         ListConsumerGroupOffsetsResult offsetsResult = adminClient.listConsumerGroupOffsets(groupId);
         Map<TopicPartition, OffsetAndMetadata> offsets = offsetsResult.partitionsToOffsetAndMetadata().get();
 

@@ -8,5 +8,5 @@ import java.util.concurrent.ExecutionException;
 
 public interface IGroupConsumerService {
     List<GroupDetailResponse> getAllConsumerGroups() throws ExecutionException, InterruptedException;
-    List<GroupPartitionResponse> checkLagByGroupName(String groupId) throws ExecutionException, InterruptedException;
+    List<GroupPartitionResponse> checkLagByGroupId(String groupId) throws ExecutionException, InterruptedException;
 }

@@ -11,7 +11,7 @@ public class GroupDetailMapper {
     public static GroupDetailResponse toResponse(String groupId, ConsumerGroupDescription des) {
         GroupDetailResponse group = new GroupDetailResponse();
         group.setGroupId(groupId);
-        group.setCoordinator(des.coordinator());
+        group.setCoordinator(NodeMapper.toResponse(des.coordinator()));
         List<GroupMemberResponse> members = new ArrayList<>();
         des.members().forEach(member -> {
             members.add(GroupMemberDetailMapper.toResponse(member));

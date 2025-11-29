@@ -23,8 +23,8 @@ public class GroupConsumerController {
         return iGroupConsumerService.getAllConsumerGroups();
     }
 
-    @GetMapping("/{groupName}/lag")
-    public List<GroupPartitionResponse> checkLagByGroupName(@PathVariable("groupName") String groupName) throws ExecutionException, InterruptedException {
-        return iGroupConsumerService.checkLagByGroupName(groupName);
+    @GetMapping("/{groupId}/lag")
+    public List<GroupPartitionResponse> checkLagByGroupName(@PathVariable("groupId") String groupId) throws ExecutionException, InterruptedException {
+        return iGroupConsumerService.checkLagByGroupId(groupId);
     }
 }
