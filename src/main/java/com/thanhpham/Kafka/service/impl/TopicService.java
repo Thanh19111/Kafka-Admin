@@ -1,18 +1,13 @@
 package com.thanhpham.Kafka.service.impl;
 
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
-import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
-import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
-import com.thanhpham.Kafka.mapper.GroupDetailMapper;
 import com.thanhpham.Kafka.mapper.TopicDetailMapper;
 import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
-import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.KafkaFuture;
-import org.apache.kafka.common.TopicPartition;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,12 +26,11 @@ public class TopicService implements ITopicService {
 
     @Override
     public String createNewTopic(TopicCreateRequest request) throws ExecutionException, InterruptedException {
-        System.out.println(request.toString());
         NewTopic newTopic = new NewTopic(request.getTopicName(), request.getPartitionNum(), request.getReplicaFNum())
                 .configs(request.getConfig());
 
         adminClient.createTopics(Collections.singleton(newTopic)).all().get();
-        return "Topic " + request.getTopicName() + " đã được tạo!";
+        return "Topic " + request.getTopicName() + " has been created!";
     }
 
     @Override
@@ -64,7 +58,7 @@ public class TopicService implements ITopicService {
     public String deleteTopic(String topicName) throws ExecutionException, InterruptedException, TimeoutException {
         DeleteTopicsResult result = adminClient.deleteTopics(Collections.singleton(topicName));
         result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
-        return "Đã xóa thành công topic: " + topicName;
+        return "Topic " + topicName + " has been deleted!";
     }
 
     @Override

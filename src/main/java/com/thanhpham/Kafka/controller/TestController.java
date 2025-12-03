@@ -1,15 +1,16 @@
 package com.thanhpham.Kafka.controller;
 
+import com.thanhpham.Kafka.dto.request.SchemaCreateRequest;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
-import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
-import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.service.ITopicService;
+import com.thanhpham.Kafka.service.impl.SchemaRegistry;
 import com.thanhpham.Kafka.utils.Constants;
+import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeoutException;
 public class TestController {
     private final ITopicService iTopicService;
     private final IConsumerService iConsumerService;
+    private final SchemaRegistry schemaRegistryUtil;
 
     @PostMapping
     public String createNewTopic(@RequestBody TopicCreateRequest request) throws ExecutionException, InterruptedException {
@@ -44,5 +46,26 @@ public class TestController {
     @GetMapping("/check")
     public void checkLag() throws ExecutionException, InterruptedException {
         iConsumerService.checkLag(Constants.BOOTSTRAP_SERVERS, "thanh", "thanh-group");
+    }
+    /// schema
+
+    @GetMapping("/schema")
+    public void getAllSubject() throws RestClientException, IOException {
+        schemaRegistryUtil.getAllSubject();
+    }
+
+    @PostMapping("/schema")
+    public void createSchema(@RequestBody SchemaCreateRequest request) throws RestClientException, IOException {
+        schemaRegistryUtil.createSchema(request);
+    }
+
+    @GetMapping("/schema/{subject}")
+    public void get(@PathVariable("subject") String subject) throws RestClientException, IOException {
+        schemaRegistryUtil.getSchemaBySubject(subject);
+    }
+
+    @PostMapping("read")
+    public void readMessage() throws RestClientException, IOException {
+        iConsumerService.getMessage();
     }
 }

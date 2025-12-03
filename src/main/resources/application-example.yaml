@@ -1,3 +1,6 @@
 spring:
   application:
-    name: Kafka
+    name: "Server Name"
+
+server:
+  port: "Server Port"

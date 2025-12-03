@@ -7,7 +7,6 @@ public class NodeMapper {
     public static NodeResponse toResponse(Node node){
         NodeResponse res = new NodeResponse();
         res.setId(node.id());
-        res.setIdString(node.idString());
         res.setHost(node.host());
         res.setPort(node.port());
         res.setRack(node.rack());

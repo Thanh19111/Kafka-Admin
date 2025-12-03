@@ -9,4 +9,5 @@ public interface IConsumerService {
     List<GroupListing> getAllConsumerGroups() throws ExecutionException, InterruptedException;
     void checkLag(String bootstrapServers, String topicName, String groupId) throws ExecutionException, InterruptedException;
     void readMessage(String topicName);
+    void getMessage();
 }

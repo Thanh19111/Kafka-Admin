@@ -1,10 +1,10 @@
 package com.thanhpham.Kafka.service.impl;
 
-import ch.qos.logback.core.joran.sanity.Pair;
 import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.utils.Constants;
 import com.thanhpham.Kafka.utils.InitConsumerProps;
 import lombok.RequiredArgsConstructor;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.GroupState;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ConsumerService implements IConsumerService {
     private final AdminClient adminClient;
+    private final KafkaConsumer<String, GenericRecord> consumer;
 
     @Override
     public List<GroupListing> getAllConsumerGroups() throws ExecutionException, InterruptedException {
@@ -43,20 +44,13 @@ public class ConsumerService implements IConsumerService {
     public void readMessage(String topicName) {
         Properties consumerProps = InitConsumerProps.initProps();
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerProps)) {
-            // 1. Lấy thông tin partition của topic
             List<TopicPartition> topicPartitions =  getListTopicPartition(consumer, topicName);
-
-            // 2. Gán thủ công các partition (không dùng subscribe)
             consumer.assign(topicPartitions);
-
-            // 3. Đưa con trỏ về cuối để lấy end offset
             consumer.seekToEnd(topicPartitions);
 
-            // Lấy end offset hiện tại của từng partition
             Map<TopicPartition, Long> endOffsets = topicPartitions.stream()
                     .collect(Collectors.toMap(tp -> tp, consumer::position));
 
-            // Seek về vị trí (end - N), nhưng không nhỏ hơn 0
             for (TopicPartition tp : topicPartitions) {
                 long targetOffset = endOffsets.get(tp) - Constants.LAST_N;
                 long seekTo = Math.max(0L, targetOffset);
@@ -65,7 +59,6 @@ public class ConsumerService implements IConsumerService {
                         tp.partition(), seekTo, endOffsets.get(tp));
             }
 
-            // 4. Poll 1 lần (đủ để lấy các message từ offset đã seek)
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(30));
 
             System.out.println("\n=== " + records.count() + " message mới nhất trong topic '" + topicName + "' ===");
@@ -117,6 +110,32 @@ public class ConsumerService implements IConsumerService {
             long lag = latest - committed;
 
             System.out.println(tp + " offset = " + committed + " " + tp + "\\ lag = " + lag);
+        }
+    }
+
+    @Override
+    public void getMessage(){
+        String topic = "avro";
+        consumer.subscribe(List.of(topic));
+
+        consumer.poll(Duration.ofMillis(100));
+
+        Set<TopicPartition> partitions = consumer.assignment();
+
+        for (TopicPartition partition : partitions) {
+            long end = consumer.endOffsets(List.of(partition)).get(partition);
+            long offset = Math.max(end - 1, 0);  // Lùi lại 1 record
+            consumer.seek(partition, offset);
+        }
+
+        while (true) {
+            ConsumerRecords<String, GenericRecord> records = consumer.poll(Duration.ofSeconds(1));
+            for (ConsumerRecord<String, GenericRecord> record : records) {
+                System.out.println("Last message:");
+                System.out.println(record.value());
+                break;
+            }
+            break;
         }
     }
 }
