@@ -68,4 +68,5 @@ public class TestController {
     public void readMessage() throws RestClientException, IOException {
         iConsumerService.getMessage();
     }
+
 }

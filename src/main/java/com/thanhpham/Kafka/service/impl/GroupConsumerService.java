@@ -24,7 +24,9 @@ public class GroupConsumerService implements IGroupConsumerService {
     @Override
     public List<GroupDetailResponse> getAllConsumerGroups() throws ExecutionException, InterruptedException {
         List<GroupDetailResponse> groups = new ArrayList<>();
+
         ListGroupsResult result = adminClient.listGroups();
+
         List<String> groupNames = result.all().get().stream().map(GroupListing::groupId).toList();
         DescribeConsumerGroupsResult desc = adminClient.describeConsumerGroups(groupNames);
 
