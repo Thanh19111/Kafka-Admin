@@ -40,6 +40,7 @@ public class AdminConsumerConfig {
         return factory;
     }
 
+    // để test, loai bỏ không dùng
     @Bean
     public KafkaConsumer<String, GenericRecord> initAvroConsumer(){
         Properties props = new Properties();

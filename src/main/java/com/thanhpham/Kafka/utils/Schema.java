@@ -1,5 +1,6 @@
 package com.thanhpham.Kafka.utils;
 
+// mock data
 public class Schema {
     public static String schemaStr = "{\n" +
             "  \"type\": \"record\",\n" +
