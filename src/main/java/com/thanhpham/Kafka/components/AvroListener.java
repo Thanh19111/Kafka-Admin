@@ -6,8 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AvroListener {
-    @KafkaListener(topics = "avro", groupId = "avro-group")
+    @KafkaListener(
+            topics = "pageviews",
+            containerFactory = "avroKafkaFactory"
+    )
     public void listen(GenericRecord record) {
-        System.out.println("Received Avro message: " + record);
+        System.out.println(">>Avro Message: " + record);
     }
 }

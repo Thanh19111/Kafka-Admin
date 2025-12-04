@@ -1,6 +1,5 @@
 package com.thanhpham.Kafka.config;
 
-import com.thanhpham.Kafka.utils.Constants;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.avro.generic.GenericRecord;
@@ -18,9 +17,9 @@ import java.util.Map;
 import java.util.Properties;
 
 @Configuration
-public class AdminConsumerConfig {
+public class AvroConsumerConfig {
     @Bean
-    public ConsumerFactory<String, GenericRecord> consumerFactory(){
+    public ConsumerFactory<String, GenericRecord> avroConsumerFactory(){
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "avro-reader");
@@ -33,14 +32,14 @@ public class AdminConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, GenericRecord> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, GenericRecord> avroKafkaFactory() {
         ConcurrentKafkaListenerContainerFactory<String, GenericRecord> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(avroConsumerFactory());
         return factory;
     }
 
-    // để test, loai bỏ không dùng
+    // để test, loại bỏ không dùng
     @Bean
     public KafkaConsumer<String, GenericRecord> initAvroConsumer(){
         Properties props = new Properties();
