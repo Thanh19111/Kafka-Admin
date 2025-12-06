@@ -2,6 +2,7 @@ package com.thanhpham.Kafka.components;
 
 import com.thanhpham.Kafka.utils.Constants;
 import jakarta.annotation.PreDestroy;
+import org.apache.kafka.clients.admin.Admin;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class AdminClientPool {
 
-    private final Map<String, AdminClient> pool = new ConcurrentHashMap<>();
+    private final Map<String, Admin> pool = new ConcurrentHashMap<>();
 
-    public AdminClient get(String bootstrap) {
+    public Admin get(String bootstrap) {
         return pool.computeIfAbsent(bootstrap, this::create);
     }
 
-    private AdminClient create(String bootstrap) {
+    private Admin create(String bootstrap) {
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrap);
         props.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, Constants.REQUEST_TIMEOUT_MS_CONFIG);
@@ -29,6 +30,6 @@ public class AdminClientPool {
 
     @PreDestroy
     public void shutdown() {
-        pool.values().forEach(AdminClient::close);
+        pool.values().forEach(Admin::close);
     }
 }
