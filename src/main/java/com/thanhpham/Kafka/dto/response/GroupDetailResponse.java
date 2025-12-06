@@ -8,5 +8,6 @@ import java.util.List;
 public class GroupDetailResponse {
     private String groupId;
     private NodeResponse coordinator;
+    private String groupState;
     List<GroupMemberResponse> members;
 }

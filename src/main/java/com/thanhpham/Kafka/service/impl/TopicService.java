@@ -1,5 +1,6 @@
 package com.thanhpham.Kafka.service.impl;
 
+import com.thanhpham.Kafka.components.AdminClientPool;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.mapper.TopicDetailMapper;
@@ -18,10 +19,13 @@ import java.util.concurrent.TimeoutException;
 @Service
 @RequiredArgsConstructor
 public class TopicService implements ITopicService {
-    private final AdminClient adminClient;
+    private final AdminClientPool adminClientPool;
 
     public Set<String> getAllListTopic() throws ExecutionException, InterruptedException {
-        return adminClient.listTopics().names().get();
+        return adminClientPool.get("localhost:9092")
+                .listTopics()
+                .names()
+                .get();
     }
 
     @Override
@@ -29,7 +33,10 @@ public class TopicService implements ITopicService {
         NewTopic newTopic = new NewTopic(request.getTopicName(), request.getPartitionNum(), request.getReplicaFNum())
                 .configs(request.getConfig());
 
-        adminClient.createTopics(Collections.singleton(newTopic)).all().get();
+        adminClientPool.get("localhost:9092")
+                .createTopics(Collections.singleton(newTopic))
+                .all()
+                .get();
         return "Topic " + request.getTopicName() + " has been created!";
     }
 
@@ -37,7 +44,9 @@ public class TopicService implements ITopicService {
     public List<TopicDetailResponse> getAllTopicDetail() throws ExecutionException, InterruptedException {
         List<TopicDetailResponse> res = new ArrayList<>();
         List<String> topicNames = new ArrayList<>(getAllListTopic());
-        DescribeTopicsResult describeResult = adminClient.describeTopics(topicNames);
+        DescribeTopicsResult describeResult = adminClientPool.get("localhost:9092")
+                .describeTopics(topicNames);
+
         Map<String, KafkaFuture<TopicDescription>> desc = describeResult.topicNameValues();
         for (String topic : desc.keySet()) {
             TopicDescription detail = desc.get(topic).get();
@@ -49,14 +58,17 @@ public class TopicService implements ITopicService {
     @Override
     public TopicDetailResponse getATopicDetail(String topicName) throws ExecutionException, InterruptedException {
         List<String> topicNames = new ArrayList<>(List.of(topicName));
-        DescribeTopicsResult describeResult = adminClient.describeTopics(topicNames);
-        TopicDescription t = describeResult.topicNameValues().get(topicName).get();
+        DescribeTopicsResult describeResult = adminClientPool.get("localhost:9092")
+                .describeTopics(topicNames);
+        TopicDescription t = describeResult.topicNameValues()
+                .get(topicName)
+                .get();
         return TopicDetailMapper.toResponse(t);
     }
 
     @Override
     public String deleteTopic(String topicName) throws ExecutionException, InterruptedException, TimeoutException {
-        DeleteTopicsResult result = adminClient.deleteTopics(Collections.singleton(topicName));
+        DeleteTopicsResult result = adminClientPool.get("localhost:9092").deleteTopics(Collections.singleton(topicName));
         result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
         return "Topic " + topicName + " has been deleted!";
     }
@@ -64,7 +76,7 @@ public class TopicService implements ITopicService {
     @Override
     public String increasePartition(String topicName, int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
         NewPartitions newPartitions = NewPartitions.increaseTo(partitionNum);
-        CreatePartitionsResult result = adminClient.createPartitions(
+        CreatePartitionsResult result = adminClientPool.get("localhost:9092").createPartitions(
                 Collections.singletonMap(topicName, newPartitions));
 
         result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);

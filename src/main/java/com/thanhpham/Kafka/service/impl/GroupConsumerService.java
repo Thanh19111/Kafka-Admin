@@ -1,5 +1,6 @@
 package com.thanhpham.Kafka.service.impl;
 
+import com.thanhpham.Kafka.components.AdminClientPool;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.mapper.GroupDetailMapper;
@@ -19,16 +20,19 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 public class GroupConsumerService implements IGroupConsumerService {
-    private final AdminClient adminClient;
+    private final AdminClientPool adminClientPool;
 
     @Override
     public List<GroupDetailResponse> getAllConsumerGroups() throws ExecutionException, InterruptedException {
         List<GroupDetailResponse> groups = new ArrayList<>();
 
-        ListGroupsResult result = adminClient.listGroups();
+        ListGroupsResult result = adminClientPool.get("localhost:9092").listGroups();
 
-        List<String> groupNames = result.all().get().stream().map(GroupListing::groupId).toList();
-        DescribeConsumerGroupsResult desc = adminClient.describeConsumerGroups(groupNames);
+        List<String> groupNames = result.all().get().stream()
+                .filter(g -> !g.protocol().isBlank() && g.protocol().equals("consumer"))
+                .map(GroupListing::groupId).toList();
+        DescribeConsumerGroupsResult desc = adminClientPool.get("localhost:9092")
+                .describeConsumerGroups(groupNames);
 
         desc.all().get().forEach((groupId, description) -> {
             groups.add(GroupDetailMapper.toResponse(groupId, description));
@@ -39,18 +43,19 @@ public class GroupConsumerService implements IGroupConsumerService {
 
     @Override
     public List<GroupPartitionResponse> checkLagByGroupId(String groupId) throws ExecutionException, InterruptedException {
-        ListConsumerGroupOffsetsResult offsetsResult = adminClient.listConsumerGroupOffsets(groupId);
-        Map<TopicPartition, OffsetAndMetadata> offsets = offsetsResult.partitionsToOffsetAndMetadata().get();
+        ListConsumerGroupOffsetsResult offsetsResult = adminClientPool.get("localhost:9092")
+                .listConsumerGroupOffsets(groupId);
 
-        Map<TopicPartition, Long> endOffsets = adminClient.listOffsets(
-                        offsets.keySet().stream().collect(
-                                HashMap::new,
-                                (m, tp) -> m.put(tp, OffsetSpec.latest()),
-                                HashMap::putAll
-                        )
-                ).all().get().entrySet().stream()
-                .collect(HashMap::new,
-                        (m, e) -> m.put(e.getKey(), e.getValue().offset()),
+        Map<TopicPartition, OffsetAndMetadata> offsets = offsetsResult.partitionsToOffsetAndMetadata().get();
+        Map<TopicPartition, Long> endOffsets = adminClientPool.get("localhost:9092")
+                .listOffsets(offsets.keySet().stream().collect(
+                                HashMap::new, (m, tp) -> m.put(tp, OffsetSpec.latest()),
+                                HashMap::putAll))
+                .all()
+                .get()
+                .entrySet()
+                .stream()
+                .collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue().offset()),
                         HashMap::putAll);
 
         List<GroupPartitionResponse> res = new ArrayList<>();
