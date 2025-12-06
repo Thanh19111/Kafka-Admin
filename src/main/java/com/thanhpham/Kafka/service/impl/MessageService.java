@@ -1,14 +1,15 @@
 package com.thanhpham.Kafka.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.thanhpham.Kafka.component.pool.IAvroConsumerPool;
+import com.thanhpham.Kafka.component.pool.IJsonConsumerPool;
 import com.thanhpham.Kafka.service.IMessageService;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,12 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageService implements IMessageService {
     private final SchemaRegistryClient client;
-    private final ConsumerFactory<String, GenericRecord> avroFactory;
-    private final ConsumerFactory<String, JsonNode> jsonFactory;
+    private final IAvroConsumerPool avroPool;
+    private final IJsonConsumerPool jsonPool;
 
     @Override
     public List<String> decodeAvro(String topic, int limit){
-        KafkaConsumer<String, GenericRecord> consumer = (KafkaConsumer<String, GenericRecord>) avroFactory.createConsumer();
+        Consumer<String, GenericRecord> consumer = avroPool.get(topic);
         consumer.subscribe(List.of(topic));
         List<String> results = new ArrayList<>();
         ConsumerRecords<String, GenericRecord> records = consumer.poll(Duration.ofSeconds(2));
@@ -41,7 +42,7 @@ public class MessageService implements IMessageService {
 
     @Override
     public List<JsonNode> decodeJson(String topic, int limit){
-        KafkaConsumer<String, JsonNode> consumer = (KafkaConsumer<String, JsonNode>) jsonFactory.createConsumer();
+        Consumer<String, JsonNode> consumer = jsonPool.get(topic);
         consumer.subscribe(List.of(topic));
         List<JsonNode> results = new ArrayList<>();
         ConsumerRecords<String, JsonNode> records = consumer.poll(Duration.ofSeconds(2));

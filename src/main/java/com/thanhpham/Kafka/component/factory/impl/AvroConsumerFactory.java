@@ -1,6 +1,5 @@
-package com.thanhpham.Kafka.components;
+package com.thanhpham.Kafka.component.factory.impl;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.avro.generic.GenericRecord;
@@ -8,11 +7,13 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 public class AvroConsumerFactory {
     public Consumer<String, GenericRecord> create() {
         Map<String, Object> props = new HashMap<>();

@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.components;
+package com.thanhpham.Kafka.component.factory.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer;

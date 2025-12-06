@@ -1,5 +1,7 @@
 package com.thanhpham.Kafka.service.impl;
 
+import com.thanhpham.Kafka.component.pool.IAdminClientPool;
+import com.thanhpham.Kafka.component.pool.IAvroConsumerPool;
 import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.utils.Constants;
 import com.thanhpham.Kafka.utils.InitConsumerProps;
@@ -21,12 +23,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ConsumerService implements IConsumerService {
-    private final AdminClient adminClient;
-    private final KafkaConsumer<String, GenericRecord> consumer;
+    private final IAdminClientPool adminClientPool;
+    private final IAvroConsumerPool avroPool;
 
     @Override
     public List<GroupListing> getAllConsumerGroups() throws ExecutionException, InterruptedException {
-        Collection<GroupListing> groups = adminClient.listGroups().valid().get();
+        Collection<GroupListing> groups = adminClientPool.get("localhost:9092").listGroups().valid().get();
         for (GroupListing group : groups) {
             String groupId = group.groupId();
             Optional<GroupType> groupTypeOpt = group.type();
@@ -95,12 +97,12 @@ public class ConsumerService implements IConsumerService {
                 new TopicPartition("thanh", 1), OffsetSpec.latest()
         );
 
-        ListOffsetsResult latestResult = adminClient.listOffsets(req);
+        ListOffsetsResult latestResult = adminClientPool.get("localhost:9092").listOffsets(req);
 
         for (TopicPartition tp : req.keySet()) {
             long latest = latestResult.partitionResult(tp).get().offset();
 
-            long committed = adminClient
+            long committed = adminClientPool.get("localhost:9092")
                     .listConsumerGroupOffsets("thanh-group")
                     .partitionsToOffsetAndMetadata()
                     .get()
@@ -116,8 +118,7 @@ public class ConsumerService implements IConsumerService {
     @Override
     public void getMessage(){
         String topic = "avro";
-        consumer.subscribe(List.of(topic));
-
+        Consumer<String, GenericRecord> consumer = avroPool.get(topic);
         consumer.poll(Duration.ofMillis(100));
 
         Set<TopicPartition> partitions = consumer.assignment();
