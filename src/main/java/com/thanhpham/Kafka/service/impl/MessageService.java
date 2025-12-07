@@ -1,8 +1,8 @@
 package com.thanhpham.Kafka.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.thanhpham.Kafka.component.pool.IAvroConsumerPool;
-import com.thanhpham.Kafka.component.pool.IJsonConsumerPool;
+import com.thanhpham.Kafka.component.pool.AvroConsumerPool;
+import com.thanhpham.Kafka.component.pool.JsonConsumerPool;
 import com.thanhpham.Kafka.service.IMessageService;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
@@ -21,8 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageService implements IMessageService {
     private final SchemaRegistryClient client;
-    private final IAvroConsumerPool avroPool;
-    private final IJsonConsumerPool jsonPool;
+    private final AvroConsumerPool avroPool;
+    private final JsonConsumerPool jsonPool;
 
     @Override
     public List<String> decodeAvro(String topic, int limit){

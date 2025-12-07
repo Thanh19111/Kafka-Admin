@@ -1,7 +1,7 @@
 package com.thanhpham.Kafka.service.impl;
 
-import com.thanhpham.Kafka.component.pool.IAdminClientPool;
-import com.thanhpham.Kafka.component.pool.IAvroConsumerPool;
+import com.thanhpham.Kafka.component.pool.AdminClientPool;
+import com.thanhpham.Kafka.component.pool.AvroConsumerPool;
 import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.utils.Constants;
 import com.thanhpham.Kafka.utils.InitConsumerProps;
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ConsumerService implements IConsumerService {
-    private final IAdminClientPool adminClientPool;
-    private final IAvroConsumerPool avroPool;
+    private final AdminClientPool adminClientPool;
+    private final AvroConsumerPool avroPool;
 
     @Override
     public List<GroupListing> getAllConsumerGroups() throws ExecutionException, InterruptedException {

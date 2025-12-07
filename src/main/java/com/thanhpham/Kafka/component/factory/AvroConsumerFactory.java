@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.component.factory.impl;
+package com.thanhpham.Kafka.component.factory;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;

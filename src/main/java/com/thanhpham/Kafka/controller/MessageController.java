@@ -2,12 +2,9 @@ package com.thanhpham.Kafka.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.thanhpham.Kafka.service.IMessageService;
-import com.thanhpham.Kafka.service.impl.MessageService;
-import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController

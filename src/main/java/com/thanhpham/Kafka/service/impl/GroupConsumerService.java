@@ -1,6 +1,6 @@
 package com.thanhpham.Kafka.service.impl;
 
-import com.thanhpham.Kafka.component.pool.IAdminClientPool;
+import com.thanhpham.Kafka.component.pool.AdminClientPool;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.mapper.GroupDetailMapper;
@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 public class GroupConsumerService implements IGroupConsumerService {
-    private final IAdminClientPool adminClientPool;
+    private final AdminClientPool adminClientPool;
 
     @Override
     public List<GroupDetailResponse> getAllConsumerGroups() throws ExecutionException, InterruptedException {

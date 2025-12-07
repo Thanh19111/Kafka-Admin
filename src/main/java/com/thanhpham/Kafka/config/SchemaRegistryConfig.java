@@ -17,8 +17,6 @@ public class SchemaRegistryConfig {
         Map<String, Object> config = new HashMap<>();
         config.put("request.timeout.ms", 30000);
         config.put("retry.backoff.ms", 500);
-
-        return new CachedSchemaRegistryClient(
-                List.of(Constants.SCHEMA_REGISTRY_URL), 100, config);
+        return new CachedSchemaRegistryClient(List.of(Constants.SCHEMA_REGISTRY_URL), 100, config);
     }
 }

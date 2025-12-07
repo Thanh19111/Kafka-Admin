@@ -5,7 +5,6 @@ import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.service.IMessageService;
 import com.thanhpham.Kafka.service.impl.SchemaRegistry;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
-import io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

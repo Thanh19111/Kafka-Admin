@@ -1,7 +1,6 @@
-package com.thanhpham.Kafka.component.pool.impl;
+package com.thanhpham.Kafka.component.pool;
 
-import com.thanhpham.Kafka.component.factory.IAvroConsumerFactory;
-import com.thanhpham.Kafka.component.pool.IAvroConsumerPool;
+import com.thanhpham.Kafka.component.factory.AvroConsumerFactory;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
@@ -14,11 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @RequiredArgsConstructor
-public class AvroConsumerPool implements IAvroConsumerPool {
-    private final IAvroConsumerFactory avroFactory;
+public class AvroConsumerPool {
+    private final AvroConsumerFactory avroFactory;
     private final Map<String, Consumer<String, GenericRecord>> pool = new ConcurrentHashMap<>();
 
-    @Override
     public Consumer<String, GenericRecord> get(String topicName) {
         return pool.computeIfAbsent(topicName, this::create);
     }

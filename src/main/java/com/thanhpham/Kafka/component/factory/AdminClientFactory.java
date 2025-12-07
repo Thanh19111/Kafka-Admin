@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.component.factory.impl;
+package com.thanhpham.Kafka.component.factory;
 
 import com.thanhpham.Kafka.utils.Constants;
 import org.apache.kafka.clients.admin.Admin;

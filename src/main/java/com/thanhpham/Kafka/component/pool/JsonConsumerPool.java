@@ -1,8 +1,7 @@
-package com.thanhpham.Kafka.component.pool.impl;
+package com.thanhpham.Kafka.component.pool;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.thanhpham.Kafka.component.factory.IJsonConsumerFactory;
-import com.thanhpham.Kafka.component.pool.IJsonConsumerPool;
+import com.thanhpham.Kafka.component.factory.JsonConsumerFactory;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -14,11 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @Component
-public class JsonConsumerPool implements IJsonConsumerPool {
-    private final IJsonConsumerFactory jsonFactory;
+public class JsonConsumerPool {
+    private final JsonConsumerFactory jsonFactory;
     private final Map<String, Consumer<String, JsonNode>> pool = new ConcurrentHashMap<>();
 
-    @Override
     public Consumer<String, JsonNode> get(String topicName) {
         return pool.computeIfAbsent(topicName, this::create);
     }
