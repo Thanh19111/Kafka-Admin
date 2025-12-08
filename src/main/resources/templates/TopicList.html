@@ -78,6 +78,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
 		<!--end::Global Theme Styles -->
 		<link rel="shortcut icon" href="assets/demo/media/img/logo/favicon.ico" />
+
+		<style>
+			.no-underline:hover {
+    			text-decoration: none;
+				}
+		</style>
 	</head>
 
 	<!-- end::Head -->
@@ -848,84 +854,25 @@ License: You must have a valid license purchased only from themeforest(the above
 										<span style="width: 100%;" class="m-widget6__caption">
 											Size
 										</span>
-										<span style="width: 100%;" class="m-widget6__caption"></span>
+										<span style="width: 100%; padding-left: 10px" class="m-widget6__caption">
+											Action
+										</span>
 									</div>
 								</div>
 								<div class="m-widget6__head">
-									<div style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); align-items: center;" class="m-widget6__item" th:each="topic : ${topics}">
-										<span th:text="${topic.topicName}" style="max-width: 170px; width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${topic.totalPartition}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${topic.outISR}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${topic.replicaFactorNum}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span style="width: 100%;" class="m-widget6__caption">?? MB</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											<button style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button>
-										</span>
-									</div>
-									<div style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); align-items: center;" class="m-widget6__item">
-										<span style="width: 100%;" class="m-widget6__caption">
-											Thanh Pham
-										</span>
-										<span style="padding: auto; width: 100%;" class="m-widget6__caption">
-											5
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											0
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											1
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											50MB
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											<button style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button>
-										</span>
-									</div>
-									<div style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); align-items: center;" class="m-widget6__item">
-										<span style="width: 100%;" class="m-widget6__caption">
-											Thanh Pham
-										</span>
-										<span style="padding: auto; width: 100%;" class="m-widget6__caption">
-											5
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											0
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											1
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											50MB
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											<button style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button>
-										</span>
-									</div>
-									<div style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); align-items: center;" class="m-widget6__item">
-										<span style="width: 100%;" class="m-widget6__caption">
-											Thanh Pham
-										</span>
-										<span style="padding: auto; width: 100%;" class="m-widget6__caption">
-											5
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											0
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											1
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											50MB
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											<button style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button>
-										</span>
-									</div>
-								</div>
-								<div class="m-widget6__foot">
-									<div class="m-widget6__action m--align-right">
-										
+									<div th:each="topic : ${topics}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); align-items: center;" class="m-widget6__item">
+										<a th:href="@{/topic/{topicName}(topicName=${topic.topicName})}" style="grid-column: span 5; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr); text-decoration: none;">
+											<span th:text="${topic.topicName}" style="max-width: 170px; width: 100%;" class="m-widget6__caption"></span>
+											<span th:text="${topic.totalPartition}" style="width: 100%;" class="m-widget6__caption"></span>
+											<span th:text="${topic.outISR}" style="width: 100%;" class="m-widget6__caption"></span>
+											<span th:text="${topic.replicaFactorNum}" style="width: 100%;" class="m-widget6__caption"></span>
+											<span style="width: 100%;" class="m-widget6__caption">?? MB</span>
+										</a>
+										<div style="grid-column: span 1;">
+											<span style="width: 100%;" class="m-widget6__caption">
+												<button style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button>
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>

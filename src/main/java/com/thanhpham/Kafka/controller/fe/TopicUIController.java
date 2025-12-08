@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -31,4 +32,16 @@ public class TopicUIController {
     public String create() {
         return "CreateNewTopic";
     }
+
+    // do lười nên truyền nhiều giá trị
+    @GetMapping("/{topicName}")
+    public String userDetail(@PathVariable String topicName, Model model) throws ExecutionException, InterruptedException {
+        TopicDetailResponse topic = iTopicService.getATopicDetail(topicName);
+        TopicDetailUI res = TopicUIMapper.format(topic);
+        model.addAttribute("detail", res);
+        model.addAttribute("id", topic.getTopicId());
+        model.addAttribute("partitions", topic.getPartitions());
+        return "TopicDetail";
+    }
+
 }

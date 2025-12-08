@@ -6,9 +6,9 @@ import java.util.List;
 
 @Data
 public class TopicDetailResponse {
-    private String topicName;
-    private String topicId;
-    private int partitionCount;
-    private int replicaFactorNum;
-    private List<PartitionSpecsResponse> partitions;
+    public String topicName;
+    public String topicId;
+    public int partitionCount;
+    public int replicaFactorNum;
+    public List<PartitionSpecsResponse> partitions;
 }

@@ -2,13 +2,16 @@ package com.thanhpham.Kafka.service.impl;
 
 import com.thanhpham.Kafka.component.pool.AdminClientPool;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
+import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
+import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
 import com.thanhpham.Kafka.mapper.TopicDetailMapper;
 import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.common.KafkaFuture;
+import org.apache.kafka.common.config.ConfigResource;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -64,6 +67,24 @@ public class TopicService implements ITopicService {
                 .get(topicName)
                 .get();
         return TopicDetailMapper.toResponse(t);
+    }
+
+    private List<Pair> getTopicConfigByTopicName(String topicName) throws ExecutionException, InterruptedException {
+        ConfigResource resource = new ConfigResource(ConfigResource.Type.TOPIC, topicName);
+        DescribeConfigsResult result = adminClientPool.get(Constants.BOOTSTRAP_SERVERS).describeConfigs(List.of(resource));
+        Config config = result.all().get().get(resource);
+        List<Pair> configs = new ArrayList<>();
+        for (ConfigEntry entry: config.entries()){
+            configs.add(new Pair(entry.name(), entry.value()));
+        }
+        return configs;
+    }
+
+    @Override
+    public TopicDetailResponseWithConfig getATopicDetailWithConfig(String topicName) throws ExecutionException, InterruptedException {
+        List<Pair> configs = getTopicConfigByTopicName(topicName);
+        TopicDetailResponse topic = getATopicDetail(topicName);
+        return new TopicDetailResponseWithConfig(topic, configs);
     }
 
     @Override
