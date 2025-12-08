@@ -852,6 +852,11 @@ License: You must have a valid license purchased only from themeforest(the above
 											Increase Partition
 										</a>
 									</li>
+									<li class="nav-item m-tabs__item">
+										<a class="nav-link m-tabs__link" style="max-width: 180px;" data-toggle="tab" href="#m_user_profile_tab_4" role="tab">
+											Config Information
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -911,7 +916,7 @@ License: You must have a valid license purchased only from themeforest(the above
 													<div th:each="partition : ${partitions}" style="padding: 10px 10px; border: dashed 1px wheat">
 														<div style="padding-top: 20px; display: flex;">
 															<span style="width: 100%;" class="m-widget6__caption">
-																Partiton
+																Partition
 															</span>
 															<span th:text="${partition.partition}" style="width: 100%;" class="example-text-input"></span>
 														</div>
@@ -1004,6 +1009,37 @@ License: You must have a valid license purchased only from themeforest(the above
 										</div>
 									</div>
 								</form>
+							</div>
+							<div class="tab-pane active" id="m_user_profile_tab_4">
+								<div class="m-portlet__body">
+									<div class="form-group m-form__group m--margin-top-10 m--hide">
+										<div class="alert m-alert m-alert--default" role="alert">
+											The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap with additional classes.
+										</div>
+									</div>
+									<div class="form-group m-form__group row">
+										<div class="col-10 ml-auto">
+											<h3 class="m-form__section">Configuration Information</h3>
+										</div>
+									</div>
+									<div class="form-group m-form__group row">
+										<label style="font-size: medium;" for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
+										<div class="col-7">
+											<div style="margin-bottom: 10px; display: flex;">
+												<span style="padding: 15px 30px;" class="form-control m-input">Config Attribute</span>
+												<span style="padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Config Value</span>
+											</div>
+											<div style="margin-bottom: 10px; display: flex;">
+												<span style="padding: 15px 30px;" class="form-control m-input">Config Attribute</span>
+												<span style="padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Config Value</span>
+											</div>
+											<div style=" margin-bottom: 10px;display: flex;">
+												<span style="padding: 15px 30px;" class="form-control m-input">Config Attribute</span>
+												<span style="padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Config Value</span>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="tab-pane " id="m_user_profile_tab_2">
 							</div>
