@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 @RestController
-@RequestMapping("/topics")
+@RequestMapping("/api/topics")
 @RequiredArgsConstructor
 public class TopicController {
     private final ITopicService iTopicService;

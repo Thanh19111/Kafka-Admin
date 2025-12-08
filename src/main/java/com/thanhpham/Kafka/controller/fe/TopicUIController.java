@@ -1,0 +1,34 @@
+package com.thanhpham.Kafka.controller.fe;
+
+import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
+import com.thanhpham.Kafka.mapper.TopicUIMapper;
+import com.thanhpham.Kafka.service.ITopicService;
+import com.thanhpham.Kafka.utils.uiformat.TopicDetailUI;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+@Controller
+@RequestMapping("/topic")
+@RequiredArgsConstructor
+public class TopicUIController {
+    private final ITopicService iTopicService;
+
+    @GetMapping
+    public String home(Model model) throws ExecutionException, InterruptedException {
+        List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
+        List<TopicDetailUI> topics = data.stream().map(TopicUIMapper::format).toList();
+        model.addAttribute("topics", topics);
+        return "TopicList";
+    }
+
+    @GetMapping("/create")
+    public String create() {
+        return "CreateNewTopic";
+    }
+}

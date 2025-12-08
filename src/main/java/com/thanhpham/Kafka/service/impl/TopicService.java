@@ -22,7 +22,7 @@ public class TopicService implements ITopicService {
     private final AdminClientPool adminClientPool;
 
     public Set<String> getAllListTopic() throws ExecutionException, InterruptedException {
-        return adminClientPool.get("localhost:9092")
+        return adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
                 .listTopics()
                 .names()
                 .get();
@@ -33,7 +33,7 @@ public class TopicService implements ITopicService {
         NewTopic newTopic = new NewTopic(request.getTopicName(), request.getPartitionNum(), request.getReplicaFNum())
                 .configs(request.getConfig());
 
-        adminClientPool.get("localhost:9092")
+        adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
                 .createTopics(Collections.singleton(newTopic))
                 .all()
                 .get();
@@ -44,7 +44,7 @@ public class TopicService implements ITopicService {
     public List<TopicDetailResponse> getAllTopicDetail() throws ExecutionException, InterruptedException {
         List<TopicDetailResponse> res = new ArrayList<>();
         List<String> topicNames = new ArrayList<>(getAllListTopic());
-        DescribeTopicsResult describeResult = adminClientPool.get("localhost:9092")
+        DescribeTopicsResult describeResult = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
                 .describeTopics(topicNames);
 
         Map<String, KafkaFuture<TopicDescription>> desc = describeResult.topicNameValues();
@@ -58,7 +58,7 @@ public class TopicService implements ITopicService {
     @Override
     public TopicDetailResponse getATopicDetail(String topicName) throws ExecutionException, InterruptedException {
         List<String> topicNames = new ArrayList<>(List.of(topicName));
-        DescribeTopicsResult describeResult = adminClientPool.get("localhost:9092")
+        DescribeTopicsResult describeResult = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
                 .describeTopics(topicNames);
         TopicDescription t = describeResult.topicNameValues()
                 .get(topicName)
@@ -68,7 +68,8 @@ public class TopicService implements ITopicService {
 
     @Override
     public String deleteTopic(String topicName) throws ExecutionException, InterruptedException, TimeoutException {
-        DeleteTopicsResult result = adminClientPool.get("localhost:9092").deleteTopics(Collections.singleton(topicName));
+        DeleteTopicsResult result = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+                .deleteTopics(Collections.singleton(topicName));
         result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
         return "Topic " + topicName + " has been deleted!";
     }
@@ -76,8 +77,8 @@ public class TopicService implements ITopicService {
     @Override
     public String increasePartition(String topicName, int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
         NewPartitions newPartitions = NewPartitions.increaseTo(partitionNum);
-        CreatePartitionsResult result = adminClientPool.get("localhost:9092").createPartitions(
-                Collections.singletonMap(topicName, newPartitions));
+        CreatePartitionsResult result = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+                .createPartitions(Collections.singletonMap(topicName, newPartitions));
 
         result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
         return "Đã tăng partition của topic " + topicName + " lên " + partitionNum;

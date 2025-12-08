@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/groups")
+@RequestMapping("/api/groups")
 public class GroupConsumerController {
     private final IGroupConsumerService iGroupConsumerService;
 

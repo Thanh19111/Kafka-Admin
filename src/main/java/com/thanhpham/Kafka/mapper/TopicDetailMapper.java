@@ -12,7 +12,9 @@ public class TopicDetailMapper {
         TopicDetailResponse res = new TopicDetailResponse();
         res.setTopicName(topicDes.name());
         res.setTopicId(topicDes.topicId().toString());
+        res.setReplicaFactorNum(topicDes.partitions().getFirst().replicas().size());
         res.setPartitionCount(topicDes.partitions().size());
+
         List<PartitionSpecsResponse> partitions = topicDes.partitions().stream().map(partition -> {
             PartitionSpecsResponse partitionInfo =  new PartitionSpecsResponse();
             partitionInfo.setPartition(partition.partition());
