@@ -1,6 +1,8 @@
 package com.thanhpham.Kafka.controller.fe;
 
+import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
+import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
 import com.thanhpham.Kafka.mapper.TopicUIMapper;
 import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.utils.uiformat.TopicDetailUI;
@@ -35,12 +37,14 @@ public class TopicUIController {
 
     // do lười nên truyền nhiều giá trị
     @GetMapping("/{topicName}")
-    public String userDetail(@PathVariable String topicName, Model model) throws ExecutionException, InterruptedException {
-        TopicDetailResponse topic = iTopicService.getATopicDetail(topicName);
-        TopicDetailUI res = TopicUIMapper.format(topic);
+    public String topicDetail(@PathVariable String topicName, Model model) throws ExecutionException, InterruptedException {
+        TopicDetailResponseWithConfig topic = iTopicService.getATopicDetailWithConfig(topicName);
+        TopicDetailUI res = TopicUIMapper.format(topic.getTopic());
+        List<Pair> configs = topic.getConfig();
         model.addAttribute("detail", res);
-        model.addAttribute("id", topic.getTopicId());
-        model.addAttribute("partitions", topic.getPartitions());
+        model.addAttribute("id", topic.getTopic().getTopicId());
+        model.addAttribute("partitions", topic.getTopic().getPartitions());
+        model.addAttribute("configs", configs);
         return "TopicDetail";
     }
 

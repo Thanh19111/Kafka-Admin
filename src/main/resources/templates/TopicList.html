@@ -862,7 +862,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="m-widget6__head">
 									<div th:each="topic : ${topics}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr); align-items: center;" class="m-widget6__item">
 										<a th:href="@{/topic/{topicName}(topicName=${topic.topicName})}" style="grid-column: span 5; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr); text-decoration: none;">
-											<span th:text="${topic.topicName}" style="max-width: 170px; width: 100%;" class="m-widget6__caption"></span>
+											<span th:text="${topic.topicName}" style="max-width: 170px; width: 100%; overflow-wrap: anywhere;" class="m-widget6__caption"></span>
 											<span th:text="${topic.totalPartition}" style="width: 100%;" class="m-widget6__caption"></span>
 											<span th:text="${topic.outISR}" style="width: 100%;" class="m-widget6__caption"></span>
 											<span th:text="${topic.replicaFactorNum}" style="width: 100%;" class="m-widget6__caption"></span>

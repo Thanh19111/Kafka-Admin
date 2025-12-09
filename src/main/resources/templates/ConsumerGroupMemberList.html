@@ -738,64 +738,45 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 
 					<!-- END: Subheader -->
-					<div class="m-content">Information of Group Consumer Members</div>
+					<div class="m-content">Information of Consumer</div>
 					<div class="m-portlet m-portlet--full-height ">
 						<div class="m-portlet__head">
 							<div class="m-portlet__head-caption">
 								<div class="m-portlet__head-title">
-									<h3 class="m-portlet__head-text">
-										All Consumers
-									</h3>
+									<h3 th:text="|Members of ${groupId} group}|" class="m-portlet__head-text"></h3>
 								</div>
 							</div>
 						</div>
 						<div class="m-portlet__body">
 							<div class="m-widget6">
 								<div class="m-widget6__head">
-									<div style="display: grid; gap: 16px; grid-template-columns: repeat(7, 1fr);" class="m-widget6__item">
+									<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 10px 10px;" class="m-widget6__item">
 										<span style="width: 100%;" class="m-widget6__caption">
-											Consumer Group ID
+											Member ID
 										</span>
 										<span style="width: 100%;" class="m-widget6__caption">
-											Members Number
+											Client ID
 										</span>
 										<span style="width: 100%;" class="m-widget6__caption">
-											Topic Number
+											Host
 										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Latest Offset
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Messages Behind
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Coordinator Broker
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											State
+										<span style="column-span: 2; width: 100%;" class="m-widget6__caption">
+											Topic/Partition Of Topic
 										</span>
 									</div>
-								</div>
-								<div class="m-widget6__head">
-									<div th:each="group : ${groups}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(7, 1fr); align-items: center;" class="m-widget6__item">
-										<a th:href="@{/group/{groupId}(groupId=${group.consumerGroupId})}" style="text-decoration: none;">
-											<span th:text="${group.consumerGroupId}" style="overflow-wrap: anywhere; max-width: 145px; width: 100%;" class="m-widget6__caption"></span>
-										</a>
-										<a th:href="@{/group/member/{groupId}(groupId=${group.consumerGroupId})}" style="text-decoration: none;">
-											<span th:text="${group.memberNum}" style="padding: auto; width: 100%;" class="m-widget6__caption"></span>
-										</a>
-										<span th:text="${group.topicNum}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.latestOffset}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.messageBehind}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.coordinator}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.state}" style="width: 100%;" class="m-widget6__caption"></span>
+									<div th:each="member : ${members}" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 10px 10px;" class="m-widget6__item">
+										<span th:text="${member.memberId}" style="width: 100%;" class="m-widget6__caption"></span>
+										<span th:text="${member.clientId}" style="width: 100%;" class="m-widget6__caption"></span>
+										<span th:text="${member.host}" style="width: 100%;" class="m-widget6__caption"></span>
+										<div style="column-span: 2; display: flex; width: 100%; justify-content: space-between;" class="m-widget6__caption">
+											<div th:each="topicPar : ${member.topicPartitions}" th:text="${topicPar}" style="flex: 1;"></div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
 				<!--</div>-->
 			</div>
 

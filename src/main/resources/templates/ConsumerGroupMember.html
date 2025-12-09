@@ -738,13 +738,13 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 
 					<!-- END: Subheader -->
-					<div class="m-content">Information of Group Consumer Members</div>
+					<div class="m-content">Information of Consumer</div>
 					<div class="m-portlet m-portlet--full-height ">
 						<div class="m-portlet__head">
 							<div class="m-portlet__head-caption">
 								<div class="m-portlet__head-title">
 									<h3 class="m-portlet__head-text">
-										All Consumers
+										Member of ??
 									</h3>
 								</div>
 							</div>
@@ -752,44 +752,103 @@ License: You must have a valid license purchased only from themeforest(the above
 						<div class="m-portlet__body">
 							<div class="m-widget6">
 								<div class="m-widget6__head">
-									<div style="display: grid; gap: 16px; grid-template-columns: repeat(7, 1fr);" class="m-widget6__item">
-										<span style="width: 100%;" class="m-widget6__caption">
-											Consumer Group ID
+									<div style="display: flex; gap: 16px; padding: 10px 10px;" class="m-widget6__item">
+										<span style="max-width: 200px;" class="m-widget6__caption">
+											Member ID
 										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Members Number
+										<span style="max-width: 200px;" class="m-widget6__caption">
+											Client ID
 										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Topic Number
+										<span style="max-width: 200px;" class="m-widget6__caption">
+											Host
 										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Latest Offset
+									</div>
+									<div style="padding: 10px 10px; display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item" m-menu-submenu-toggle="click" aria-haspopup="true">
+										<span style="max-width: 200px;" class="m-widget6__caption">
+											??
 										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Messages Behind
+										<span style="max-width: 200px;" class="m-widget6__caption">
+											??
 										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											Coordinator Broker
-										</span>
-										<span style="width: 100%;" class="m-widget6__caption">
-											State
+										<span style="max-width: 200px;" class="m-widget6__caption">
+											??
 										</span>
 									</div>
 								</div>
 								<div class="m-widget6__head">
-									<div th:each="group : ${groups}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(7, 1fr); align-items: center;" class="m-widget6__item">
-										<a th:href="@{/group/{groupId}(groupId=${group.consumerGroupId})}" style="text-decoration: none;">
-											<span th:text="${group.consumerGroupId}" style="overflow-wrap: anywhere; max-width: 145px; width: 100%;" class="m-widget6__caption"></span>
-										</a>
-										<a th:href="@{/group/member/{groupId}(groupId=${group.consumerGroupId})}" style="text-decoration: none;">
-											<span th:text="${group.memberNum}" style="padding: auto; width: 100%;" class="m-widget6__caption"></span>
-										</a>
-										<span th:text="${group.topicNum}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.latestOffset}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.messageBehind}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.coordinator}" style="width: 100%;" class="m-widget6__caption"></span>
-										<span th:text="${group.state}" style="width: 100%;" class="m-widget6__caption"></span>
+									<div style="border: dashed rgb(177, 177, 177) 1px; padding: 10px 10px; max-width: 1000px; margin-bottom: 5px;">
+										<div style="display: flex; gap: 16px; font-weight: 400; padding-top: 10px; align-items: center;" class="m-widget6__item">
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Partition
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Commited Offset
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Latest Offset
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Lag
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Topic
+											</span>
+										</div>
+										<div style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+										</div>
 									</div>
+									<div style="border: dashed rgb(177, 177, 177) 1px; padding: 10px 10px; max-width: 1000px;">
+										<div style="display: flex; gap: 16px; font-weight: 400; padding-top: 10px; align-items: center;" class="m-widget6__item">
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Partition
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Commited Offset
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Latest Offset
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Lag
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Topic
+											</span>
+										</div>
+										<div style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												??
+											</span>
+										</div>
+									</div>
+									<!-- <div style="border-bottom: 1px dashed #8d8989; margin: 16px 0;"></div> -->
 								</div>
 							</div>
 						</div>

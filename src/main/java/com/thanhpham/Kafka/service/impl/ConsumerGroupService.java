@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
-public class GroupConsumerService implements IGroupConsumerService {
+public class ConsumerGroupService implements IGroupConsumerService {
     private final AdminClientPool adminClientPool;
 
     @Override
@@ -48,6 +48,7 @@ public class GroupConsumerService implements IGroupConsumerService {
                 .listConsumerGroupOffsets(groupId);
 
         Map<TopicPartition, OffsetAndMetadata> offsets = offsetsResult.partitionsToOffsetAndMetadata().get();
+
         Map<TopicPartition, Long> endOffsets = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
                 .listOffsets(offsets.keySet().stream().collect(
                                 HashMap::new, (m, tp) -> m.put(tp, OffsetSpec.latest()),
@@ -65,7 +66,7 @@ public class GroupConsumerService implements IGroupConsumerService {
             long committed = offsetAndMeta.offset();
             long latest = endOffsets.getOrDefault(tp, committed);
             long lag = latest - committed;
-            res.add(new GroupPartitionResponse(tp.toString(), committed, latest, lag));
+            res.add(new GroupPartitionResponse(tp.topic(), tp.partition(), committed, latest, lag));
         });
 
         return res;

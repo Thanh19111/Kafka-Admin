@@ -866,7 +866,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="m-widget6">
 										<div class="m-widget6__head">
 											<div style="display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr);" class="m-widget6__item">
-												<div style="padding: 10px 10px; border: dashed 1px wheat">
+												<div style="padding: 10px 10px; border: dashed 1px wheat;">
 													<div style="font-size: medium; width: 100%;" class="m-widget6__caption">
 														Topic Detail
 													</div>
@@ -913,7 +913,7 @@ License: You must have a valid license purchased only from themeforest(the above
 													<div style="font-size: medium; width: 100%; padding-left: 10px;" class="m-widget6__caption">
 														Partition Specifications
 													</div>
-													<div th:each="partition : ${partitions}" style="padding: 10px 10px; border: dashed 1px wheat">
+													<div th:each="partition : ${partitions}" style="margin-top: 10px; padding: 10px 10px; border: dashed 1px wheat">
 														<div style="padding-top: 20px; display: flex;">
 															<span style="width: 100%;" class="m-widget6__caption">
 																Partition
@@ -971,28 +971,19 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="form-group m-form__group row">
 											<label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
 											<div class="col-7">
-												<span style="max-width: 50%;" class="form-control m-input">Example 1</span>
+												<span th:text="${detail.topicName}" style="max-width: 50%;" class="form-control m-input">Example 1</span>
 											</div>
 										</div>
 										<div class="form-group m-form__group row">
 											<label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
 											<div class="col-7">
-												<input type="number" value="1" style="max-width: 50%;" class="form-control m-input" />
+												<input  type="number" th:value="${detail.totalPartition}" style="max-width: 50%;" class="form-control m-input" />
 											</div>
 										</div>
 										<div class="form-group m-form__group row">
 											<label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
 											<div class="col-7">
-												<span style="max-width: 50%;" class="form-control m-input">1</span>
-											</div>
-										</div>
-										<div class="form-group m-form__group row">
-											<label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
-											<div class="col-7">
-												<div style="display: flex;">
-													<span style="padding: 15px 30px;" class="form-control m-input">Config Attribute</span>
-													<span style="padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Config Value</span>
-												</div>
+												<span th:text="${detail.replicaFactorNum}" style="max-width: 50%;" class="form-control m-input"></span>
 											</div>
 										</div>
 									</div>
@@ -1025,17 +1016,9 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-group m-form__group row">
 										<label style="font-size: medium;" for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
 										<div class="col-7">
-											<div style="margin-bottom: 10px; display: flex;">
-												<span style="padding: 15px 30px;" class="form-control m-input">Config Attribute</span>
-												<span style="padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Config Value</span>
-											</div>
-											<div style="margin-bottom: 10px; display: flex;">
-												<span style="padding: 15px 30px;" class="form-control m-input">Config Attribute</span>
-												<span style="padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Config Value</span>
-											</div>
-											<div style=" margin-bottom: 10px;display: flex;">
-												<span style="padding: 15px 30px;" class="form-control m-input">Config Attribute</span>
-												<span style="padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Config Value</span>
+											<div th:each="config : ${configs}" style="margin-bottom: 10px; display: flex;">
+												<span th:text="${config.left}"  style="min-width: 350px; padding: 15px 30px;" class="form-control m-input"></span>
+												<span th:text="${config.right}"  style="min-width: 350px; padding: 15px 30px; margin-left: 10px;" class="form-control m-input"></span>
 											</div>
 										</div>
 									</div>

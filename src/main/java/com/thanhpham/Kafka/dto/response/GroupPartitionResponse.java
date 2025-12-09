@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupPartitionResponse {
-    private String partitionId;
+    private String topic;
+    private int partition;
     private long commitedOffset;
     private long latestOffset;
     private long lag;
