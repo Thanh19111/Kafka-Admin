@@ -242,20 +242,14 @@ License: You must have a valid license purchased only from themeforest(the above
 								<h3 class="m-subheader__title m-subheader__title--separator">Consumer</h3>
 								<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
 									<li class="m-nav__item m-nav__item--home">
-										<a href="#" class="m-nav__link m-nav__link--icon">
+										<a th:href="@{/}" class="m-nav__link m-nav__link--icon">
 											<i class="m-nav__link-icon la la-home"></i>
 										</a>
 									</li>
 									<li class="m-nav__separator">-</li>
 									<li class="m-nav__item">
-										<a href="" class="m-nav__link">
-											<span class="m-nav__link-text">Local Cluster</span>
-										</a>
-									</li>
-									<li class="m-nav__separator">-</li>
-									<li class="m-nav__item">
-										<a href="" class="m-nav__link">
-											<span class="m-nav__link-text">Consumer</span>
+										<a th:href="@{/group}" class="m-nav__link">
+											<span style="color: rgb(78, 15, 165);" class="m-nav__link-text">Consumers</span>
 										</a>
 									</li>
 								</ul>
@@ -264,13 +258,13 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 
 					<!-- END: Subheader -->
-					<div class="m-content">Information of Group Consumer Members</div>
+					<div class="m-content">Information of Consumer Group List</div>
 					<div class="m-portlet m-portlet--full-height ">
 						<div class="m-portlet__head">
 							<div class="m-portlet__head-caption">
 								<div class="m-portlet__head-title">
 									<h3 class="m-portlet__head-text">
-										All Consumers
+										All Consumer Groups
 									</h3>
 								</div>
 							</div>

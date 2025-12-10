@@ -233,7 +233,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<!-- end::Header -->
 
 			<!-- begin::Body -->
-			<div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
+			<div style="width: 100%; padding-top: 70px !important;" class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
 				<div class="m-grid__item m-grid__item--fluid m-wrapper">
 					<!-- BEGIN: Subheader -->
 					<div class="m-subheader ">
@@ -248,14 +248,14 @@ License: You must have a valid license purchased only from themeforest(the above
 									</li>
 									<li class="m-nav__separator">-</li>
 									<li class="m-nav__item">
-										<a href="" class="m-nav__link">
-											<span class="m-nav__link-text">Local Cluster</span>
+										<a th:href="@{/group}" class="m-nav__link">
+											<span class="m-nav__link-text">Consumers</span>
 										</a>
 									</li>
 									<li class="m-nav__separator">-</li>
 									<li class="m-nav__item">
-										<a href="" class="m-nav__link">
-											<span class="m-nav__link-text">Consumer</span>
+										<a th:href="@{/group/{groupId}(groupId=${groupId})}" class="m-nav__link">
+											<span style="color: rgb(78, 15, 165);" th:text="${groupId}" class="m-nav__link-text"></span>
 										</a>
 									</li>
 								</ul>
@@ -264,12 +264,12 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 
 					<!-- END: Subheader -->
-					<div class="m-content">Information of Consumer</div>
+					<div class="m-content">Information of Consumer Members</div>
 					<div class="m-portlet m-portlet--full-height ">
 						<div class="m-portlet__head">
 							<div class="m-portlet__head-caption">
 								<div class="m-portlet__head-title">
-									<h3 th:text="|Members of ${groupId} group}|" class="m-portlet__head-text"></h3>
+									<h3 th:text="|Members of ${groupId} group|" class="m-portlet__head-text"></h3>
 								</div>
 							</div>
 						</div>
@@ -290,13 +290,16 @@ License: You must have a valid license purchased only from themeforest(the above
 											Topic/Partition Of Topic
 										</span>
 									</div>
-									<div th:each="member : ${members}" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 10px 10px;" class="m-widget6__item">
+									<div th:each="member : ${members}" style="display: grid; grid-template-columns: repeat(3, 1fr) 2fr; gap: 16px; padding: 10px 10px;" class="m-widget6__item">
 										<span th:text="${member.memberId}" style="width: 100%;" class="m-widget6__caption"></span>
 										<span th:text="${member.clientId}" style="width: 100%;" class="m-widget6__caption"></span>
 										<span th:text="${member.host}" style="width: 100%;" class="m-widget6__caption"></span>
-										<div style="column-span: 2; display: flex; width: 100%; justify-content: space-between;" class="m-widget6__caption">
-											<div th:each="topicPar : ${member.topicPartitions}" th:text="${topicPar}" style="flex: 1;"></div>
+										<div style="width: 100%" class="m-widget6__caption">
+											<div style="padding: 10px 0px;" th:each="topicPar : ${member.topicPartitions}" th:text="${topicPar}"></div>
 										</div>
+<!--										<div style="column-span: 2; display: flex; width: 100%; justify-content: space-between;" class="m-widget6__caption">-->
+<!--											-->
+<!--										</div>-->
 									</div>
 								</div>
 							</div>

@@ -134,7 +134,8 @@ License: You must have a valid license purchased only from themeforest(the above
 															<i class="m-menu__hor-arrow la la-angle-right"></i>
 															<i class="m-menu__ver-arrow la la-angle-right"></i>
 														</a>
-														<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right"><span class="m-menu__arrow "></span>
+														<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right">
+															<span class="m-menu__arrow "></span>
 															<ul class="m-menu__subnav">
 																<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true">
 																	<a th:href="@{/topic}" class="m-menu__link ">
@@ -233,7 +234,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<!-- end::Header -->
 
 			<!-- begin::Body -->
-			<div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
+			<div style="width: 100%; padding-top: 70px !important;" class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
 				<div class="m-grid__item m-grid__item--fluid m-wrapper">
 					<!-- BEGIN: Subheader -->
 					<div class="m-subheader ">
@@ -249,13 +250,19 @@ License: You must have a valid license purchased only from themeforest(the above
 									<li class="m-nav__separator">-</li>
 									<li class="m-nav__item">
 										<a href="" class="m-nav__link">
-											<span class="m-nav__link-text">Brokers</span>
+											<span class="m-nav__link-text">Topics</span>
 										</a>
 									</li>
 									<li class="m-nav__separator">-</li>
 									<li class="m-nav__item">
-										<a href="" class="m-nav__link">
-											<span class="m-nav__link-text">Topic</span>
+										<a th:href="@{/topic}" class="m-nav__link">
+											<span class="m-nav__link-text">List of Topics</span>
+										</a>
+									</li>
+									<li class="m-nav__separator">-</li>
+									<li class="m-nav__item">
+										<a th:href="@{/topic/{topicName}(topicName=${detail.topicName})}" class="m-nav__link">
+											<span style="color: rgb(78, 15, 165);" th:text="${detail.topicName}" class="m-nav__link-text"></span>
 										</a>
 									</li>
 								</ul>
@@ -397,30 +404,32 @@ License: You must have a valid license purchased only from themeforest(the above
 													<div style="font-size: medium; width: 100%; padding-left: 10px;" class="m-widget6__caption">
 														Partition Specifications
 													</div>
-													<div th:each="partition : ${partitions}" style="margin-top: 10px; padding: 10px 10px; border: dashed 1px wheat">
-														<div style="padding-top: 20px; display: flex;">
+													<div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden; padding-top: 10px">
+														<div th:each="partition : ${partitions}" style="margin: 0px 10px 10px 10px; padding: 10px 10px; border: dashed 1px wheat">
+															<div style="padding-top: 20px; display: flex;">
 															<span style="width: 100%;" class="m-widget6__caption">
 																Partition
 															</span>
-															<span th:text="${partition.partition}" style="width: 100%;" class="example-text-input"></span>
-														</div>
-														<div style="padding-top: 20px; display: flex;">
+																<span th:text="${partition.partition}" style="width: 100%;" class="example-text-input"></span>
+															</div>
+															<div style="padding-top: 20px; display: flex;">
 															<span style="width: 100%;" class="m-widget6__caption">
 																Leader
 															</span>
-															<span th:text="${partition.leader}" style="width: 100%;" class="example-text-input"></span>
-														</div>
-														<div style="padding-top: 20px; display: flex;">
+																<span th:text="${partition.leader}" style="width: 100%;" class="example-text-input"></span>
+															</div>
+															<div style="padding-top: 20px; display: flex;">
 															<span style="width: 100%;" class="m-widget6__caption">
 																Replicas
 															</span>
-															<span th:text="${partition.replicas}" style="width: 100%;" class="example-text-input"></span>
-														</div>
-														<div style="padding-top: 20px; display: flex;">
+																<span th:text="${partition.replicas}" style="width: 100%;" class="example-text-input"></span>
+															</div>
+															<div style="padding-top: 20px; display: flex;">
 															<span style="width: 100%;" class="m-widget6__caption">
 																ISR
 															</span>
-															<span th:text="${partition.isr}" style="width: 100%;" class="example-text-input"></span>
+																<span th:text="${partition.isr}" style="width: 100%;" class="example-text-input"></span>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -500,9 +509,15 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-group m-form__group row">
 										<label style="font-size: medium;" for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
 										<div class="col-7">
-											<div th:each="config : ${configs}" style="margin-bottom: 10px; display: flex;">
-												<span th:text="${config.left}"  style="min-width: 350px; padding: 15px 30px;" class="form-control m-input"></span>
-												<span th:text="${config.right}"  style="min-width: 350px; padding: 15px 30px; margin-left: 10px;" class="form-control m-input"></span>
+											<div style="display: flex;">
+												<span style="font-size: medium; border: none; min-width: 350px; padding: 15px 30px;" class="form-control m-input">Attribute Name</span>
+												<span style="font-size: medium; border: none; min-width: 350px; padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Attribute Value</span>
+											</div>
+											<div style="max-height: 360px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
+												<div th:each="config : ${configs}" style="margin-bottom: 10px; display: flex;">
+													<span th:text="${config.left}"  style="min-width: 350px; padding: 15px 30px;" class="form-control m-input"></span>
+													<span th:text="${config.right}"  style="min-width: 350px; padding: 15px 30px; margin-left: 10px;" class="form-control m-input"></span>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -521,51 +536,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
 			<!-- end::Body -->
 
-			<!-- begin::Footer -->
-			<footer class="m-grid__item m-footer ">
-				<div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
-					<div class="m-footer__wrapper">
-						<div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
-							<div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
-								<span class="m-footer__copyright">
-									2017 &copy; Metronic theme by <a href="https://keenthemes.com" class="m-link">Keenthemes</a>
-								</span>
-							</div>
-							<div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
-								<ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
-									<li class="m-nav__item">
-										<a href="#" class="m-nav__link">
-											<span class="m-nav__link-text">About</span>
-										</a>
-									</li>
-									<li class="m-nav__item">
-										<a href="#" class="m-nav__link">
-											<span class="m-nav__link-text">Privacy</span>
-										</a>
-									</li>
-									<li class="m-nav__item">
-										<a href="#" class="m-nav__link">
-											<span class="m-nav__link-text">T&C</span>
-										</a>
-									</li>
-									<li class="m-nav__item">
-										<a href="#" class="m-nav__link">
-											<span class="m-nav__link-text">Purchase</span>
-										</a>
-									</li>
-									<li class="m-nav__item m-nav__item--last">
-										<a href="#" class="m-nav__link" data-toggle="m-tooltip" title="Support Center" data-placement="left">
-											<i class="m-nav__link-icon flaticon-info m--icon-font-size-lg3"></i>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</footer>
-
-			<!-- end::Footer -->
 		</div>
 
 		<!-- end:: Page -->

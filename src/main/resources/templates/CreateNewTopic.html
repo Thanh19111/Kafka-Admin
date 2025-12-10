@@ -261,7 +261,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									<li class="m-nav__separator">-</li>
 									<li class="m-nav__item">
 										<a th:href="@{/topic/create}" class="m-nav__link">
-											<span style="color: rgb(46, 8, 100);" class="m-nav__link-text">Create new topic</span>
+											<span style="color: rgb(78, 15, 165);" class="m-nav__link-text">Create new topic</span>
 										</a>
 									</li>
 								</ul>
@@ -297,8 +297,17 @@ License: You must have a valid license purchased only from themeforest(the above
 								<label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
 								<div class="col-7">
 									<div style="display: flex;">
-										<input type="text" class="form-control m-input" value="Config Attribute" />
-										<input type="text" style="margin-left: 10px;" class="form-control m-input" value="Config Value" />
+										<select class="form-control m-input" id="configKey">
+											<option value="">Choose Config Attribute</option>
+											<option th:each="entry : ${configMap}"
+													th:value="${entry.key}"
+													th:text="${entry.key}">
+											</option>
+										</select>
+
+										<select style="margin-left: 10px;" class="form-control m-input" id="configValue">
+											<option value="">Config Value</option>
+										</select>
 										<button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">Add</button>
 									</div>
 								</div>
@@ -317,23 +326,121 @@ License: You must have a valid license purchased only from themeforest(the above
 							</div>
 						</div>
 					</form>
-				</div>
 
+					<div x-data="configForm([[${configs}]])" class="form">
+						<!-- combobox 1 -->
+						<select x-model="selectedKey">
+							<option value="">-- chọn key --</option>
+							<template x-for="k in Object.keys(configs)" :key="k">
+								<option x-text="k"></option>
+							</template>
+						</select>
+
+						<!-- combobox 2 -->
+						<select x-model="selectedValue">
+							<option value="">-- chọn value --</option>
+							<template x-for="v in valuesByKey()" :key="v">
+								<option x-text="v"></option>
+							</template>
+						</select>
+
+						<!-- add button -->
+						<button type="button" @click="addConfig()">Add</button>
+
+						<!-- render list -->
+						<div class="selected-list">
+							<template x-for="(item, index) in selectedConfigs" :key="index">
+								<div class="row">
+									<span x-text="item.key"></span> :
+									<span x-text="item.value"></span>
+									<button type="button" @click="remove(index)">x</button>
+								</div>
+							</template>
+						</div>
+
+						<!-- submit -->
+						<button type="button" @click="submit()">Submit</button>
+					</div>
+
+				</div>
 				<!--</div>-->
 			</div>
 
 			<!-- end::Body -->
+
 		</div>
 
 		<!-- end:: Page -->
 
+		<script>
+			function configForm(configs) {
+              return {
 
-		<!-- begin::Scroll Top -->
-		<div id="m_scroll_top" class="m-scroll-top">
-			<i class="la la-arrow-up"></i>
-		</div>
+                // data từ backend
+                configs: configs,
 
-		<!-- end::Scroll Top -->
+                // state combobox
+                selectedKey: '',
+                selectedValue: '',
+
+                // list object cần submit
+                selectedConfigs: [],
+
+                // computed values
+                valuesByKey() {
+                  return this.configs[this.selectedKey] || [];
+                },
+
+                // add item
+                addConfig() {
+                  if (!this.selectedKey || !this.selectedValue) {
+                    alert("Chọn đầy đủ key và value");
+                    return;
+                  }
+
+                  this.selectedConfigs.push({
+                    key: this.selectedKey,
+                    value: this.selectedValue
+                  });
+
+                  // reset value
+                  this.selectedValue = '';
+                },
+
+                // remove item
+                remove(index) {
+                  this.selectedConfigs.splice(index, 1);
+                },
+
+                // submit form
+                submit() {
+                  axios.post('/api/config', this.selectedConfigs)
+                    .then(() => alert("✅ Submit thành công"))
+                    .catch(() => alert("❌ Lỗi"));
+                }
+              }
+            }
+		</script>
+
+
+		<!--		<script th:inline="javascript">-->
+<!--			const data = [[${configMap}]];-->
+
+<!--            const keySelect = document.getElementById("configKey");-->
+<!--            const valueSelect = document.getElementById("configValue");-->
+
+<!--            keySelect.addEventListener("change", () => {-->
+<!--                const values = data[keySelect.value] || [];-->
+<!--                valueSelect.innerHTML = '<option value="">Choose Atrribute Value</option>';-->
+
+<!--                values.forEach(v => {-->
+<!--                    const option = document.createElement("option");-->
+<!--                    option.value = v;-->
+<!--                    option.textContent = v;-->
+<!--                    valueSelect.appendChild(option);-->
+<!--                });-->
+<!--            });-->
+<!--		</script>-->
 
 		<!--begin:: Global Mandatory Vendors -->
 		<script src="/vendors/jquery/dist/jquery.js" type="text/javascript"></script>
@@ -414,7 +521,15 @@ License: You must have a valid license purchased only from themeforest(the above
 		<script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
 
 		<!--end::Page Scripts -->
-	</body>
 
+
+		<!--		alpineJS-->
+		<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		<!--		axios-->
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<!--		toast-->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	</body>
 	<!-- end::Body -->
 </html>
