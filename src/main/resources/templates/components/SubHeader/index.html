@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="subheader" class="m-subheader ">
+    <div th:fragment="subheader(mainLabel, navLabels)" class="m-subheader ">
         <div class="d-flex align-items-center">
             <div class="mr-auto">
-                <h3 class="m-subheader__title m-subheader__title--separator">Topics</h3>
+                <h3 th:text="${mainLabel}" class="m-subheader__title m-subheader__title--separator"></h3>
                 <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
                     <li class="m-nav__item m-nav__item--home">
                         <a th:href="@{/}" class="m-nav__link m-nav__link--icon">
                             <i class="m-nav__link-icon la la-home"></i>
                         </a>
                     </li>
-                    <li class="m-nav__separator">-</li>
-                    <li class="m-nav__item">
-                        <a th:href="@{/topic}" class="m-nav__link">
-                            <span class="m-nav__link-text">Topics</span>
-                        </a>
-                    </li>
-                    <li class="m-nav__separator">-</li>
-                    <li class="m-nav__item">
-                        <a th:href="@{/topic}" class="m-nav__link">
-                            <span style="color: rgb(78, 15, 165);" class="m-nav__link-text">List of Topics</span>
-                        </a>
-                    </li>
+                    <th:block th:each="navLabel : ${navLabels}">
+                        <li class="m-nav__separator">-</li>
+                        <li class="m-nav__item">
+                            <a th:href="@{{url}(url=${navLabel.right})}" class="m-nav__link">
+                                <span class="m-nav__link-text" th:text="${navLabel.left}">Topics</span>
+                            </a>
+                        </li>
+                    </th:block>
                 </ul>
             </div>
         </div>

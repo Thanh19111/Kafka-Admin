@@ -8,8 +8,12 @@
     </th:block>
 
     <th:block layout:fragment="subheader">
-        <div th:replace="~{/components/SubHeader/index :: subheader}"></div>
+        <div th:replace="~{/components/SubHeader/index :: subheader(${mainLabel}, ${navLabels})}"></div>
     </th:block>
+
+    <th:block layout:fragment="labelDescription" th:text="|All ${mainLabel}|"></th:block>
+
+    <th:block layout:fragment="info" th:text="|Information of ${mainLabel}|"></th:block>
 
     <th:block layout:fragment="content">
         <div class="m-widget6">

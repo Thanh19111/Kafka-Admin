@@ -94,13 +94,16 @@
                 <div layout:fragment="subheader"></div>
 
                 <!-- END: Subheader -->
-                <div class="m-content">Information of Topics </div>
+                <div class="m-content">
+                    <span layout:fragment="info"></span>
+                </div>
+
                 <div class="m-portlet m-portlet--full-height ">
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    All Topics
+                                    <span layout:fragment="labelDescription"></span>
                                 </h3>
                             </div>
                         </div>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,13 @@ public class TopicUIController {
     public String testTheme(Model model) throws ExecutionException, InterruptedException {
         List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
         List<TopicDetailUI> topics = data.stream().map(TopicUIMapper::format).toList();
+
+        List<Pair> navLabels = new ArrayList<>();
+        navLabels.add(new Pair("Topics", "/topic"));
+        navLabels.add(new Pair("List of Topics", "/topic"));
         model.addAttribute("topics", topics);
+        model.addAttribute("navLabels", navLabels);
+        model.addAttribute("mainLabel", "Topics");
         return "pages/Topic/TopicList/index";
     }
 
