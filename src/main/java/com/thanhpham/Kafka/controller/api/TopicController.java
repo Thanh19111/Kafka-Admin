@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.controller;
+package com.thanhpham.Kafka.controller.api;
 
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;

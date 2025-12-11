@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeUIController {
     @GetMapping
     public String home() {
-        return "index";
+        return "pages/Home/index";
     }
 }

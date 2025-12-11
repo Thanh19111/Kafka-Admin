@@ -57,4 +57,12 @@ public class TopicUIController {
         return "TopicDetail";
     }
 
+    @GetMapping("/test")
+    public String testTheme(Model model) throws ExecutionException, InterruptedException {
+        List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
+        List<TopicDetailUI> topics = data.stream().map(TopicUIMapper::format).toList();
+        model.addAttribute("topics", topics);
+        return "pages/Topic/TopicList/index";
+    }
+
 }

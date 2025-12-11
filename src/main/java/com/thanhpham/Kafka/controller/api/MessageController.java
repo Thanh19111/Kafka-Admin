@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.controller;
+package com.thanhpham.Kafka.controller.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.thanhpham.Kafka.service.IMessageService;
