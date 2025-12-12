@@ -1,8 +1,8 @@
 package com.thanhpham.Kafka.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.thanhpham.Kafka.component.pool.AvroConsumerPool;
-import com.thanhpham.Kafka.component.pool.JsonConsumerPool;
+import com.thanhpham.Kafka.config.pool.AvroConsumerPool;
+import com.thanhpham.Kafka.config.pool.JsonConsumerPool;
 import com.thanhpham.Kafka.service.IMessageService;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
@@ -36,7 +36,7 @@ public class MessageService implements IMessageService {
             if (results.size() >= limit) break;
         }
 
-        consumer.close();
+//        consumer.close();
         return results;
     }
 
@@ -52,7 +52,7 @@ public class MessageService implements IMessageService {
             if (results.size() >= limit) break;
         }
 
-        consumer.close();
+//        consumer.close();
         return results;
     }
 

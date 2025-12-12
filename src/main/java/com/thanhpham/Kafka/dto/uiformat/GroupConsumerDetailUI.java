@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.utils.uiformat;
+package com.thanhpham.Kafka.dto.uiformat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

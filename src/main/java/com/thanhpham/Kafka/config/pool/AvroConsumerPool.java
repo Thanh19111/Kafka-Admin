@@ -1,6 +1,6 @@
-package com.thanhpham.Kafka.component.pool;
+package com.thanhpham.Kafka.config.pool;
 
-import com.thanhpham.Kafka.component.factory.AvroConsumerFactory;
+import com.thanhpham.Kafka.config.factory.AvroConsumerFactory;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;

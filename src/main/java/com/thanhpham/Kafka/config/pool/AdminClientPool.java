@@ -1,6 +1,6 @@
-package com.thanhpham.Kafka.component.pool;
+package com.thanhpham.Kafka.config.pool;
 
-import com.thanhpham.Kafka.component.factory.AdminClientFactory;
+import com.thanhpham.Kafka.config.factory.AdminClientFactory;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.Admin;

@@ -2,8 +2,8 @@ package com.thanhpham.Kafka.mapper;
 
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupMemberResponse;
-import com.thanhpham.Kafka.utils.uiformat.ConsumerGroupMemberUI;
-import com.thanhpham.Kafka.utils.uiformat.GroupConsumerDetailUI;
+import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupMemberUI;
+import com.thanhpham.Kafka.dto.uiformat.GroupConsumerDetailUI;
 
 import java.util.ArrayList;
 import java.util.List;

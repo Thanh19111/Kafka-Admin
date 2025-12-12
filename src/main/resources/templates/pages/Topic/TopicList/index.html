@@ -17,6 +17,15 @@
 
     <th:block layout:fragment="button">
         <div class="m-portlet__head-tools">
+            <input
+                    hx-get="/topic/filter"
+                    hx-trigger="keyup changed delay:300ms"
+                    hx-target="#topic-list"
+                    name="keyword"
+                    placeholder="Search..."
+                    class="p-2 border"
+                    style="margin-right: 10px;"
+            />
             <ul class="m-portlet__nav">
                 <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
                     <a th:href="@{/topic/create}" style="text-decoration: none">
@@ -39,8 +48,8 @@
                     <span style="width: 100%; padding-left: 10px" class="m-widget6__caption">Action</span>
                 </div>
             </div>
-            <div class="m-widget6__head">
-                <div th:each="topic : ${topics}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr) 0.5fr; align-items: center;" class="m-widget6__item">
+            <div id="topic-list" class="m-widget6__head">
+                <div th:each="topic : ${topics}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr) 0.5fr; align-items: center; color: #27272f;" class="m-widget6__item">
                     <a th:href="@{/topic/{topicName}(topicName=${topic.topicName})}" style="grid-column: span 5; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr); text-decoration: none;">
                         <span th:text="${topic.topicName}" style="width: 100%; overflow-wrap: anywhere;" class="m-widget6__caption"></span>
                         <span th:text="${topic.totalPartition}" style="width: 100%;" class="m-widget6__caption"></span>
@@ -50,7 +59,7 @@
                     </a>
                     <div style="grid-column: span 1;">
                         <span style="width: 100%;" class="m-widget6__caption">
-                            <button style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button>
+                            <button hx-delete="/remove/${topic.topicName}" hx-confirm="Are you sure?" style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button>
                         </span>
                     </div>
                 </div>

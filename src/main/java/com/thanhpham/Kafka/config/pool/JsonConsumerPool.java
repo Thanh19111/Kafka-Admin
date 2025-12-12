@@ -1,7 +1,7 @@
-package com.thanhpham.Kafka.component.pool;
+package com.thanhpham.Kafka.config.pool;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.thanhpham.Kafka.component.factory.JsonConsumerFactory;
+import com.thanhpham.Kafka.config.factory.JsonConsumerFactory;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.Consumer;

@@ -1,6 +1,6 @@
 package com.thanhpham.Kafka.service.impl;
 
-import com.thanhpham.Kafka.component.pool.AdminClientPool;
+import com.thanhpham.Kafka.config.pool.AdminClientPool;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;

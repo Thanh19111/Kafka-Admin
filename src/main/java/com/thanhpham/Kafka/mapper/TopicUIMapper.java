@@ -2,7 +2,7 @@ package com.thanhpham.Kafka.mapper;
 
 import com.thanhpham.Kafka.dto.response.PartitionSpecsResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
-import com.thanhpham.Kafka.utils.uiformat.TopicDetailUI;
+import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
 
 public class TopicUIMapper {
     public static TopicDetailUI format(TopicDetailResponse res){

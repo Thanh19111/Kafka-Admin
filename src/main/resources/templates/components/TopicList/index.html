@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="topiclist">
+    <div th:each="topic : ${topiclist}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr) 0.5fr; align-items: center; color: #27272f;" class="m-widget6__item">
+        <a th:href="@{/topic/{topicName}(topicName=${topic.topicName})}" style="grid-column: span 5; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr); text-decoration: none;">
+            <span th:text="${topic.topicName}" style="width: 100%; overflow-wrap: anywhere;" class="m-widget6__caption"></span>
+            <span th:text="${topic.totalPartition}" style="width: 100%;" class="m-widget6__caption"></span>
+            <span th:text="${topic.outISR}" style="width: 100%;" class="m-widget6__caption"></span>
+            <span th:text="${topic.replicaFactorNum}" style="width: 100%;" class="m-widget6__caption"></span>
+            <span style="width: 100%;" class="m-widget6__caption">?? MB</span>
+        </a>
+        <div style="grid-column: span 1;">
+            <span style="width: 100%;" class="m-widget6__caption">
+                <button hx-delete="/remove/${topic.topicName}" hx-confirm="Are you sure?" style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

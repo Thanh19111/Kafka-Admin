@@ -3,15 +3,17 @@ package com.thanhpham.Kafka.controller.fe;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
+import com.thanhpham.Kafka.dto.test.User;
 import com.thanhpham.Kafka.mapper.TopicUIMapper;
 import com.thanhpham.Kafka.service.ITopicService;
-import com.thanhpham.Kafka.utils.uiformat.TopicDetailUI;
+import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,9 +56,14 @@ public class TopicUIController {
         configMap.put("acks", List.of("0", "1", "all"));
 
         model.addAttribute("activeNavIndex", 2);
-        model.addAttribute("configs", configMap);
+        model.addAttribute("configMap", configMap);
         model.addAttribute("navLabels", navLabels);
         model.addAttribute("mainLabel", "Topics");
+
+        User user = new User("Alice", "alice@example.com");
+        model.addAttribute("user", user);
+
+
         return "pages/Topic/CreateNewTopic/index";
     }
 
@@ -80,5 +87,21 @@ public class TopicUIController {
         model.addAttribute("partitions", topic.getTopic().getPartitions());
         model.addAttribute("configs", configs);
         return "pages/Topic/TopicDetail/index";
+    }
+
+    // filter by topic Name
+
+    @GetMapping("/filter")
+    public String filter(@RequestParam String keyword, Model model) throws ExecutionException, InterruptedException {
+
+        List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
+        List<TopicDetailUI> topics = data.stream()
+                .filter(topic -> topic.getTopicName().contains(keyword))
+                .map(TopicUIMapper::format).toList();
+
+        System.out.println(topics.size());
+
+        model.addAttribute("topiclist", topics);
+        return "components/TopicList/index :: topiclist";
     }
 }
