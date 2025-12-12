@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/BaseLayout/index}">
+<body>
+    <th:block layout:fragment="header">
+        <header th:replace="~{/components/Header/index :: header(1)}"></header>
+    </th:block>
+
+    <th:block layout:fragment="subheader">
+        <div th:replace="~{/components/SubHeader/index :: subheader(${mainLabel}, ${navLabels}, ${activeNavIndex})}"></div>
+    </th:block>
+
+    <th:block layout:fragment="labelDescription" th:text="|Information Of ${group.groupId} Group|"></th:block>
+
+    <th:block layout:fragment="info" th:text="|Information of ${group.groupId} Group|"></th:block>
+
+    <th:block layout:fragment="content">
+        <div class="m-widget6">
+            <div class="m-widget6__head">
+                <div style="display: flex; gap: 16px; padding: 10px 10px;" class="m-widget6__item">
+										<span style="max-width: 200px;" class="m-widget6__caption">
+											Group ID
+										</span>
+                    <span style="max-width: 200px;" class="m-widget6__caption">
+											Coordinator Broker
+										</span>
+                    <span style="max-width: 200px;" class="m-widget6__caption">
+											State
+										</span>
+                </div>
+                <div style="padding: 10px 10px; display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center; overflow-wrap: anywhere;" class="m-widget6__item" m-menu-submenu-toggle="click" aria-haspopup="true">
+                    <div th:text="${group.groupId}" style="max-width: 200px;" class="m-widget6__caption">
+                    </div>
+                    <div style="max-width: 200px; display: block;" class="m-widget6__caption">
+                        <div th:text="|ID: ${group.coordinator.id}|" style="padding-bottom: 5px;"></div>
+                        <div th:text="|Host: ${group.coordinator.host}:${group.coordinator.port}|" style="padding-bottom: 5px;"></div>
+                        <div th:text="|Rack: ${group.coordinator.rack}|" style="padding-bottom: 5px;"></div>
+                        <div th:text="|IsFenced: ${group.coordinator.isFenced}|" style="padding-bottom: 5px;"></div>
+                        <div th:text="|IsEmpty: ${group.coordinator.isEmpty}|" style="padding-bottom: 5px;"></div>
+                    </div>
+                    <div th:text="${group.groupState}" style="max-width: 200px;" class="m-widget6__caption">
+                    </div>
+                </div>
+            </div>
+            <span style="max-width: 200px; font-weight: 600; font-size: larger;" class="m-widget6__caption">
+									Group's Partition
+								</span>
+            <div class="m-widget6__head">
+                <div th:each="groupLag : ${groupLags}" style="border: dashed rgb(177, 177, 177) 1px; padding: 10px 10px; max-width: 1000px; margin-bottom: 5px;">
+                    <div style="display: flex; gap: 16px; font-weight: 400; padding-top: 10px; align-items: center;" class="m-widget6__item">
+											<span style="max-width: 200px;" class="m-widget6__caption">
+												Topic
+											</span>
+                        <span style="max-width: 200px;" class="m-widget6__caption">
+												Partition
+											</span>
+                        <span style="max-width: 200px;" class="m-widget6__caption">
+												Commited Offset
+											</span>
+                        <span style="max-width: 200px;" class="m-widget6__caption">
+												Latest Offset
+											</span>
+                        <span style="max-width: 200px;" class="m-widget6__caption">
+												Lag
+											</span>
+                    </div>
+                    <div style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">
+                        <span th:text="${groupLag.topic}" style="max-width: 200px;" class="m-widget6__caption"></span>
+                        <span th:text="${groupLag.partition}" style="max-width: 200px;" class="m-widget6__caption"></span>
+                        <span th:text="${groupLag.commitedOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>
+                        <span th:text="${groupLag.latestOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>
+                        <span th:text="${groupLag.lag}" style="max-width: 200px;" class="m-widget6__caption"></span>
+                    </div>
+                </div>
+                <!--									 <div style="border-bottom: 1px dashed #8d8989; margin: 16px 0;"></div>-->
+            </div>
+        </div>
+    </th:block>
+</body>
+</html>

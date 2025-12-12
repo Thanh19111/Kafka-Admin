@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/BaseLayout/index}">
+<body>
+    <th:block layout:fragment="header">
+        <header th:replace="~{/components/Header/index :: header(1)}"></header>
+    </th:block>
+
+    <th:block layout:fragment="subheader">
+        <div th:replace="~{/components/SubHeader/index :: subheader(${mainLabel}, ${navLabels}, ${activeNavIndex})}"></div>
+    </th:block>
+
+    <th:block layout:fragment="labelDescription" th:text="|Create new ${mainLabel}|"></th:block>
+
+    <th:block layout:fragment="info" th:text="|Create new ${mainLabel} UI|"></th:block>
+
+    <th:block layout:fragment="content">
+        <div class="m-widget6">
+            <div class="form-group m-form__group row">
+                <div class="col-10 ml-auto">
+                    <h3 class="m-form__section">Create new topic</h3>
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
+                <div class="col-7">
+                    <input style="max-width: 50%;" class="form-control m-input" type="text" value="Example 1"/>
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
+                <div class="col-7">
+                    <input type="number" value="1" style="max-width: 50%;" class="form-control m-input" />
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
+                <div class="col-7">
+                    <input type="number" value="1" style="max-width: 50%;" class="form-control m-input"/>
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
+                <div class="col-7">
+                    <div style="display: flex;">
+                        <select class="form-control m-input" id="configKey">
+                            <option value="">Choose Config Attribute</option>
+                            <option th:each="entry : ${configMap}"
+                                    th:value="${entry.key}"
+                                    th:text="${entry.key}">
+                            </option>
+                        </select>
+
+                        <select style="margin-left: 10px;" class="form-control m-input" id="configValue">
+                            <option value="">Config Value</option>
+                        </select>
+                        <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</body>
+</html>

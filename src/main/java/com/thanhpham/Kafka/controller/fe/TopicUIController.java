@@ -26,50 +26,59 @@ public class TopicUIController {
     private final ITopicService iTopicService;
 
     @GetMapping
-    public String home(Model model) throws ExecutionException, InterruptedException {
-        List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
-        List<TopicDetailUI> topics = data.stream().map(TopicUIMapper::format).toList();
-        model.addAttribute("topics", topics);
-        return "TopicList";
-    }
-
-    @GetMapping("/create")
-    public String create(Model model) {
-        Map<String, List<String>> configMap = new HashMap<>();
-        configMap.put("cleanup.policy", List.of("delete", "compact"));
-        configMap.put("compression.type", List.of("gzip", "lz4", "snappy"));
-        configMap.put("acks", List.of("0", "1", "all"));
-
-        model.addAttribute("configs", configMap);
-
-        return "CreateNewTopic";
-    }
-
-    // do lười nên truyền nhiều giá trị
-    @GetMapping("/{topicName}")
-    public String topicDetail(@PathVariable String topicName, Model model) throws ExecutionException, InterruptedException {
-        TopicDetailResponseWithConfig topic = iTopicService.getATopicDetailWithConfig(topicName);
-        TopicDetailUI res = TopicUIMapper.format(topic.getTopic());
-        List<Pair> configs = topic.getConfig();
-        model.addAttribute("detail", res);
-        model.addAttribute("id", topic.getTopic().getTopicId());
-        model.addAttribute("partitions", topic.getTopic().getPartitions());
-        model.addAttribute("configs", configs);
-        return "TopicDetail";
-    }
-
-    @GetMapping("/test")
-    public String testTheme(Model model) throws ExecutionException, InterruptedException {
+    public String getTopicListUI(Model model) throws ExecutionException, InterruptedException {
         List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
         List<TopicDetailUI> topics = data.stream().map(TopicUIMapper::format).toList();
 
         List<Pair> navLabels = new ArrayList<>();
         navLabels.add(new Pair("Topics", "/topic"));
         navLabels.add(new Pair("List of Topics", "/topic"));
+
+        model.addAttribute("activeNavIndex", 1);
         model.addAttribute("topics", topics);
         model.addAttribute("navLabels", navLabels);
         model.addAttribute("mainLabel", "Topics");
         return "pages/Topic/TopicList/index";
     }
 
+    @GetMapping("/create")
+    public String getCreateNewTopicUI(Model model) {
+        List<Pair> navLabels = new ArrayList<>();
+        navLabels.add(new Pair("Topics", "/topic"));
+        navLabels.add(new Pair("List of Topics", "/topic"));
+        navLabels.add(new Pair("Create New Topic", "/topic/create"));
+
+        Map<String, List<String>> configMap = new HashMap<>();
+        configMap.put("cleanup.policy", List.of("delete", "compact"));
+        configMap.put("compression.type", List.of("gzip", "lz4", "snappy"));
+        configMap.put("acks", List.of("0", "1", "all"));
+
+        model.addAttribute("activeNavIndex", 2);
+        model.addAttribute("configs", configMap);
+        model.addAttribute("navLabels", navLabels);
+        model.addAttribute("mainLabel", "Topics");
+        return "pages/Topic/CreateNewTopic/index";
+    }
+
+    @GetMapping("/{topicName}")
+    public String getTopicDetailUI(@PathVariable String topicName, Model model) throws ExecutionException, InterruptedException {
+        TopicDetailResponseWithConfig topic = iTopicService.getATopicDetailWithConfig(topicName);
+        TopicDetailUI res = TopicUIMapper.format(topic.getTopic());
+        List<Pair> configs = topic.getConfig();
+        List<Pair> navLabels = new ArrayList<>();
+
+        navLabels.add(new Pair("Topics", "/topic"));
+        navLabels.add(new Pair("List of Topics", "/topic"));
+        navLabels.add(new Pair(topic.getTopic().getTopicName(), "/topic/" + topic.getTopic().getTopicName()));
+
+        model.addAttribute("activeNavIndex", 2);
+        model.addAttribute("navLabels", navLabels);
+        model.addAttribute("mainLabel", "Topics");
+
+        model.addAttribute("detail", res);
+        model.addAttribute("id", topic.getTopic().getTopicId());
+        model.addAttribute("partitions", topic.getTopic().getPartitions());
+        model.addAttribute("configs", configs);
+        return "pages/Topic/TopicDetail/index";
+    }
 }

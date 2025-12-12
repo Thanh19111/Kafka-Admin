@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/BaseLayout/index}">
+<body>
+    <th:block layout:fragment="header">
+        <header th:replace="~{/components/Header/index :: header(1)}"></header>
+    </th:block>
+
+    <th:block layout:fragment="subheader">
+        <div th:replace="~{/components/SubHeader/index :: subheader(${mainLabel}, ${navLabels}, ${activeNavIndex})}"></div>
+    </th:block>
+
+    <th:block layout:fragment="labelDescription" th:text="|Members of ${mainLabel} Group|"></th:block>
+
+    <th:block layout:fragment="info" th:text="|Information Of ${mainLabel}'s Members|"></th:block>
+
+    <th:block layout:fragment="content">
+        <div class="m-widget6">
+            <div class="m-widget6__head">
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 10px 10px;" class="m-widget6__item">
+										<span style="width: 100%;" class="m-widget6__caption">
+											Member ID
+										</span>
+                    <span style="width: 100%;" class="m-widget6__caption">
+											Client ID
+										</span>
+                    <span style="width: 100%;" class="m-widget6__caption">
+											Host
+										</span>
+                    <span style="column-span: 2; width: 100%;" class="m-widget6__caption">
+											Topic/Partition Of Topic
+										</span>
+                </div>
+                <div th:each="member : ${members}" style="display: grid; grid-template-columns: repeat(3, 1fr) 2fr; gap: 16px; padding: 10px 10px;" class="m-widget6__item">
+                    <span th:text="${member.memberId}" style="width: 100%;" class="m-widget6__caption"></span>
+                    <span th:text="${member.clientId}" style="width: 100%;" class="m-widget6__caption"></span>
+                    <span th:text="${member.host}" style="width: 100%;" class="m-widget6__caption"></span>
+                    <div style="width: 100%; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden; padding-top: 10px;" class="m-widget6__caption">
+                        <div style="padding: 0px 0px 10px 5px;" th:each="topicPar : ${member.topicPartitions}" th:text="${topicPar}"></div>
+                    </div>
+                    <!--										<div style="column-span: 2; display: flex; width: 100%; justify-content: space-between;" class="m-widget6__caption">-->
+                    <!--											-->
+                    <!--										</div>-->
+                </div>
+            </div>
+        </div>
+    </th:block>
+</body>
+</html>

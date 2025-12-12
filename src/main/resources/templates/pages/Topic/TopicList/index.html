@@ -8,12 +8,24 @@
     </th:block>
 
     <th:block layout:fragment="subheader">
-        <div th:replace="~{/components/SubHeader/index :: subheader(${mainLabel}, ${navLabels})}"></div>
+        <div th:replace="~{/components/SubHeader/index :: subheader(${mainLabel}, ${navLabels}, ${activeNavIndex})}"></div>
     </th:block>
 
     <th:block layout:fragment="labelDescription" th:text="|All ${mainLabel}|"></th:block>
 
     <th:block layout:fragment="info" th:text="|Information of ${mainLabel}|"></th:block>
+
+    <th:block layout:fragment="button">
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
+                    <a th:href="@{/topic/create}" style="text-decoration: none">
+                        <span style="padding-left: 5px;">Create New Topic</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </th:block>
 
     <th:block layout:fragment="content">
         <div class="m-widget6">
@@ -43,18 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div class="m-widget6__head">
-                <div>Test</div>
-                <div x-data="{topicList: [[${topics}]]}">
-                    <template x-for="topic in topicList" :key="topic.topicName">
-                        <div>test</div>
-                        <div x-text="topic.topicName"></div>
-                    </template>
-                </div>
-            </div>
-            <h1 x-data="{ message: [[${topics}]]}" x-text="message"></h1>
         </div>
     </th:block>
-
 </body>
 </html>

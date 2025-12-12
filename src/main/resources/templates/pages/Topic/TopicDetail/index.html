@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/BaseLayout/index}">
+<body>
+    <th:block layout:fragment="header">
+        <header th:replace="~{/components/Header/index :: header(1)}"></header>
+    </th:block>
+
+    <th:block layout:fragment="subheader">
+        <div th:replace="~{/components/SubHeader/index :: subheader(${mainLabel}, ${navLabels}, ${activeNavIndex})}"></div>
+    </th:block>
+
+    <th:block layout:fragment="labelDescription" th:text="|All ${mainLabel}|"></th:block>
+
+    <th:block layout:fragment="info" th:text="|Information of ${mainLabel}|"></th:block>
+
+    <th:block layout:fragment="content">
+        <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-tools">
+                    <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                <i class="flaticon-share m--hide"></i>
+                                Topic Information
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                                Messages
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link" style="max-width: 180px;" data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
+                                Increase Partition
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link" style="max-width: 180px;" data-toggle="tab" href="#m_user_profile_tab_4" role="tab">
+                                Config Information
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_user_profile_tab_1">
+                    <div class="m-portlet__body">
+                        <div class="m-widget6">
+                            <div class="m-widget6__head">
+                                <div style="display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr);" class="m-widget6__item">
+                                    <div style="padding: 10px 10px; border: dashed 1px wheat;">
+                                        <div style="font-size: medium; width: 100%;" class="m-widget6__caption">Topic Detail</div>
+                                        <div style="padding-top: 20px; display: flex;">
+                                            <span style="width: 100%;" class="m-widget6__caption">Topic Id</span>
+                                            <span th:text="${id}" style="width: 100%;" class="example-text-input"></span>
+                                        </div>
+                                        <div style="padding-top: 20px; display: flex;">
+                                            <span style="width: 100%;" class="m-widget6__caption">Topic Name</span>
+                                            <span th:text="${detail.topicName}" style="width: 100%;" class="example-text-input"></span>
+                                        </div>
+                                        <div style="padding-top: 20px; display: flex;">
+                                            <span style="width: 100%;" class="m-widget6__caption">Total Partitions</span>
+                                            <span th:text="${detail.totalPartition}" style="width: 100%;" class="example-text-input"></span>
+                                        </div>
+                                        <div style="padding-top: 20px; display: flex;">
+                                            <span style="width: 100%;" class="m-widget6__caption">Out of sync Replicas</span>
+                                            <span th:text="${detail.outISR}" style="width: 100%;" class="example-text-input"></span>
+                                        </div>
+                                        <div style="padding-top: 20px; display: flex;">
+                                            <span style="width: 100%;" class="m-widget6__caption">Replica Factor Number</span>
+                                            <span th:text="${detail.replicaFactorNum}" style="width: 100%;" class="example-text-input"></span>
+                                        </div>
+                                        <div style="padding-top: 20px; display: flex;">
+                                            <span style="width: 100%;" class="m-widget6__caption">Size</span>
+                                            <span style="width: 100%;" class="example-text-input">?? MB</span>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 10px 10px; border: dashed 1px wheat">
+                                        <div style="font-size: medium; width: 100%; padding-left: 10px;" class="m-widget6__caption">
+                                            Partition Specifications
+                                        </div>
+                                        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden; padding-top: 10px">
+                                            <div th:each="partition : ${partitions}" style="margin: 0px 10px 10px 10px; padding: 10px 10px; border: dashed 1px wheat">
+                                                <div style="padding-top: 20px; display: flex;">
+                                                    <span style="width: 100%;" class="m-widget6__caption">
+                                                        Partition
+                                                    </span>
+                                                    <span th:text="${partition.partition}" style="width: 100%;" class="example-text-input"></span>
+                                                </div>
+                                                <div style="padding-top: 20px; display: flex;">
+                                                    <span style="width: 100%;" class="m-widget6__caption">
+                                                        Leader
+                                                    </span>
+                                                    <span th:text="${partition.leader}" style="width: 100%;" class="example-text-input"></span>
+                                                </div>
+                                                <div style="padding-top: 20px; display: flex;">
+                                                    <span style="width: 100%;" class="m-widget6__caption">
+                                                        Replicas
+                                                    </span>
+                                                    <span th:text="${partition.replicas}" style="width: 100%;" class="example-text-input"></span>
+                                                </div>
+                                                <div style="padding-top: 20px; display: flex;">
+                                                    <span style="width: 100%;" class="m-widget6__caption">
+                                                        ISR
+                                                    </span>
+                                                    <span th:text="${partition.isr}" style="width: 100%;" class="example-text-input"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="m_user_profile_tab_2">
+                    <div class="m-portlet__body">
+                        <div class="m-widget6">
+                            <div class="m-widget6__head">
+                                <div style="padding-bottom: 10px;" class="example-text-input">{"name":"Alice","age":30,"city":"Wonderland"}</div>
+                                <div style="padding-bottom: 10px;" class="example-text-input">{"name":"Bob","age":30,"city":"Wonderland"}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="m_user_profile_tab_3">
+                    <form class="m-form m-form--fit m-form--label-align-right">
+                        <div class="m-portlet__body">
+                            <div class="form-group m-form__group m--margin-top-10 m--hide">
+                                <div class="alert m-alert m-alert--default" role="alert">
+                                    The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap with additional classes.
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-10 ml-auto">
+                                    <h3 class="m-form__section">Increase Partition Number</h3>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
+                                <div class="col-7">
+                                    <span th:text="${detail.topicName}" style="max-width: 50%;" class="form-control m-input">Example 1</span>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
+                                <div class="col-7">
+                                    <input  type="number" th:value="${detail.totalPartition}" style="max-width: 50%;" class="form-control m-input" />
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
+                                <div class="col-7">
+                                    <span th:text="${detail.replicaFactorNum}" style="max-width: 50%;" class="form-control m-input"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__foot m-portlet__foot--fit">
+                            <div class="m-form__actions">
+                                <div class="row">
+                                    <div class="col-2">
+                                    </div>
+                                    <div class="col-7">
+                                        <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">Save changes</button>&nbsp;&nbsp;
+                                        <button type="reset" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane" id="m_user_profile_tab_4">
+                    <div class="m-portlet__body">
+                        <div class="form-group m-form__group m--margin-top-10 m--hide">
+                            <div class="alert m-alert m-alert--default" role="alert">
+                                The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap with additional classes.
+                            </div>
+                        </div>
+                        <div class="form-group m-form__group row">
+                            <div class="col-10 ml-auto">
+                                <h3 class="m-form__section">Configuration Information</h3>
+                            </div>
+                        </div>
+                        <div class="form-group m-form__group row">
+                            <label style="font-size: medium;" for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
+                            <div class="col-7">
+                                <div style="display: flex;">
+                                    <span style="font-size: medium; border: none; min-width: 350px; padding: 15px 30px;" class="form-control m-input">Attribute Name</span>
+                                    <span style="font-size: medium; border: none; min-width: 350px; padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Attribute Value</span>
+                                </div>
+                                <div style="max-height: 360px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
+                                    <div th:each="config : ${configs}" style="margin-bottom: 10px; display: flex;">
+                                        <span th:text="${config.left}"  style="min-width: 350px; padding: 15px 30px;" class="form-control m-input"></span>
+                                        <span th:text="${config.right}"  style="min-width: 350px; padding: 15px 30px; margin-left: 10px;" class="form-control m-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</body>
+</html>

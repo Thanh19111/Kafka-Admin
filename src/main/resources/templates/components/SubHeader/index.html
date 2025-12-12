@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="subheader(mainLabel, navLabels)" class="m-subheader ">
+    <div th:fragment="subheader(mainLabel, navLabels, activeNavIndex)" class="m-subheader ">
         <div class="d-flex align-items-center">
             <div class="mr-auto">
                 <h3 th:text="${mainLabel}" class="m-subheader__title m-subheader__title--separator"></h3>
@@ -11,11 +11,11 @@
                             <i class="m-nav__link-icon la la-home"></i>
                         </a>
                     </li>
-                    <th:block th:each="navLabel : ${navLabels}">
+                    <th:block th:each="navLabel, status : ${navLabels}">
                         <li class="m-nav__separator">-</li>
                         <li class="m-nav__item">
                             <a th:href="@{{url}(url=${navLabel.right})}" class="m-nav__link">
-                                <span class="m-nav__link-text" th:text="${navLabel.left}">Topics</span>
+                                <span th:styleappend="${status.index == activeNavIndex} ? 'color: rgb(78, 15, 165);' : ''" class="m-nav__link-text" th:text="${navLabel.left}"></span>
                             </a>
                         </li>
                     </th:block>
