@@ -36,12 +36,9 @@
                     <span th:text="${member.memberId}" style="width: 100%;" class="m-widget6__caption"></span>
                     <span th:text="${member.clientId}" style="width: 100%;" class="m-widget6__caption"></span>
                     <span th:text="${member.host}" style="width: 100%;" class="m-widget6__caption"></span>
-                    <div style="width: 100%; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden; padding-top: 10px;" class="m-widget6__caption">
+                    <div style="width: 80%; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden; padding-top: 10px;" class="m-widget6__caption">
                         <div style="padding: 0px 0px 10px 5px;" th:each="topicPar : ${member.topicPartitions}" th:text="${topicPar}"></div>
                     </div>
-                    <!--										<div style="column-span: 2; display: flex; width: 100%; justify-content: space-between;" class="m-widget6__caption">-->
-                    <!--											-->
-                    <!--										</div>-->
                 </div>
             </div>
         </div>
