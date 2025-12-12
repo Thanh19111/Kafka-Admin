@@ -16,59 +16,101 @@
     <th:block layout:fragment="info" th:text="|Create new ${mainLabel} UI|"></th:block>
 
     <th:block layout:fragment="content">
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr);">
+        <div x-data="formData()" style="display: grid; grid-template-columns: repeat(2, 1fr);">
             <div class="m-widget6">
                 <div class="form-group m-form__group row">
                     <div class="col-10 ml-auto">
                         <h3 class="m-form__section">Create new topic</h3>
                     </div>
                 </div>
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
-                    <div class="col-7">
-                        <input style="max-width: 50%;" class="form-control m-input" type="text" value="Example 1"/>
-                    </div>
-                </div>
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
-                    <div class="col-7">
-                        <input type="number" value="1" style="max-width: 50%;" class="form-control m-input" />
-                    </div>
-                </div>
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
-                    <div class="col-7">
-                        <input type="number" value="1" style="max-width: 50%;" class="form-control m-input"/>
-                    </div>
-                </div>
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
-                    <div class="col-7">
-                        <div style="display: flex;">
-                            <select class="form-control m-input" id="configKey">
-                                <option value="">Choose Config Attribute</option>
-                                <option th:each="entry : ${configMap}"
-                                        th:value="${entry.key}"
-                                        th:text="${entry.key}">
-                                </option>
-                            </select>
+                <form>
+                    <input type="hidden" name="listJson" :value="JSON.stringify(list)">
 
-                            <select style="margin-left: 10px; margin-right: 10px" class="form-control m-input" id="configValue">
-                                <option value="">Config Value</option>
-                            </select>
-                            <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">Add</button>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
+                        <div class="col-7">
+                            <input style="width: 300px;" class="form-control m-input" type="text" value="Example 1"/>
                         </div>
                     </div>
-                </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
+                        <div class="col-7">
+                            <input type="number" value="1" style="width: 150px;" class="form-control m-input" />
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
+                        <div class="col-7">
+                            <input type="number" value="1" style="width: 150px;" class="form-control m-input"/>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
+                        <div class="col-7">
+                            <div style="display: flex;">
+                                <select style="width: 200px;" x-model="selectedCategory" class="form-control m-input" id="configKey">
+                                    <option value="">Choose Config Attribute</option>
+                                    <option th:each="entry : ${configMap}"
+                                            th:value="${entry.key}"
+                                            th:text="${entry.key}">
+                                    </option>
+                                </select>
+
+                                <select x-model="selectedItem" style="width: 200px; margin-left: 10px; margin-right: 10px" class="form-control m-input" id="configValue">
+                                    <option value="">Config Value</option>
+                                </select>
+                                <button type="button" @click="add()" class="btn btn-accent m-btn m-btn--air m-btn--custom">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
+
             <div class="col-10 ml-auto">
                 <h3 class="m-form__section">Config Added</h3>
+                <div style="display: flex;">
+                    <span style="flex-wrap: wrap; font-size: medium; border: none; width: 50%; padding: 15px 30px;" class="form-control m-input">Attribute Name</span>
+                    <span style="flex-wrap: wrap; font-size: medium; border: none; width: 50%; padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Attribute Value</span>
+                </div>
+                <div style="max-height: 360px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
+                    <template x-for="(row, index) in list" :key="index">
+                        <div style="margin-bottom: 10px; display: flex;">
+                            <span x-text="row.category" style="width: 50%; padding: 15px 30px; word-wrap: break-word;" class="form-control m-input"></span>
+                            <span x-text="row.item"  style="width: 50%; padding: 15px 30px; margin-left: 10px; word-wrap: break-word;" class="form-control m-input"></span>
+                        </div>
+                    </template>
+                </div>
             </div>
         </div>
     </th:block>
 
     <th:block layout:fragment="footer-scripts">
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.2/dist/cdn.min.js"></script>
+        <script>
+            function formData() {
+                const data = [[${configMap}]];
+
+                return {
+                    selectedCategory: "",
+                    selectedItem: "",
+                    list: [],
+
+                    add() {
+                        if (!this.selectedCategory || !this.selectedItem) {
+                            alert("Hãy chọn cả 2 combobox!");
+                            return;
+                        }
+
+                        if()
+
+                        this.list.push({
+                            category: this.selectedCategory,
+                            item: this.selectedItem
+                        });
+                    }
+                }
+            }
+        </script>
         <script th:inline="javascript">
             const data = [[${configMap}]];
 
