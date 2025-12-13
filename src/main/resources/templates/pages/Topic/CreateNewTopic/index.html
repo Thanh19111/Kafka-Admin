@@ -23,26 +23,29 @@
                         <h3 class="m-form__section">Create new topic</h3>
                     </div>
                 </div>
-                <form>
+                <form action="#" th:action="@{/create}" th:object="${topicForm}" method="post">
                     <input type="text" name="config" :value="JSON.stringify(list)">
 
                     <div class="form-group m-form__group row">
                         <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
                         <div class="col-7">
-                            <input name="topicName" style="width: 300px;" class="form-control m-input" type="text" value="Example 1"/>
+                            <input th:field="*{topicName}" style="width: 300px;" class="form-control m-input" type="text" value="Example 1"/>
                         </div>
+                        <div th:if="${#fields.hasErrors('topicName')}" th:errors="*{topicName}">Name Error</div>
                     </div>
                     <div class="form-group m-form__group row">
                         <label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
                         <div class="col-7">
-                            <input name="partitionNum" type="number" value="1" style="width: 150px;" class="form-control m-input" />
+                            <input th:field="*{partitionNum}" type="number" value="1" style="width: 150px;" class="form-control m-input" />
                         </div>
+                        <div th:if="${#fields.hasErrors('partitionNum')}" th:errors="*{partitionNum}">Name Error</div>
                     </div>
                     <div class="form-group m-form__group row">
                         <label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
                         <div class="col-7">
-                            <input name="replicaFNum" type="number" value="1" style="width: 150px;" class="form-control m-input"/>
+                            <input th:field="*{replicaFNum}" type="number" value="1" style="width: 150px;" class="form-control m-input"/>
                         </div>
+                        <div th:if="${#fields.hasErrors('replicaFNum')}" th:errors="*{replicaFNum}">Name Error</div>
                     </div>
                     <div class="form-group m-form__group row">
                         <label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
@@ -59,7 +62,12 @@
                                 <select x-model="value" style="width: 200px; margin-left: 10px; margin-right: 10px" class="form-control m-input" id="configValue">
                                     <option value="">Config Value</option>
                                 </select>
-                                <button type="button" @click="add()" class="btn btn-accent m-btn m-btn--air m-btn--custom">Add</button>
+                                <button type="button" @click="add()"
+                                        :disabled="isAddDisabled"
+                                        :class="{
+                                            'bg-gray-400 cursor-not-allowed': isAddDisabled,
+                                            'bg-blue-500 hover:bg-blue-600': !isAddDisabled
+                                        }" class="btn btn-accent m-btn m-btn--air m-btn--custom">Add</button>
                             </div>
                         </div>
                     </div>
@@ -72,7 +80,7 @@
                     <span style="flex-wrap: wrap; font-size: medium; border: none; width: 50%; padding: 15px 30px;" class="form-control m-input">Attribute Name</span>
                     <span style="flex-wrap: wrap; font-size: medium; border: none; width: 50%; padding: 15px 30px; margin-left: 10px;" class="form-control m-input">Attribute Value</span>
                 </div>
-                <div style="max-height: 360px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
+                <div style="min-height: 50px; max-height: 360px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
                     <template x-for="(row, index) in list" :key="index">
                         <div @click="remove(row.attribute, row.value)" style="margin-bottom: 10px; display: flex;">
                             <span x-text="row.attribute" style="width: 50%; padding: 15px 30px; word-wrap: break-word;" class="form-control m-input"></span>
@@ -101,7 +109,7 @@
                             return;
                         } else if (this.map[this.attribute].includes(this.value)) {
                             if(this.isDuplicate()) {
-                                alert("Config đã được thêm trước đó");
+                                alert("Config đã được thêm trước đó!");
                                 return;
                             }
 
@@ -117,9 +125,7 @@
 
                     isDuplicate() {
                         return this.list.some(
-                        item => item.attribute === this.attribute
-                        && item.value === this.value
-                        );
+                        item => item.attribute === this.attribute);
                     },
 
                     remove(key, value) {
@@ -127,6 +133,13 @@
                         item =>
                             !(item.attribute === key && item.value === value)
                         );
+                    },
+
+                    get isAddDisabled() {
+                        return !this.attribute
+                            || !this.value
+                            || !this.map[this.attribute]?.includes(this.value)
+                            || this.isDuplicate();
                     }
                 }
             }

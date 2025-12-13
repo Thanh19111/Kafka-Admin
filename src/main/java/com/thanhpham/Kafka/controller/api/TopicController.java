@@ -4,6 +4,7 @@ import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
 import com.thanhpham.Kafka.service.ITopicService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class TopicController {
     }
 
     @PostMapping
-    public String createNewTopic(@RequestBody TopicCreateRequest request) throws ExecutionException, InterruptedException {
+    public String createNewTopic(@RequestBody @Valid TopicCreateRequest request) throws ExecutionException, InterruptedException {
         return iTopicService.createNewTopic(request);
     }
 

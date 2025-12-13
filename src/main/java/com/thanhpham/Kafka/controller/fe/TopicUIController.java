@@ -1,5 +1,6 @@
 package com.thanhpham.Kafka.controller.fe;
 
+import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
@@ -7,13 +8,12 @@ import com.thanhpham.Kafka.dto.test.User;
 import com.thanhpham.Kafka.mapper.TopicUIMapper;
 import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,5 +103,15 @@ public class TopicUIController {
 
         model.addAttribute("topiclist", topics);
         return "components/TopicList/index :: topiclist";
+    }
+
+    @PostMapping("/create")
+    public String checkTopicCreationRequest(@Valid TopicCreateRequest topicForm, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "pages/Topic/CreateNewTopic/index";
+        }
+
+        return "redirect:/index";
     }
 }
