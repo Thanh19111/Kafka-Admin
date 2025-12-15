@@ -1,6 +1,10 @@
 package com.thanhpham.Kafka.controller.fe;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thanhpham.Kafka.dto.form.TopicCreateForm;
+import com.thanhpham.Kafka.dto.request.ConfigItem;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
@@ -11,19 +15,24 @@ import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Controller
 @RequestMapping("/topic")
 @RequiredArgsConstructor
 public class TopicUIController {
     private final ITopicService iTopicService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping
     public String getTopicListUI(Model model) throws ExecutionException, InterruptedException {
@@ -51,7 +60,6 @@ public class TopicUIController {
         Map<String, List<String>> configMap = new HashMap<>();
         configMap.put("cleanup.policy", List.of("delete", "compact"));
         configMap.put("compression.type", List.of("gzip", "lz4", "snappy"));
-        configMap.put("acks", List.of("0", "1", "all"));
 
         model.addAttribute("activeNavIndex", 2);
         model.addAttribute("configMap", configMap);
@@ -110,22 +118,37 @@ public class TopicUIController {
     }
 
     @PostMapping("/create")
-    public String checkTopicCreationRequest(@Valid @ModelAttribute("topicForm") TopicCreateForm topicForm,
+    public Object checkTopicCreationRequest(@Valid @ModelAttribute("topicForm") TopicCreateForm topicForm,
                                             BindingResult bindingResult,
-                                            Model model) {
+                                            Model model) throws JsonProcessingException, ExecutionException, InterruptedException {
 
         if (bindingResult.hasErrors()) {
-            System.out.println("Error");
-            System.out.println(bindingResult.hasErrors());
-            bindingResult.getAllErrors()
-                    .forEach(e -> System.out.println(e.toString()));
-
             model.addAttribute("topicForm", topicForm);
             return "components/TopicForm/index :: form";
         }
 
-        System.out.println("OK");
-        System.out.println(topicForm.getConfig());
-        return "redirect:/topic";
+        List<ConfigItem> configs = objectMapper.readValue(topicForm.getConfig(), new TypeReference<>() {});
+
+        TopicCreateRequest request = new TopicCreateRequest();
+        request.setTopicName(topicForm.getTopicName());
+        request.setPartitionNum(topicForm.getPartitionNum());
+        request.setReplicaFNum(topicForm.getReplicaFNum());
+        request.setConfig(configs);
+
+        iTopicService.createNewTopic(request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("HX-Redirect", "/topic")
+                .build();
+    }
+
+    @DeleteMapping("/{topicName}")
+    public Object deleteTopicByName(@PathVariable("topicName") String topicName) throws ExecutionException, InterruptedException, TimeoutException {
+        iTopicService.deleteTopic(topicName);
+        
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("HX-Redirect", "/topic")
+                .build();
     }
 }
