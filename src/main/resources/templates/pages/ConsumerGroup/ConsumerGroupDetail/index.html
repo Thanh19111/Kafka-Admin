@@ -44,37 +44,43 @@
                 </div>
             </div>
             <span style="max-width: 200px; font-weight: 600; font-size: larger;" class="m-widget6__caption">
-									Group's Partition
-								</span>
-            <div class="m-widget6__head">
-                <div th:each="groupLag : ${groupLags}" style="border: dashed rgb(177, 177, 177) 1px; padding: 10px 10px; max-width: 1000px; margin-bottom: 5px;">
-                    <div style="display: flex; gap: 16px; font-weight: 400; padding-top: 10px; align-items: center;" class="m-widget6__item">
-											<span style="max-width: 200px;" class="m-widget6__caption">
-												Topic
-											</span>
-                        <span style="max-width: 200px;" class="m-widget6__caption">
-												Partition
-											</span>
-                        <span style="max-width: 200px;" class="m-widget6__caption">
-												Commited Offset
-											</span>
-                        <span style="max-width: 200px;" class="m-widget6__caption">
-												Latest Offset
-											</span>
-                        <span style="max-width: 200px;" class="m-widget6__caption">
-												Lag
-											</span>
-                    </div>
-                    <div style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">
-                        <span th:text="${groupLag.topic}" style="max-width: 200px;" class="m-widget6__caption"></span>
-                        <span th:text="${groupLag.partition}" style="max-width: 200px;" class="m-widget6__caption"></span>
-                        <span th:text="${groupLag.commitedOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>
-                        <span th:text="${groupLag.latestOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>
-                        <span th:text="${groupLag.lag}" style="max-width: 200px;" class="m-widget6__caption"></span>
-                    </div>
-                </div>
-                <!--									 <div style="border-bottom: 1px dashed #8d8989; margin: 16px 0;"></div>-->
+                Group's Partition
+            </span>
+            <div id="latest-detail"
+                 th:attr="hx-get=@{/group/{groupId}/latest(groupId=${group.groupId})}"
+                 hx-trigger="load, every 0.5s"
+                 hx-swap="innerHTML">
+
             </div>
+<!--            <div class="m-widget6__head">-->
+<!--                <div th:each="groupLag : ${groupLags}" style="border: dashed rgb(177, 177, 177) 1px; padding: 10px 10px; max-width: 1000px; margin-bottom: 5px;">-->
+<!--                    <div style="display: flex; gap: 16px; font-weight: 400; padding-top: 10px; align-items: center;" class="m-widget6__item">-->
+<!--											<span style="max-width: 200px;" class="m-widget6__caption">-->
+<!--												Topic-->
+<!--											</span>-->
+<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
+<!--												Partition-->
+<!--											</span>-->
+<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
+<!--												Commited Offset-->
+<!--											</span>-->
+<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
+<!--												Latest Offset-->
+<!--											</span>-->
+<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
+<!--												Lag-->
+<!--											</span>-->
+<!--                    </div>-->
+<!--                    <div style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">-->
+<!--                        <span th:text="${groupLag.topic}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
+<!--                        <span th:text="${groupLag.partition}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
+<!--                        <span th:text="${groupLag.commitedOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
+<!--                        <span th:text="${groupLag.latestOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
+<!--                        <span th:text="${groupLag.lag}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;									 <div style="border-bottom: 1px dashed #8d8989; margin: 16px 0;"></div>&ndash;&gt;-->
+<!--            </div>-->
         </div>
     </th:block>
 </body>

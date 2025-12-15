@@ -82,4 +82,12 @@ public class ConsumerGroupUIController {
         model.addAttribute("groupId", groupId);
         return "pages/ConsumerGroup/ConsumerGroupMemberList/index";
     }
+
+    @GetMapping("/{groupId}/latest")
+    public String test(@PathVariable("groupId") String groupId, Model model) throws ExecutionException, InterruptedException {
+        List<GroupPartitionResponse> groupLags = iGroupConsumerService.checkLagByGroupId(groupId);
+        model.addAttribute("groupLags", groupLags);
+        return "components/GroupPartitionDetail/index :: partitionDetail";
+    }
+
 }

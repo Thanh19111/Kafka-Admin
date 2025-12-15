@@ -3,6 +3,7 @@ package com.thanhpham.Kafka.controller.fe;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thanhpham.Kafka.dto.form.PartitionIncreaseRequest;
 import com.thanhpham.Kafka.dto.form.TopicCreateForm;
 import com.thanhpham.Kafka.dto.request.ConfigItem;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -145,10 +147,25 @@ public class TopicUIController {
     @DeleteMapping("/{topicName}")
     public Object deleteTopicByName(@PathVariable("topicName") String topicName) throws ExecutionException, InterruptedException, TimeoutException {
         iTopicService.deleteTopic(topicName);
-        
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("HX-Redirect", "/topic")
+                .build();
+    }
+
+    @PutMapping("/adjust")
+    public Object increasePartitionByTopicName(@ModelAttribute PartitionIncreaseRequest request){
+        try {
+            iTopicService.increasePartition(request.getTopicName(), request.getPartitionNumber());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("HX-Redirect", "/topic")
+                .header("HX-Trigger", "toast-success")
                 .build();
     }
 }

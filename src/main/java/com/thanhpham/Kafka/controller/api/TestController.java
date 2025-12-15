@@ -17,8 +17,8 @@ public class TestController {
     private final IConsumerService iConsumerService;
     private final SchemaRegistry schemaRegistryUtil;
     private final IMessageService iMessageService;
-    /// schema
 
+    /// schema
     @GetMapping("/schema")
     public void getAllSubject() throws RestClientException, IOException {
         schemaRegistryUtil.getAllSubject();
