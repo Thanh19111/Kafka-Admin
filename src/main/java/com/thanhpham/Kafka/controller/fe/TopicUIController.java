@@ -1,5 +1,6 @@
 package com.thanhpham.Kafka.controller.fe;
 
+import com.thanhpham.Kafka.dto.form.TopicCreateForm;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
@@ -15,10 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -59,6 +57,12 @@ public class TopicUIController {
         model.addAttribute("configMap", configMap);
         model.addAttribute("navLabels", navLabels);
         model.addAttribute("mainLabel", "Topics");
+
+
+        TopicCreateForm form = new TopicCreateForm();
+        form.setPartitionNum(1);
+        form.setReplicaFNum((short) 1);
+        model.addAttribute("topicForm", form);
 
         User user = new User("Alice", "alice@example.com");
         model.addAttribute("user", user);
@@ -106,12 +110,22 @@ public class TopicUIController {
     }
 
     @PostMapping("/create")
-    public String checkTopicCreationRequest(@Valid TopicCreateRequest topicForm, BindingResult bindingResult) {
+    public String checkTopicCreationRequest(@Valid @ModelAttribute("topicForm") TopicCreateForm topicForm,
+                                            BindingResult bindingResult,
+                                            Model model) {
 
         if (bindingResult.hasErrors()) {
-            return "pages/Topic/CreateNewTopic/index";
+            System.out.println("Error");
+            System.out.println(bindingResult.hasErrors());
+            bindingResult.getAllErrors()
+                    .forEach(e -> System.out.println(e.toString()));
+
+            model.addAttribute("topicForm", topicForm);
+            return "components/TopicForm/index :: form";
         }
 
-        return "redirect:/index";
+        System.out.println("OK");
+        System.out.println(topicForm.getConfig());
+        return "redirect:/topic";
     }
 }

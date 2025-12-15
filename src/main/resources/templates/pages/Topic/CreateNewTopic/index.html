@@ -23,55 +23,84 @@
                         <h3 class="m-form__section">Create new topic</h3>
                     </div>
                 </div>
-                <form action="#" th:action="@{/create}" th:object="${topicForm}" method="post">
-                    <input type="text" name="config" :value="JSON.stringify(list)">
+                <div id="form-container">
+                    <form hx-post="/topic/create"
+                          hx-target="#form-container"
+                          hx-swap="outerHTML"
+                          th:object="${topicForm}">
+                        <input type="text" name="config" :value="JSON.stringify(list)" />
 
-                    <div class="form-group m-form__group row">
-                        <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
-                        <div class="col-7">
-                            <input th:field="*{topicName}" style="width: 300px;" class="form-control m-input" type="text" value="Example 1"/>
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>
+                            <div class="col-7">
+                                <input
+                                        th:field="*{topicName}" style="width: 300px;" class="form-control m-input" type="text" placeholder="Example 1"/>
+                            </div>
+                            <div
+                                    th:if="${#fields.hasErrors('topicName')}"
+                                    th:errors="*{topicName}">Name Error</div>
                         </div>
-                        <div th:if="${#fields.hasErrors('topicName')}" th:errors="*{topicName}">Name Error</div>
-                    </div>
-                    <div class="form-group m-form__group row">
-                        <label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
-                        <div class="col-7">
-                            <input th:field="*{partitionNum}" type="number" value="1" style="width: 150px;" class="form-control m-input" />
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-2 col-form-label">Partition Number</label>
+                            <div class="col-7">
+                                <input
+                                        th:field="*{partitionNum}" type="number" value="1" style="width: 150px;" class="form-control m-input" />
+                            </div>
+                            <div
+                                    th:if="${#fields.hasErrors('partitionNum')}"
+                                    th:errors="*{partitionNum}">Name Error</div>
                         </div>
-                        <div th:if="${#fields.hasErrors('partitionNum')}" th:errors="*{partitionNum}">Name Error</div>
-                    </div>
-                    <div class="form-group m-form__group row">
-                        <label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
-                        <div class="col-7">
-                            <input th:field="*{replicaFNum}" type="number" value="1" style="width: 150px;" class="form-control m-input"/>
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-2 col-form-label">Replica Factor Number</label>
+                            <div class="col-7">
+                                <input
+                                        th:field="*{replicaFNum}" type="number" value="1" style="width: 150px;" class="form-control m-input"/>
+                            </div>
+                            <div
+                                    th:if="${#fields.hasErrors('replicaFNum')}"
+                                    th:errors="*{replicaFNum}">Name Error</div>
                         </div>
-                        <div th:if="${#fields.hasErrors('replicaFNum')}" th:errors="*{replicaFNum}">Name Error</div>
-                    </div>
-                    <div class="form-group m-form__group row">
-                        <label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
-                        <div class="col-7">
-                            <div style="display: flex;">
-                                <select style="width: 200px;" x-model="attribute" class="form-control m-input" id="configKey">
-                                    <option value="">Choose Config Attribute</option>
-                                    <option th:each="entry : ${configMap}"
-                                            th:value="${entry.key}"
-                                            th:text="${entry.key}">
-                                    </option>
-                                </select>
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-2 col-form-label">List of Topic Config</label>
+                            <div class="col-7">
+                                <div style="display: flex;">
+                                    <select style="width: 200px;" x-model="attribute" class="form-control m-input" id="configKey">
+                                        <option value="">Choose Config Attribute</option>
+                                        <option th:each="entry : ${configMap}"
+                                                th:value="${entry.key}"
+                                                th:text="${entry.key}">
+                                        </option>
+                                    </select>
 
-                                <select x-model="value" style="width: 200px; margin-left: 10px; margin-right: 10px" class="form-control m-input" id="configValue">
-                                    <option value="">Config Value</option>
-                                </select>
-                                <button type="button" @click="add()"
-                                        :disabled="isAddDisabled"
-                                        :class="{
+                                    <select x-model="value" style="width: 200px; margin-left: 10px; margin-right: 10px" class="form-control m-input" id="configValue">
+                                        <option value="">Config Value</option>
+                                    </select>
+
+
+                                    <button type="button" @click="add()"
+                                            :disabled="isAddDisabled"
+                                            :class="{
                                             'bg-gray-400 cursor-not-allowed': isAddDisabled,
                                             'bg-blue-500 hover:bg-blue-600': !isAddDisabled
                                         }" class="btn btn-accent m-btn m-btn--air m-btn--custom">Add</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                        <div class="m-portlet__foot m-portlet__foot--fit">
+                            <div class="m-form__actions">
+                                <div class="row">
+                                    <div class="col-2">
+                                    </div>
+                                    <div class="col-7">
+                                        <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom">Create</button>&nbsp;&nbsp;
+                                        <button type="reset" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
             </div>
 
             <div class="col-10 ml-auto">
