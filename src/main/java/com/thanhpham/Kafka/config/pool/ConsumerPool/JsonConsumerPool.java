@@ -1,9 +1,9 @@
-package com.thanhpham.Kafka.config.pool;
+package com.thanhpham.Kafka.config.pool.ConsumerPool;
 
-import com.thanhpham.Kafka.config.factory.AvroConsumerFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.thanhpham.Kafka.config.factory.JsonConsumerFactory;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.springframework.stereotype.Component;
 
@@ -13,16 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @RequiredArgsConstructor
-public class AvroConsumerPool {
-    private final AvroConsumerFactory avroFactory;
-    private final Map<String, Consumer<String, GenericRecord>> pool = new ConcurrentHashMap<>();
+public class JsonConsumerPool {
+    private final JsonConsumerFactory jsonFactory;
+    private final Map<String, Consumer<String, JsonNode>> pool = new ConcurrentHashMap<>();
 
-    public Consumer<String, GenericRecord> get(String topicName) {
+    public Consumer<String, JsonNode> get(String topicName) {
         return pool.computeIfAbsent(topicName, this::create);
     }
 
-    private Consumer<String, GenericRecord> create(String topicName) {
-        Consumer<String, GenericRecord> instance = avroFactory.create();
+    private Consumer<String, JsonNode> create(String topicName) {
+        Consumer<String, JsonNode> instance = jsonFactory.createConsumer();
         instance.subscribe(List.of(topicName));
         return instance;
     }

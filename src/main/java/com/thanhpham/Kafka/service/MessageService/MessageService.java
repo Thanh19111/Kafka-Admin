@@ -1,21 +1,18 @@
 package com.thanhpham.Kafka.service.MessageService;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.thanhpham.Kafka.config.pool.AvroConsumerPool;
-import com.thanhpham.Kafka.config.pool.JsonConsumerPool;
+import com.thanhpham.Kafka.config.pool.ConsumerPool.AvroConsumerPool;
+import com.thanhpham.Kafka.config.pool.ConsumerPool.JsonConsumerPool;
 import com.thanhpham.Kafka.dto.response.AvroMessage;
 import com.thanhpham.Kafka.dto.response.JsonMessage;
 import com.thanhpham.Kafka.mapper.AvroMessageMapper;
 import com.thanhpham.Kafka.mapper.JsonMessageMapper;
-import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
-import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;

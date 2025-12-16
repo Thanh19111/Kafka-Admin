@@ -1,13 +1,13 @@
-package com.thanhpham.Kafka.service.ConsumerService;
-
-import org.apache.kafka.clients.admin.GroupListing;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-public interface IConsumerService {
-    List<GroupListing> getAllConsumerGroups() throws ExecutionException, InterruptedException;
-    void checkLag(String bootstrapServers, String topicName, String groupId) throws ExecutionException, InterruptedException;
-    void readMessage(String topicName);
-    void getMessage();
-}
+//package com.thanhpham.Kafka.service.ConsumerService;
+//
+//import org.apache.kafka.clients.admin.GroupListing;
+//
+//import java.util.List;
+//import java.util.concurrent.ExecutionException;
+//
+//public interface IConsumerService {
+//    List<GroupListing> getAllConsumerGroups() throws ExecutionException, InterruptedException;
+//    void checkLag(String bootstrapServers, String topicName, String groupId) throws ExecutionException, InterruptedException;
+//    void readMessage(String topicName);
+//    void getMessage();
+//}

@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.config.pool;
+package com.thanhpham.Kafka.config.pool.AdminClientPool;
 
 import com.thanhpham.Kafka.config.factory.AdminClientFactory;
 import jakarta.annotation.PreDestroy;
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @RequiredArgsConstructor
-public class AdminClientPool {
+public class AdminClientPool implements IAdminClientPool {
     private final AdminClientFactory adminClientFactory;
     private final Map<String, Admin> pool = new ConcurrentHashMap<>();
 

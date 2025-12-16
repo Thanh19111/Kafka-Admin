@@ -6,7 +6,7 @@ import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.mapper.ConsumerGroupUIMapper;
 import com.thanhpham.Kafka.service.ConsumerGroupService.IGroupConsumerService;
 import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupMemberUI;
-import com.thanhpham.Kafka.dto.uiformat.GroupConsumerDetailUI;
+import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupDetailUI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,7 @@ public class ConsumerGroupUIController {
     @GetMapping
     public String getConsumerGroupListUI(Model model) throws ExecutionException, InterruptedException {
         List<GroupDetailResponse> data = iGroupConsumerService.getAllConsumerGroups();
-        List<GroupConsumerDetailUI> groups = data.stream().map(ConsumerGroupUIMapper::format).toList();
+        List<ConsumerGroupDetailUI> groups = data.stream().map(ConsumerGroupUIMapper::format).toList();
 
         List<Pair> navLabels = new ArrayList<>();
         navLabels.add(new Pair("Consumers", "/group"));

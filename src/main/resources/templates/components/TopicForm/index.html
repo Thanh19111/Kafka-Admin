@@ -6,7 +6,7 @@
           hx-target="#form-container"
           hx-swap="outerHTML"
           th:object="${topicForm}">
-        <input type="text" name="config" :value="JSON.stringify(list)" />
+        <input type="hidden" name="config" :value="JSON.stringify(list)" />
 
         <div class="form-group m-form__group row">
             <label for="example-text-input" class="col-2 col-form-label">Topic Name</label>

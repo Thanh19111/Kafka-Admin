@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupConsumerDetailUI {
+public class ConsumerGroupDetailUI {
     private String consumerGroupId;
     private int memberNum;
     private int topicNum;

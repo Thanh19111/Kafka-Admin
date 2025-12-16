@@ -1,6 +1,6 @@
 package com.thanhpham.Kafka.service.TopicService;
 
-import com.thanhpham.Kafka.config.pool.AdminClientPool;
+import com.thanhpham.Kafka.config.pool.AdminClientPool.IAdminClientPool;
 import com.thanhpham.Kafka.dto.request.ConfigItem;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
 @Service
 @RequiredArgsConstructor
 public class TopicService implements ITopicService {
-    private final AdminClientPool adminClientPool;
+    private final IAdminClientPool adminClientPool;
 
     public Set<String> getAllListTopic() throws ExecutionException, InterruptedException {
         return adminClientPool.get(Constants.BOOTSTRAP_SERVERS)

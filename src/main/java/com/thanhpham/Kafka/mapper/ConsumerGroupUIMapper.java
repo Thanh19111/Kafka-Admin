@@ -3,15 +3,15 @@ package com.thanhpham.Kafka.mapper;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupMemberResponse;
 import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupMemberUI;
-import com.thanhpham.Kafka.dto.uiformat.GroupConsumerDetailUI;
+import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupDetailUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // tối ưu sau
 public class ConsumerGroupUIMapper {
-    public static GroupConsumerDetailUI format(GroupDetailResponse res) {
-        GroupConsumerDetailUI detail = new GroupConsumerDetailUI();
+    public static ConsumerGroupDetailUI format(GroupDetailResponse res) {
+        ConsumerGroupDetailUI detail = new ConsumerGroupDetailUI();
         detail.setConsumerGroupId(res.getGroupId());
         detail.setMemberNum(res.getMembers().size());
         detail.setTopicNum(-1);

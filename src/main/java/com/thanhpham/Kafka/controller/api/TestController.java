@@ -1,7 +1,6 @@
 package com.thanhpham.Kafka.controller.api;
 
 import com.thanhpham.Kafka.dto.request.SchemaCreateRequest;
-import com.thanhpham.Kafka.service.ConsumerService.IConsumerService;
 import com.thanhpham.Kafka.service.MessageService.IMessageService;
 import com.thanhpham.Kafka.service.SchemaRegistry.SchemaRegistry;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
@@ -14,7 +13,6 @@ import java.io.IOException;
 @RequestMapping("/test")
 @RequiredArgsConstructor
 public class TestController {
-    private final IConsumerService iConsumerService;
     private final SchemaRegistry schemaRegistryUtil;
     private final IMessageService iMessageService;
 
@@ -33,10 +31,4 @@ public class TestController {
     public void get(@PathVariable("subject") String subject) throws RestClientException, IOException {
         schemaRegistryUtil.getSchemaBySubject(subject);
     }
-
-    @PostMapping("read")
-    public void readMessage() throws RestClientException, IOException {
-        iConsumerService.getMessage();
-    }
-
 }
