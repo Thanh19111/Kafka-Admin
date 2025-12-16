@@ -1,10 +1,9 @@
-package com.thanhpham.Kafka.service.impl;
+package com.thanhpham.Kafka.service.ConsumerGroupService;
 
 import com.thanhpham.Kafka.config.pool.AdminClientPool;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.mapper.GroupDetailMapper;
-import com.thanhpham.Kafka.service.IGroupConsumerService;
 import com.thanhpham.Kafka.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;

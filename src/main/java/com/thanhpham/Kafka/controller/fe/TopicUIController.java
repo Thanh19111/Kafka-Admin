@@ -10,9 +10,8 @@ import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
-import com.thanhpham.Kafka.dto.test.User;
 import com.thanhpham.Kafka.mapper.TopicUIMapper;
-import com.thanhpham.Kafka.service.ITopicService;
+import com.thanhpham.Kafka.service.TopicService.ITopicService;
 import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -68,15 +65,10 @@ public class TopicUIController {
         model.addAttribute("navLabels", navLabels);
         model.addAttribute("mainLabel", "Topics");
 
-
         TopicCreateForm form = new TopicCreateForm();
         form.setPartitionNum(1);
         form.setReplicaFNum((short) 1);
         model.addAttribute("topicForm", form);
-
-        User user = new User("Alice", "alice@example.com");
-        model.addAttribute("user", user);
-
 
         return "pages/Topic/CreateNewTopic/index";
     }
@@ -112,8 +104,6 @@ public class TopicUIController {
         List<TopicDetailUI> topics = data.stream()
                 .filter(topic -> topic.getTopicName().contains(keyword))
                 .map(TopicUIMapper::format).toList();
-
-        System.out.println(topics.size());
 
         model.addAttribute("topiclist", topics);
         return "components/TopicList/index :: topiclist";

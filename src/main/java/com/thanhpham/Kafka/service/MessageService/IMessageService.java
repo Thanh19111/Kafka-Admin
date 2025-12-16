@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.service;
+package com.thanhpham.Kafka.service.MessageService;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;

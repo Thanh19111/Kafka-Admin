@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.service;
+package com.thanhpham.Kafka.service.ConsumerGroupService;
 
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;

@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.service.impl;
+package com.thanhpham.Kafka.service.TopicService;
 
 import com.thanhpham.Kafka.config.pool.AdminClientPool;
 import com.thanhpham.Kafka.dto.request.ConfigItem;
@@ -7,14 +7,12 @@ import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
 import com.thanhpham.Kafka.mapper.TopicDetailMapper;
-import com.thanhpham.Kafka.service.ITopicService;
 import com.thanhpham.Kafka.utils.Constants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.config.ConfigResource;
-import org.apache.kafka.common.internals.Topic;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

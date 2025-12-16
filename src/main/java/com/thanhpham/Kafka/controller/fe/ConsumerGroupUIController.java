@@ -4,7 +4,7 @@ import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.mapper.ConsumerGroupUIMapper;
-import com.thanhpham.Kafka.service.IGroupConsumerService;
+import com.thanhpham.Kafka.service.ConsumerGroupService.IGroupConsumerService;
 import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupMemberUI;
 import com.thanhpham.Kafka.dto.uiformat.GroupConsumerDetailUI;
 import lombok.RequiredArgsConstructor;

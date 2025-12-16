@@ -1,8 +1,7 @@
-package com.thanhpham.Kafka.service.impl;
+package com.thanhpham.Kafka.service.ConsumerService;
 
 import com.thanhpham.Kafka.config.pool.AdminClientPool;
 import com.thanhpham.Kafka.config.pool.AvroConsumerPool;
-import com.thanhpham.Kafka.service.IConsumerService;
 import com.thanhpham.Kafka.utils.Constants;
 import com.thanhpham.Kafka.utils.InitConsumerProps;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.service;
+package com.thanhpham.Kafka.service.ConsumerService;
 
 import org.apache.kafka.clients.admin.GroupListing;
 

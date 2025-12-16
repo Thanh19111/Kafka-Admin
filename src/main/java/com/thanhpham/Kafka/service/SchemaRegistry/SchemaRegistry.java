@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.service.impl;
+package com.thanhpham.Kafka.service.SchemaRegistry;
 
 import com.thanhpham.Kafka.dto.request.SchemaCreateRequest;
 import io.confluent.kafka.schemaregistry.avro.AvroSchema;
