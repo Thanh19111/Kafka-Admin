@@ -4,6 +4,7 @@ import com.thanhpham.Kafka.config.factory.AdminClientFactory;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.Admin;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

@@ -68,6 +68,17 @@
 <!--			<artifactId>spring-kafka</artifactId>-->
 <!--		</dependency>-->
 
+		<!--consumer group cache-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-clients</artifactId>
@@ -83,7 +94,7 @@
 			<artifactId>kafka-schema-registry-client</artifactId>
 			<version>7.7.1</version>
 		</dependency>
-		<!--		old 7.6.1-->
+		<!--old 7.6.1-->
 
 		<dependency>
 			<groupId>io.confluent</groupId>

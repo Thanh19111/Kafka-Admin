@@ -26,7 +26,7 @@ public class MessageService implements IMessageService {
     @Override
     public List<AvroMessage> decodeAvro(String topic){
         Consumer<String, GenericRecord> consumer = avroPool.get(topic);
-        consumer.subscribe(List.of(topic));
+
         List<AvroMessage> results = new ArrayList<>();
         ConsumerRecords<String, GenericRecord> records = consumer.poll(Duration.ofSeconds(2));
 
