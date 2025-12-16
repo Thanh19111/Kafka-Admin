@@ -3,6 +3,10 @@ package com.thanhpham.Kafka.service.MessageService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.thanhpham.Kafka.config.pool.AvroConsumerPool;
 import com.thanhpham.Kafka.config.pool.JsonConsumerPool;
+import com.thanhpham.Kafka.dto.response.AvroMessage;
+import com.thanhpham.Kafka.dto.response.JsonMessage;
+import com.thanhpham.Kafka.mapper.AvroMessageMapper;
+import com.thanhpham.Kafka.mapper.JsonMessageMapper;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import lombok.RequiredArgsConstructor;
@@ -19,68 +23,34 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MessageService implements IMessageService {
-    private final SchemaRegistryClient client;
     private final AvroConsumerPool avroPool;
     private final JsonConsumerPool jsonPool;
 
     @Override
-    public List<String> decodeAvro(String topic, int limit){
+    public List<AvroMessage> decodeAvro(String topic){
         Consumer<String, GenericRecord> consumer = avroPool.get(topic);
         consumer.subscribe(List.of(topic));
-        List<String> results = new ArrayList<>();
+        List<AvroMessage> results = new ArrayList<>();
         ConsumerRecords<String, GenericRecord> records = consumer.poll(Duration.ofSeconds(2));
 
         for (var record : records) {
-            results.add(record.value().toString());
-            if (results.size() >= limit) break;
+            results.add(AvroMessageMapper.toResponse(record));
         }
 
-//        consumer.close();
         return results;
     }
 
     @Override
-    public List<JsonNode> decodeJson(String topic, int limit){
+    public List<JsonMessage> decodeJson(String topic){
         Consumer<String, JsonNode> consumer = jsonPool.get(topic);
         consumer.subscribe(List.of(topic));
-        List<JsonNode> results = new ArrayList<>();
+        List<JsonMessage> results = new ArrayList<>();
         ConsumerRecords<String, JsonNode> records = consumer.poll(Duration.ofSeconds(2));
 
         for (var record : records) {
-            results.add(record.value());
-            if (results.size() >= limit) break;
+            results.add(JsonMessageMapper.toResponse(record));
         }
 
-//        consumer.close();
         return results;
-    }
-
-    @Override
-    public void checkFormat(String topic) throws RestClientException, IOException {
-//        String subject = topic + "-value";
-//        Properties props = new Properties();
-//        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-//        props.put(ConsumerConfig.GROUP_ID_CONFIG, "format-checker");
-//        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
-//        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
-//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-//
-//        try(KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(props)){
-//            consumer.subscribe(List.of(topic));
-//            ConsumerRecords<byte[], byte[]> records = consumer.poll(Duration.ofMillis(300));
-//            System.out.println("1");
-//            if(records.isEmpty()) return;
-//            for (ConsumerRecord<byte[], byte[]> rec : records) {
-//                byte[] value = rec.value();
-//                int schemaId = ByteBuffer.wrap(value, 1, 4).getInt();
-//                SchemaMetadata meta = client.getSchemaMetadata(subject, schemaId);
-//                String schemaType = meta.getSchemaType(); // AVRO | JSON | PROTOBUF
-//
-//                System.out.println(schemaType);
-//            }
-//
-//            System.out.println("End");
-//        }
-
     }
 }

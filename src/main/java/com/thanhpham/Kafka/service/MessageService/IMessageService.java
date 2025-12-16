@@ -1,13 +1,11 @@
 package com.thanhpham.Kafka.service.MessageService;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
+import com.thanhpham.Kafka.dto.response.AvroMessage;
+import com.thanhpham.Kafka.dto.response.JsonMessage;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IMessageService {
-    List<JsonNode> decodeJson(String topic, int limit);
-    List<String> decodeAvro(String topic, int limit);
-    void checkFormat(String topic) throws RestClientException, IOException;
+    List<JsonMessage> decodeJson(String topic);
+    List<AvroMessage> decodeAvro(String topic);
 }

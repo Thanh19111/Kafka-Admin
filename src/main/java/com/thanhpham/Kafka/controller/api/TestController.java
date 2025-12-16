@@ -39,9 +39,4 @@ public class TestController {
         iConsumerService.getMessage();
     }
 
-    @GetMapping("/check")
-    public void checkTopic(@RequestParam("topicName") String topicName) throws RestClientException, IOException {
-        iMessageService.checkFormat(topicName);
-    }
-
 }
