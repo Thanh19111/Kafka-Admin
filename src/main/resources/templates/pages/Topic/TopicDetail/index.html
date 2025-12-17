@@ -120,9 +120,13 @@
                 <div class="tab-pane" id="m_user_profile_tab_2">
                     <div class="m-portlet__body">
                         <div class="m-widget6">
-                            <div class="m-widget6__head">
-                                <div style="padding-bottom: 10px;" class="example-text-input">{"name":"Alice","age":30,"city":"Wonderland"}</div>
-                                <div style="padding-bottom: 10px;" class="example-text-input">{"name":"Bob","age":30,"city":"Wonderland"}</div>
+                            <div
+                                    id="latest-messages"
+                                    hx-get="/topic/messages/avro/pageviews"
+                                    hx-trigger="load, every 0.5s"
+                                    hx-swap="afterbegin"
+                                    class="m-widget6__head"
+                                    style="padding-left: 10px; max-height: 800px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
                             </div>
                         </div>
                     </div>

@@ -19,15 +19,15 @@
         <div class="m-widget6">
             <div class="m-widget6__head">
                 <div style="display: flex; gap: 16px; padding: 10px 10px;" class="m-widget6__item">
-										<span style="max-width: 200px;" class="m-widget6__caption">
-											Group ID
-										</span>
                     <span style="max-width: 200px;" class="m-widget6__caption">
-											Coordinator Broker
-										</span>
+                        Group ID
+                    </span>
                     <span style="max-width: 200px;" class="m-widget6__caption">
-											State
-										</span>
+                        Coordinator Broker
+                    </span>
+                    <span style="max-width: 200px;" class="m-widget6__caption">
+                        State
+                    </span>
                 </div>
                 <div style="padding: 10px 10px; display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center; overflow-wrap: anywhere;" class="m-widget6__item" m-menu-submenu-toggle="click" aria-haspopup="true">
                     <div th:text="${group.groupId}" style="max-width: 200px;" class="m-widget6__caption">
@@ -50,37 +50,7 @@
                  th:attr="hx-get=@{/group/{groupId}/latest(groupId=${group.groupId})}"
                  hx-trigger="load, every 0.5s"
                  hx-swap="innerHTML">
-
             </div>
-<!--            <div class="m-widget6__head">-->
-<!--                <div th:each="groupLag : ${groupLags}" style="border: dashed rgb(177, 177, 177) 1px; padding: 10px 10px; max-width: 1000px; margin-bottom: 5px;">-->
-<!--                    <div style="display: flex; gap: 16px; font-weight: 400; padding-top: 10px; align-items: center;" class="m-widget6__item">-->
-<!--											<span style="max-width: 200px;" class="m-widget6__caption">-->
-<!--												Topic-->
-<!--											</span>-->
-<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
-<!--												Partition-->
-<!--											</span>-->
-<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
-<!--												Commited Offset-->
-<!--											</span>-->
-<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
-<!--												Latest Offset-->
-<!--											</span>-->
-<!--                        <span style="max-width: 200px;" class="m-widget6__caption">-->
-<!--												Lag-->
-<!--											</span>-->
-<!--                    </div>-->
-<!--                    <div style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">-->
-<!--                        <span th:text="${groupLag.topic}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
-<!--                        <span th:text="${groupLag.partition}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
-<!--                        <span th:text="${groupLag.commitedOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
-<!--                        <span th:text="${groupLag.latestOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
-<!--                        <span th:text="${groupLag.lag}" style="max-width: 200px;" class="m-widget6__caption"></span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                &lt;!&ndash;									 <div style="border-bottom: 1px dashed #8d8989; margin: 16px 0;"></div>&ndash;&gt;-->
-<!--            </div>-->
         </div>
     </th:block>
 </body>

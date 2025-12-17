@@ -1,6 +1,5 @@
 package com.thanhpham.Kafka.service.ConsumerGroupService;
 
-import com.thanhpham.Kafka.config.pool.AdminClientPool.AdminClientPool;
 import com.thanhpham.Kafka.config.pool.AdminClientPool.IAdminClientPool;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;

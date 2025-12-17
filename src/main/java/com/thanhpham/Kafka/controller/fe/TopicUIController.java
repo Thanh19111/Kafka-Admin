@@ -7,10 +7,9 @@ import com.thanhpham.Kafka.dto.form.PartitionIncreaseRequest;
 import com.thanhpham.Kafka.dto.form.TopicCreateForm;
 import com.thanhpham.Kafka.dto.request.ConfigItem;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
-import com.thanhpham.Kafka.dto.response.Pair;
-import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
-import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
+import com.thanhpham.Kafka.dto.response.*;
 import com.thanhpham.Kafka.mapper.TopicUIMapper;
+import com.thanhpham.Kafka.service.MessageService.IMessageService;
 import com.thanhpham.Kafka.service.TopicService.ITopicService;
 import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
 import jakarta.validation.Valid;
@@ -32,6 +31,7 @@ import java.util.concurrent.TimeoutException;
 public class TopicUIController {
     private final ITopicService iTopicService;
     private final ObjectMapper objectMapper;
+    private final IMessageService iMessageService;
 
     @GetMapping
     public String getTopicListUI(Model model) throws ExecutionException, InterruptedException {
@@ -158,4 +158,18 @@ public class TopicUIController {
                 .header("HX-Trigger", "toast-success")
                 .build();
     }
+
+    @GetMapping("/messages/avro/pageviews")
+    public Object t(Model model) {
+        List<AvroMessage> messages = new ArrayList<>();
+        try {
+            messages = iMessageService.decodeAvro("pageviews");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute("messages", messages.reversed());
+        return "components/MessageTemplate/index :: messageTemplate";
+    }
+
 }
