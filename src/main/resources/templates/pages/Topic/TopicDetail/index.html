@@ -120,13 +120,33 @@
                 <div class="tab-pane" id="m_user_profile_tab_2">
                     <div class="m-portlet__body">
                         <div class="m-widget6">
-                            <div
-                                    id="latest-messages"
-                                    hx-get="/topic/messages/avro/pageviews"
-                                    hx-trigger="load, every 0.5s"
-                                    hx-swap="afterbegin"
-                                    class="m-widget6__head"
-                                    style="padding-left: 10px; max-height: 800px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
+                            <div style="padding-bottom: 10px;">
+                                <form
+                                        hx-post="/topic/change"
+                                        hx-trigger="change"
+                                        hx-target="#wrapper"
+                                        hx-swap="outerHTML">
+
+                                    <label>
+                                        <input type="radio" name="mode" value="/avro/pageviews">
+                                        Avro
+                                    </label>
+
+                                    <label>
+                                        <input type="radio" name="mode" value="/json/pageviews">
+                                        Json
+                                    </label>
+                                </form>
+                            </div>
+
+                            <div id="wrapper">
+                                <div id="latest-messages"
+                                     hx-get="/topic/messages/avro/pageviews"
+                                     hx-trigger="load, every 5s"
+                                     hx-swap="afterbegin"
+                                     class="m-widget6__head"
+                                     style="padding-left: 10px; max-height: 500px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,6 +230,20 @@
                 </div>
             </div>
         </div>
+    </th:block>
+
+    <th:block layout:fragment="footer-scripts">
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.2/dist/cdn.min.js"></script>
+        <script>
+            function radioControl() {
+                return {
+                    selected: '',
+                    applyAttr() {
+
+                    }
+                }
+            }
+        </script>
     </th:block>
 </body>
 </html>

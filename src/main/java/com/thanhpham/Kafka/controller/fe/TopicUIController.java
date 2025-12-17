@@ -14,6 +14,7 @@ import com.thanhpham.Kafka.service.TopicService.ITopicService;
 import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -159,8 +160,8 @@ public class TopicUIController {
                 .build();
     }
 
-    @GetMapping("/messages/avro/pageviews")
-    public Object t(Model model) {
+    @GetMapping("/messages/avro/{topicName}")
+    public Object getAvroMessage(@PathVariable("topicName") String topicName, Model model) {
         List<AvroMessage> messages = new ArrayList<>();
         try {
             messages = iMessageService.decodeAvro("pageviews");
@@ -172,4 +173,23 @@ public class TopicUIController {
         return "components/MessageTemplate/index :: messageTemplate";
     }
 
+    @GetMapping("/messages/json/{topicName}")
+    public Object getJsonMessage(@PathVariable("topicName") String topicName, Model model) {
+        List<AvroMessage> messages = new ArrayList<>();
+        try {
+            messages = iMessageService.decodeAvro("pageviews");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute("messages", messages.reversed());
+        return "components/MessageTemplate/index :: messageTemplate";
+    }
+
+    @PostMapping("/change")
+    public Object changeDecode (@RequestParam("mode") String mode, Model model){
+        System.out.println(mode);
+        model.addAttribute("mode", mode);
+        return "components/ChangeTemplateDecode/index :: changeDecode";
+    }
 }

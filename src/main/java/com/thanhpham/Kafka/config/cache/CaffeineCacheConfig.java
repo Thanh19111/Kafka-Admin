@@ -1,6 +1,7 @@
 package com.thanhpham.Kafka.config.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -21,9 +22,10 @@ public class CaffeineCacheConfig {
                         .maximumSize(1000)
                         .expireAfterAccess(10, TimeUnit.SECONDS)
                         .removalListener((key, value, cause) -> {
-                            if (value instanceof Closeable ac) {
+                            if (value instanceof Consumer ac) {
                                 try {
                                     System.out.println(">>> " + cause);
+                                    ac.wakeup();
                                     ac.close();
                                 } catch (Exception e) {
                                     e.printStackTrace();
