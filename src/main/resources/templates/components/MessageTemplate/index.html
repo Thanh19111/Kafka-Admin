@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<div id="latest-messages" th:fragment="messageTemplate" class="m-widget6__head">
-    <div th:each="message : ${messages}" style="display: flex; align-items: center; gap: 10px; min-height: 30px;">
-        <div th:text="|Offset: ${message.offset}|" style="padding-bottom: 10px; width: 150px;">
-        </div>
-        <div th:text="|Message: ${message.message}|" style="padding-bottom: 10px;" class="example-text-input"></div>
-    </div>
+<div th:fragment="messageTemplate" th:each="message : ${messages}" style="display: flex; align-items: center; gap: 10px; min-height: 30px; padding-top: 10px;">
+    <div th:text="|Offset: ${message.offset}|" style="padding-bottom: 10px; width: 150px;"></div>
+    <div th:text="|Message: ${message.message}|" style="padding-bottom: 10px;" class="example-text-input"></div>
 </div>
 </body>
 </html>

@@ -121,30 +121,24 @@
                     <div class="m-portlet__body">
                         <div class="m-widget6">
                             <div style="padding-bottom: 10px;">
-                                <form
-                                        hx-post="/topic/change"
-                                        hx-trigger="change"
-                                        hx-target="#wrapper"
-                                        hx-swap="outerHTML">
-
+                                <form hx-post="/topic/change"
+                                      hx-trigger="change"
+                                      hx-target="#wrapper"
+                                      hx-swap="innerHTML">
                                     <label>
-                                        <input type="radio" name="mode" value="/avro/pageviews">
+                                        <input type="radio" name="mode" value="avro/pageviews">
                                         Avro
                                     </label>
 
                                     <label>
-                                        <input type="radio" name="mode" value="/json/pageviews">
+                                        <input type="radio" name="mode" value="json/pageviews">
                                         Json
                                     </label>
                                 </form>
                             </div>
 
                             <div id="wrapper">
-                                <div id="latest-messages"
-                                     hx-get="/topic/messages/avro/pageviews"
-                                     hx-trigger="load, every 5s"
-                                     hx-swap="afterbegin"
-                                     class="m-widget6__head"
+                                <div class="m-widget6__head"
                                      style="padding-left: 10px; max-height: 500px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
                                 </div>
                             </div>

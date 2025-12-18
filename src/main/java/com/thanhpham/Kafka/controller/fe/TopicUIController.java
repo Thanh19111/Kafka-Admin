@@ -166,7 +166,7 @@ public class TopicUIController {
         try {
             messages = iMessageService.decodeAvro("pageviews");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Parsing avro message has error");
         }
 
         model.addAttribute("messages", messages.reversed());
@@ -175,11 +175,11 @@ public class TopicUIController {
 
     @GetMapping("/messages/json/{topicName}")
     public Object getJsonMessage(@PathVariable("topicName") String topicName, Model model) {
-        List<AvroMessage> messages = new ArrayList<>();
+        List<JsonMessage> messages = new ArrayList<>();
         try {
-            messages = iMessageService.decodeAvro("pageviews");
+            messages = iMessageService.decodeJson("pageviews");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Parsing json message has error");
         }
 
         model.addAttribute("messages", messages.reversed());
@@ -188,7 +188,7 @@ public class TopicUIController {
 
     @PostMapping("/change")
     public Object changeDecode (@RequestParam("mode") String mode, Model model){
-        System.out.println(mode);
+        System.out.println("Change to " + mode);
         model.addAttribute("mode", mode);
         return "components/ChangeTemplateDecode/index :: changeDecode";
     }

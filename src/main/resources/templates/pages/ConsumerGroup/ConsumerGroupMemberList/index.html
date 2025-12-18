@@ -19,18 +19,18 @@
         <div class="m-widget6">
             <div class="m-widget6__head">
                 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 10px 10px;" class="m-widget6__item">
-										<span style="width: 100%;" class="m-widget6__caption">
-											Member ID
-										</span>
                     <span style="width: 100%;" class="m-widget6__caption">
-											Client ID
-										</span>
+                        Member ID
+                    </span>
                     <span style="width: 100%;" class="m-widget6__caption">
-											Host
-										</span>
+                        Client ID
+                    </span>
+                    <span style="width: 100%;" class="m-widget6__caption">
+                        Host
+                    </span>
                     <span style="column-span: 2; width: 100%;" class="m-widget6__caption">
-											Topic/Partition Of Topic
-										</span>
+                        Topic/Partition Of Topic
+                    </span>
                 </div>
                 <div th:each="member : ${members}" style="display: grid; grid-template-columns: repeat(3, 1fr) 2fr; gap: 16px; padding: 10px 10px;" class="m-widget6__item">
                     <span th:text="${member.memberId}" style="width: 100%;" class="m-widget6__caption"></span>

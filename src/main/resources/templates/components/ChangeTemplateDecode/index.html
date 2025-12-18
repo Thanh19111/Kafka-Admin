@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<div id="wrapper" th:fragment="changeDecode">
-    <div id="latest-messages"
-         hx-get="/topic/messages/avro/pageviews"
-         hx-trigger="load, every 5s"
-         hx-swap="afterbegin"
-         class="m-widget6__head"
-         style="padding-left: 10px; max-height: 800px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
-    </div>
+<div th:fragment="changeDecode"
+     th:attr="hx-get=@{/topic/messages/{m}(m=${mode})}"
+     hx-trigger="every 5s"
+     hx-swap="afterbegin"
+     class="m-widget6__head"
+     style="padding-left: 10px; max-height: 800px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
 </div>
 </body>
 </html>
