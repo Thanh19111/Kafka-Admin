@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -27,8 +25,33 @@ public class ConsumerGroupUIController {
 
     @GetMapping
     public String getConsumerGroupListUI(Model model) throws ExecutionException, InterruptedException {
+        // lay thong tin chung cua cac consumer group
         List<GroupDetailResponse> data = iGroupConsumerService.getAllConsumerGroups();
+        Map<String, List<GroupPartitionResponse>> offsetAndLag = new HashMap<>();
+
+        for (GroupDetailResponse group : data) {
+            offsetAndLag.put(group.getGroupId(), iGroupConsumerService.checkLagByGroupId(group.getGroupId()));
+        }
+
         List<ConsumerGroupDetailUI> groups = data.stream().map(ConsumerGroupUIMapper::format).toList();
+
+        for (ConsumerGroupDetailUI groupDetailUI: groups) {
+            List<GroupPartitionResponse> partitionDetail = offsetAndLag.get(groupDetailUI.getConsumerGroupId());
+            // tim max offset cua partition
+            GroupPartitionResponse maxOffset = partitionDetail.stream().reduce(partitionDetail.getFirst(), (a, b) -> a.getLatestOffset() > b.getLatestOffset() ? a : b);
+            groupDetailUI.setLatestOffset(maxOffset.getLatestOffset());
+
+            // tim so luong topic
+            int count = (int) partitionDetail.stream().map(GroupPartitionResponse::getTopic).distinct().count();
+            groupDetailUI.setTopicNum(count);
+
+            // tim tong lag
+            long lagSum = partitionDetail.stream().map(GroupPartitionResponse::getLag)
+                                                    .reduce(partitionDetail.getFirst().getLag(), Long::sum);
+            groupDetailUI.setMessageBehind(lagSum);
+
+            // end
+        }
 
         List<Pair> navLabels = new ArrayList<>();
         navLabels.add(new Pair("Consumers", "/group"));

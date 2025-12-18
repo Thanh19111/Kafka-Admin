@@ -8,15 +8,17 @@ import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupDetailUI;
 import java.util.ArrayList;
 import java.util.List;
 
-// tối ưu sau
 public class ConsumerGroupUIMapper {
     public static ConsumerGroupDetailUI format(GroupDetailResponse res) {
         ConsumerGroupDetailUI detail = new ConsumerGroupDetailUI();
         detail.setConsumerGroupId(res.getGroupId());
         detail.setMemberNum(res.getMembers().size());
+
+        // cac gia trị -1 se duoc thay the o controller ui
         detail.setTopicNum(-1);
         detail.setLatestOffset(-1);
         detail.setMessageBehind(-1);
+
         detail.setCoordinator(res.getCoordinator().getId());
         detail.setState(res.getGroupState());
         return detail;
@@ -27,11 +29,12 @@ public class ConsumerGroupUIMapper {
         res.setMemberId(detail.getMemberId());
         res.setClientId(detail.getClientId());
         res.setHost(detail.getHost());
-        List<String> topicPartitons = new ArrayList<>();
+        List<String> topicPartitions = new ArrayList<>();
+
         for(var i : detail.getAssignPartitions()) {
-            topicPartitons.add(i.getTopic() + i.getPartition());
+            topicPartitions.add(i.getTopic() + i.getPartition());
         }
-        res.setTopicPartitions(topicPartitons);
+        res.setTopicPartitions(topicPartitions);
         return res;
     }
 }

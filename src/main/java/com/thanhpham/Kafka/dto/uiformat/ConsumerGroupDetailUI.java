@@ -11,8 +11,8 @@ public class ConsumerGroupDetailUI {
     private String consumerGroupId;
     private int memberNum;
     private int topicNum;
-    private int latestOffset;
-    private int messageBehind;
+    private long latestOffset;
+    private long messageBehind;
     private int coordinator;
     private String state;
 }

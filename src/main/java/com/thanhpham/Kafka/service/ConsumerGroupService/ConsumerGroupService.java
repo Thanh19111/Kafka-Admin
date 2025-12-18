@@ -70,4 +70,18 @@ public class ConsumerGroupService implements IGroupConsumerService {
 
         return res;
     }
+
+
+    @Override
+    public void getAllLagAndOffset() throws ExecutionException, InterruptedException {
+        List<GroupDetailResponse> groups = getAllConsumerGroups();
+
+        Map<String, List<GroupPartitionResponse>> offsetAndLag = new HashMap<>();
+
+        for (GroupDetailResponse group : groups) {
+            offsetAndLag.put(group.getGroupId(), checkLagByGroupId(group.getGroupId()));
+        }
+
+    }
+
 }
