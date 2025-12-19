@@ -3,7 +3,7 @@ package com.thanhpham.Kafka.controller.api;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
-import com.thanhpham.Kafka.service.TopicService.ITopicService;
+import com.thanhpham.Kafka.service.topic.ITopicService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

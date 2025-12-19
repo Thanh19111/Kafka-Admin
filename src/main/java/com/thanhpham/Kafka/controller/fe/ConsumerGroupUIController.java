@@ -4,7 +4,7 @@ import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.mapper.ConsumerGroupUIMapper;
-import com.thanhpham.Kafka.service.ConsumerGroupService.IGroupConsumerService;
+import com.thanhpham.Kafka.service.consumergroup.IGroupConsumerService;
 import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupMemberUI;
 import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupDetailUI;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,7 @@ public class ConsumerGroupUIController {
     public String getConsumerGroupListUI(Model model) throws ExecutionException, InterruptedException {
         // lay thong tin chung cua cac consumer group
         List<GroupDetailResponse> data = iGroupConsumerService.getAllConsumerGroups();
+
         Map<String, List<GroupPartitionResponse>> offsetAndLag = new HashMap<>();
 
         for (GroupDetailResponse group : data) {
@@ -38,19 +39,23 @@ public class ConsumerGroupUIController {
         for (ConsumerGroupDetailUI groupDetailUI: groups) {
             List<GroupPartitionResponse> partitionDetail = offsetAndLag.get(groupDetailUI.getConsumerGroupId());
             // tim max offset cua partition
-            GroupPartitionResponse maxOffset = partitionDetail.stream().reduce(partitionDetail.getFirst(), (a, b) -> a.getLatestOffset() > b.getLatestOffset() ? a : b);
-            groupDetailUI.setLatestOffset(maxOffset.getLatestOffset());
 
-            // tim so luong topic
-            int count = (int) partitionDetail.stream().map(GroupPartitionResponse::getTopic).distinct().count();
-            groupDetailUI.setTopicNum(count);
+            try {
+                GroupPartitionResponse maxOffset = partitionDetail.stream().reduce(partitionDetail.getFirst(), (a, b) -> a.getLatestOffset() > b.getLatestOffset() ? a : b);
+                groupDetailUI.setLatestOffset(maxOffset.getLatestOffset());
 
-            // tim tong lag
-            long lagSum = partitionDetail.stream().map(GroupPartitionResponse::getLag)
-                                                    .reduce(partitionDetail.getFirst().getLag(), Long::sum);
-            groupDetailUI.setMessageBehind(lagSum);
+                // tim so luong topic
+                int count = (int) partitionDetail.stream().map(GroupPartitionResponse::getTopic).distinct().count();
+                groupDetailUI.setTopicNum(count);
 
-            // end
+                // tim tong lag
+                long lagSum = partitionDetail.stream().map(GroupPartitionResponse::getLag).reduce(partitionDetail.getFirst().getLag(), Long::sum);
+                groupDetailUI.setMessageBehind(lagSum);
+                // end
+
+            } catch (Exception e) {
+                System.out.println(groupDetailUI.getConsumerGroupId()+ ": Error for calculating offset and lag");
+            }
         }
 
         List<Pair> navLabels = new ArrayList<>();

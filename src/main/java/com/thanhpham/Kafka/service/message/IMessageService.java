@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.service.MessageService;
+package com.thanhpham.Kafka.service.message;
 
 import com.thanhpham.Kafka.dto.response.AvroMessage;
 import com.thanhpham.Kafka.dto.response.JsonMessage;

@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.config.pool.AdminClientPool;
+package com.thanhpham.Kafka.config.pool.admin;
 
 import org.apache.kafka.clients.admin.Admin;
 

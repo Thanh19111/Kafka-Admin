@@ -1,8 +1,8 @@
-package com.thanhpham.Kafka.service.MessageService;
+package com.thanhpham.Kafka.service.message;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.thanhpham.Kafka.config.pool.ConsumerPool.AvroConsumerPool;
-import com.thanhpham.Kafka.config.pool.ConsumerPool.JsonConsumerPool;
+import com.thanhpham.Kafka.config.pool.client.avro.IAvroConsumerPool;
+import com.thanhpham.Kafka.config.pool.client.json.IJsonConsumerPool;
 import com.thanhpham.Kafka.dto.response.AvroMessage;
 import com.thanhpham.Kafka.dto.response.JsonMessage;
 import com.thanhpham.Kafka.mapper.AvroMessageMapper;
@@ -20,8 +20,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MessageService implements IMessageService {
-    private final AvroConsumerPool avroPool;
-    private final JsonConsumerPool jsonPool;
+    private final IAvroConsumerPool avroPool;
+    private final IJsonConsumerPool jsonPool;
 
     @Override
     public List<AvroMessage> decodeAvro(String topic){

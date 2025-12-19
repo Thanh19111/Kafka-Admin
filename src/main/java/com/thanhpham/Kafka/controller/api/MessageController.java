@@ -1,9 +1,8 @@
 package com.thanhpham.Kafka.controller.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.thanhpham.Kafka.dto.response.AvroMessage;
 import com.thanhpham.Kafka.dto.response.JsonMessage;
-import com.thanhpham.Kafka.service.MessageService.IMessageService;
+import com.thanhpham.Kafka.service.message.IMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

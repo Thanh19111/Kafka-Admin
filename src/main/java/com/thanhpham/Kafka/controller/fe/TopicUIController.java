@@ -9,12 +9,11 @@ import com.thanhpham.Kafka.dto.request.ConfigItem;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.*;
 import com.thanhpham.Kafka.mapper.TopicUIMapper;
-import com.thanhpham.Kafka.service.MessageService.IMessageService;
-import com.thanhpham.Kafka.service.TopicService.ITopicService;
+import com.thanhpham.Kafka.service.message.IMessageService;
+import com.thanhpham.Kafka.service.topic.ITopicService;
 import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -97,7 +96,6 @@ public class TopicUIController {
     }
 
     // filter by topic Name
-
     @GetMapping("/filter")
     public String filter(@RequestParam String keyword, Model model) throws ExecutionException, InterruptedException {
 
@@ -187,9 +185,9 @@ public class TopicUIController {
     }
 
     @PostMapping("/change")
-    public Object changeDecode (@RequestParam("mode") String mode, Model model){
+    public Object changeDecode(@RequestParam("mode") String mode, Model model){
         System.out.println("Change to " + mode);
         model.addAttribute("mode", mode);
-        return "components/ChangeTemplateDecode/index :: changeDecode";
+        return "components/TemplateDecoder/index :: changeDecode";
     }
 }

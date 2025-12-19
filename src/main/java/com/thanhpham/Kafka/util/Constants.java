@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.utils;
+package com.thanhpham.Kafka.util;
 
 // tất cả đều đon vị là miliseconds
 public class Constants {

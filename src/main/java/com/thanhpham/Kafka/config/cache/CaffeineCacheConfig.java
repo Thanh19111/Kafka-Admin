@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class CaffeineCacheConfig {
     @Bean
     public CacheManager caffeineCacheManager(){
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("avros");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("avros", "jsons");
         cacheManager.setCaffeine(
                 Caffeine.newBuilder()
                         .maximumSize(1000)
@@ -33,7 +33,7 @@ public class CaffeineCacheConfig {
                             }
                         })
                         .recordStats()
-        );
+                );
         return cacheManager;
     }
 }

@@ -1,10 +1,10 @@
-package com.thanhpham.Kafka.service.ConsumerGroupService;
+package com.thanhpham.Kafka.service.consumergroup;
 
-import com.thanhpham.Kafka.config.pool.AdminClientPool.IAdminClientPool;
+import com.thanhpham.Kafka.config.pool.admin.IAdminClientPool;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.mapper.GroupDetailMapper;
-import com.thanhpham.Kafka.utils.Constants;
+import com.thanhpham.Kafka.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
@@ -29,8 +29,9 @@ public class ConsumerGroupService implements IGroupConsumerService {
         ListGroupsResult result = adminClientPool.get(Constants.BOOTSTRAP_SERVERS).listGroups();
 
         List<String> groupNames = result.all().get().stream()
-                .filter(g -> !g.protocol().isBlank() && g.protocol().equals("consumer"))
+                .filter(g -> !g.protocol().isBlank() && g.protocol().equals("consumer") && !g.groupId().toLowerCase().contains("reader"))
                 .map(GroupListing::groupId).toList();
+
         DescribeConsumerGroupsResult desc = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
                 .describeConsumerGroups(groupNames);
 
@@ -70,18 +71,4 @@ public class ConsumerGroupService implements IGroupConsumerService {
 
         return res;
     }
-
-
-    @Override
-    public void getAllLagAndOffset() throws ExecutionException, InterruptedException {
-        List<GroupDetailResponse> groups = getAllConsumerGroups();
-
-        Map<String, List<GroupPartitionResponse>> offsetAndLag = new HashMap<>();
-
-        for (GroupDetailResponse group : groups) {
-            offsetAndLag.put(group.getGroupId(), checkLagByGroupId(group.getGroupId()));
-        }
-
-    }
-
 }

@@ -1,6 +1,6 @@
 package com.thanhpham.Kafka.config.factory;
 
-import com.thanhpham.Kafka.utils.Constants;
+import com.thanhpham.Kafka.util.Constants;
 import org.apache.kafka.clients.admin.Admin;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;

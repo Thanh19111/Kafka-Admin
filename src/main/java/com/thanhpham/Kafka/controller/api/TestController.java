@@ -1,8 +1,8 @@
 package com.thanhpham.Kafka.controller.api;
 
 import com.thanhpham.Kafka.dto.request.SchemaCreateRequest;
-import com.thanhpham.Kafka.service.MessageService.IMessageService;
-import com.thanhpham.Kafka.service.SchemaRegistry.SchemaRegistry;
+import com.thanhpham.Kafka.service.message.IMessageService;
+import com.thanhpham.Kafka.service.schemaregistry.SchemaRegistry;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

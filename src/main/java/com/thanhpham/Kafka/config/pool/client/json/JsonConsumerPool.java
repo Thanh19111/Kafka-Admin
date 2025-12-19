@@ -1,34 +1,28 @@
-package com.thanhpham.Kafka.config.pool.ConsumerPool;
+package com.thanhpham.Kafka.config.pool.client.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.thanhpham.Kafka.config.factory.JsonConsumerFactory;
-import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.Consumer;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @RequiredArgsConstructor
-public class JsonConsumerPool {
+public class JsonConsumerPool implements IJsonConsumerPool {
     private final JsonConsumerFactory jsonFactory;
-    private final Map<String, Consumer<String, JsonNode>> pool = new ConcurrentHashMap<>();
 
+    @Cacheable(value = "jsons", key = "#topicName")
     public Consumer<String, JsonNode> get(String topicName) {
-        return pool.computeIfAbsent(topicName, this::create);
+        System.out.println("Create new json consumer for caching");
+        return create(topicName);
     }
 
     private Consumer<String, JsonNode> create(String topicName) {
         Consumer<String, JsonNode> instance = jsonFactory.createConsumer();
         instance.subscribe(List.of(topicName));
         return instance;
-    }
-
-    @PreDestroy
-    public void shutdown() {
-        pool.values().forEach(Consumer::close);
     }
 }

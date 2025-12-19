@@ -1,13 +1,13 @@
-package com.thanhpham.Kafka.service.TopicService;
+package com.thanhpham.Kafka.service.topic;
 
-import com.thanhpham.Kafka.config.pool.AdminClientPool.IAdminClientPool;
+import com.thanhpham.Kafka.config.pool.admin.IAdminClientPool;
 import com.thanhpham.Kafka.dto.request.ConfigItem;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponse;
 import com.thanhpham.Kafka.dto.response.TopicDetailResponseWithConfig;
 import com.thanhpham.Kafka.mapper.TopicDetailMapper;
-import com.thanhpham.Kafka.utils.Constants;
+import com.thanhpham.Kafka.util.Constants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;

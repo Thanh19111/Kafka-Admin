@@ -126,12 +126,12 @@
                                       hx-target="#wrapper"
                                       hx-swap="innerHTML">
                                     <label>
-                                        <input type="radio" name="mode" value="avro/pageviews">
+                                        <input type="radio" name="mode" th:value="|avro/${detail.topicName}|">
                                         Avro
                                     </label>
 
                                     <label>
-                                        <input type="radio" name="mode" value="json/pageviews">
+                                        <input type="radio" name="mode" th:value="|json/${detail.topicName}|">
                                         Json
                                     </label>
                                 </form>

@@ -1,4 +1,4 @@
-package com.thanhpham.Kafka.config.pool.ConsumerPool;
+package com.thanhpham.Kafka.config.pool.client.avro;
 
 import com.thanhpham.Kafka.config.factory.AvroConsumerFactory;
 import lombok.RequiredArgsConstructor;
@@ -11,17 +11,16 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class AvroConsumerPool {
+public class AvroConsumerPool implements IAvroConsumerPool {
     private final AvroConsumerFactory avroFactory;
 
     @Cacheable(value = "avros", key = "#topicName")
     public Consumer<String, GenericRecord> get(String topicName) {
-        System.out.println("Create new avro consumer bean for cache");
+        System.out.println("Create new avro consumer bean for caching");
         return create(topicName);
     }
 
     private Consumer<String, GenericRecord> create(String topicName) {
-        System.out.println("Create new avro consumer for cache");
         Consumer<String, GenericRecord> instance = avroFactory.create();
         instance.subscribe(List.of(topicName));
         return instance;
