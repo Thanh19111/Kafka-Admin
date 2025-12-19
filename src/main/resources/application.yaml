@@ -4,3 +4,9 @@ spring:
 
 server:
   port: 7000
+
+kafka:
+  bootstrap-server: localhost:9092
+
+schema-registry:
+  url: http://localhost:8081

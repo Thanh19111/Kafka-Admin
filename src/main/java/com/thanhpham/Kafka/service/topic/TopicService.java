@@ -1,6 +1,7 @@
 package com.thanhpham.Kafka.service.topic;
 
 import com.thanhpham.Kafka.config.pool.admin.IAdminClientPool;
+import com.thanhpham.Kafka.config.property.KafkaProperties;
 import com.thanhpham.Kafka.dto.request.ConfigItem;
 import com.thanhpham.Kafka.dto.request.TopicCreateRequest;
 import com.thanhpham.Kafka.dto.response.Pair;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.config.ConfigResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,10 +25,11 @@ import java.util.concurrent.TimeoutException;
 @Service
 @RequiredArgsConstructor
 public class TopicService implements ITopicService {
+    private final KafkaProperties properties;
     private final IAdminClientPool adminClientPool;
 
     public Set<String> getAllListTopic() throws ExecutionException, InterruptedException {
-        return adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+        return adminClientPool.get(properties.getBootstrapServer())
                 .listTopics()
                 .names()
                 .get();
@@ -38,7 +41,7 @@ public class TopicService implements ITopicService {
 
         newTopic.configs(convertConfigListToConfigMap(request.getConfig()));
 
-        adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+        adminClientPool.get(properties.getBootstrapServer())
                 .createTopics(Collections.singleton(newTopic))
                 .all()
                 .get();
@@ -49,7 +52,7 @@ public class TopicService implements ITopicService {
     public List<TopicDetailResponse> getAllTopicDetail() throws ExecutionException, InterruptedException {
         List<TopicDetailResponse> res = new ArrayList<>();
         List<String> topicNames = new ArrayList<>(getAllListTopic());
-        DescribeTopicsResult describeResult = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+        DescribeTopicsResult describeResult = adminClientPool.get(properties.getBootstrapServer())
                 .describeTopics(topicNames);
 
         Map<String, KafkaFuture<TopicDescription>> desc = describeResult.topicNameValues();
@@ -63,7 +66,7 @@ public class TopicService implements ITopicService {
     @Override
     public TopicDetailResponse getATopicDetail(String topicName) throws ExecutionException, InterruptedException {
         List<String> topicNames = new ArrayList<>(List.of(topicName));
-        DescribeTopicsResult describeResult = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+        DescribeTopicsResult describeResult = adminClientPool.get(properties.getBootstrapServer())
                 .describeTopics(topicNames);
         TopicDescription t = describeResult.topicNameValues()
                 .get(topicName)
@@ -80,7 +83,7 @@ public class TopicService implements ITopicService {
 
     @Override
     public String deleteTopic(String topicName) throws ExecutionException, InterruptedException, TimeoutException {
-        DeleteTopicsResult result = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+        DeleteTopicsResult result = adminClientPool.get(properties.getBootstrapServer())
                 .deleteTopics(Collections.singleton(topicName));
         result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
         return "Topic " + topicName + " has been deleted!";
@@ -89,7 +92,7 @@ public class TopicService implements ITopicService {
     @Override
     public String increasePartition(String topicName, int partitionNum) throws ExecutionException, InterruptedException, TimeoutException {
         NewPartitions newPartitions = NewPartitions.increaseTo(partitionNum);
-        CreatePartitionsResult result = adminClientPool.get(Constants.BOOTSTRAP_SERVERS)
+        CreatePartitionsResult result = adminClientPool.get(properties.getBootstrapServer())
                 .createPartitions(Collections.singletonMap(topicName, newPartitions));
 
         result.all().get(Constants.ADJUST_TOPIC_MAX_TIMEOUT_CONFIG, TimeUnit.MILLISECONDS);
@@ -99,7 +102,7 @@ public class TopicService implements ITopicService {
     // internal
     private List<Pair> getTopicConfigByTopicName(String topicName) throws ExecutionException, InterruptedException {
         ConfigResource resource = new ConfigResource(ConfigResource.Type.TOPIC, topicName);
-        DescribeConfigsResult result = adminClientPool.get(Constants.BOOTSTRAP_SERVERS).describeConfigs(List.of(resource));
+        DescribeConfigsResult result = adminClientPool.get(properties.getBootstrapServer()).describeConfigs(List.of(resource));
         Config config = result.all().get().get(resource);
         List<Pair> configs = new ArrayList<>();
         for (ConfigEntry entry: config.entries()){
