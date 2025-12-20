@@ -48,7 +48,7 @@
             </span>
             <div id="latest-detail"
                  th:attr="hx-get=@{/group/{groupId}/latest(groupId=${group.groupId})}"
-                 hx-trigger="load, every 0.5s"
+                 hx-trigger="load, every 5s"
                  hx-swap="innerHTML">
             </div>
         </div>

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * class nay dung trong uscase xem thong tin partiton ma group dang assign
+ * class nay dung trong usecase xem thong tin partiton ma group dang assign
  */
 @Data
 @AllArgsConstructor

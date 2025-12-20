@@ -20,7 +20,7 @@
                 Lag
             </span>
         </div>
-        <div style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">
+        <div th:id="${groupLag.topic + '-' + groupLag.partition}" style="display: flex; gap: 16px; font-weight: 300; padding-top: 10px; align-items: center;" class="m-widget6__item">
             <span th:text="${groupLag.topic}" style="max-width: 200px;" class="m-widget6__caption"></span>
             <span th:text="${groupLag.partition}" style="max-width: 200px;" class="m-widget6__caption"></span>
             <span th:text="${groupLag.commitedOffset}" style="max-width: 200px;" class="m-widget6__caption"></span>

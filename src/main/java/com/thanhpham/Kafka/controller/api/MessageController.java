@@ -14,13 +14,23 @@ import java.util.List;
 public class MessageController {
     private final IMessageService iMessageService;
 
-    @GetMapping("/avro")
-    public List<AvroMessage> getAvroMessage(@RequestParam("topicName") String topicName) {
+    @GetMapping("/avro/{topicName}")
+    public List<AvroMessage> getAvroMessage(@PathVariable("topicName") String topicName) {
         return iMessageService.decodeAvro(topicName);
     }
 
-    @GetMapping("/json")
-    public List<JsonMessage> getJsonMessage(@RequestParam("topicName") String topicName) {
+    @GetMapping("/json/{topicName}")
+    public List<JsonMessage> getJsonMessage(@PathVariable("topicName") String topicName) {
         return iMessageService.decodeJson(topicName);
+    }
+
+    @GetMapping("/avro")
+    public List<AvroMessage> readAvroMessageByOffset(@RequestParam("topic") String topic, @RequestParam("partition") int partition, @RequestParam("startOffset") long startOffset, @RequestParam("endOffset") long endOffset) {
+        return iMessageService.readAvroMessageByOffset(topic, partition, startOffset, endOffset);
+    }
+
+    @GetMapping("/json")
+    public List<JsonMessage> readJsonMessageByOffset(@RequestParam("topic") String topic, @RequestParam("partition") int partition, @RequestParam("startOffset") long startOffset, @RequestParam("endOffset") long endOffset) {
+        return iMessageService.readJsonMessageByOffset(topic, partition, startOffset, endOffset);
     }
 }

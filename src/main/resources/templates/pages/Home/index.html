@@ -8,6 +8,8 @@
 </th:block>
 
 <th:block layout:fragment="content">
+    <button hx-on:click="htmx.toggleClass(htmx.find('#side-bar-menu'), 'hide')"> </button>
+    <div id="side-bar-menu">[menu content]</div>
 </th:block>
 
 </body>

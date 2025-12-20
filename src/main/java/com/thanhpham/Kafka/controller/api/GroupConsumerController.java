@@ -1,13 +1,11 @@
 package com.thanhpham.Kafka.controller.api;
 
+import com.thanhpham.Kafka.dto.request.ChangeOffsetRequest;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.service.consumergroup.IGroupConsumerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -27,4 +25,10 @@ public class GroupConsumerController {
     public List<GroupPartitionResponse> checkLagByGroupName(@PathVariable("groupId") String groupId) throws ExecutionException, InterruptedException {
         return iGroupConsumerService.checkLagByGroupId(groupId);
     }
+
+    @PostMapping("/test")
+    public void changeOffset(@RequestBody ChangeOffsetRequest request) throws ExecutionException, InterruptedException {
+        iGroupConsumerService.changeOffset(request.getGroupId(), request.getDetail(), request.getOffset());
+    }
+
 }

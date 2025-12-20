@@ -21,7 +21,7 @@ public class JsonConsumerPool implements IJsonConsumerPool {
     }
 
     private Consumer<String, JsonNode> create(String topicName) {
-        Consumer<String, JsonNode> instance = jsonFactory.createConsumer();
+        Consumer<String, JsonNode> instance = jsonFactory.create();
         instance.subscribe(List.of(topicName));
         return instance;
     }

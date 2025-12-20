@@ -4,3 +4,10 @@ spring:
 
 server:
   port: "Server Port"
+
+
+kafka:
+  bootstrap-server: "Kafka URL"
+
+schema-registry:
+  url: "Schema Registry URL"

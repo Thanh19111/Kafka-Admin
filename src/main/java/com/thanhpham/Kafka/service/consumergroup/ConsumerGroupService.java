@@ -2,6 +2,7 @@ package com.thanhpham.Kafka.service.consumergroup;
 
 import com.thanhpham.Kafka.config.pool.admin.IAdminClientPool;
 import com.thanhpham.Kafka.config.property.KafkaProperties;
+import com.thanhpham.Kafka.dto.request.TopicAndPartition;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.mapper.GroupDetailMapper;
@@ -73,5 +74,22 @@ public class ConsumerGroupService implements IGroupConsumerService {
         });
 
         return res;
+    }
+
+    @Override
+    public String changeOffset(String groupId, TopicAndPartition detail, long offset) throws ExecutionException, InterruptedException {
+        Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
+        offsets.put(
+                new TopicPartition(detail.getTopic(), detail.getPartition()),
+                new OffsetAndMetadata(offset)
+        );
+
+        AlterConsumerGroupOffsetsResult result =
+                adminClientPool.get(properties.getBootstrapServer())
+                        .alterConsumerGroupOffsets(groupId, offsets);
+
+        result.all().get();
+
+        return "Partition: " + detail.getPartition() + " of " + detail.getTopic() + " has bean changed to " + offset;
     }
 }
