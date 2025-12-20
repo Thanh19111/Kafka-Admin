@@ -12,6 +12,7 @@ import com.thanhpham.Kafka.mapper.TopicUIMapper;
 import com.thanhpham.Kafka.service.message.IMessageService;
 import com.thanhpham.Kafka.service.topic.ITopicService;
 import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
+import com.thanhpham.Kafka.util.ListSlicer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,15 +36,10 @@ public class TopicUIController {
 
     @GetMapping
     public String getTopicListUI(Model model) throws ExecutionException, InterruptedException {
-        List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
-        List<TopicDetailUI> topics = data.stream().map(TopicUIMapper::format).toList();
-
         List<Pair> navLabels = new ArrayList<>();
         navLabels.add(new Pair("Topics", "/topic"));
         navLabels.add(new Pair("List of Topics", "/topic"));
-
         model.addAttribute("activeNavIndex", 1);
-        model.addAttribute("topics", topics);
         model.addAttribute("navLabels", navLabels);
         model.addAttribute("mainLabel", "Topics");
         return "pages/Topic/TopicList/index";
@@ -104,7 +100,8 @@ public class TopicUIController {
                 .filter(topic -> topic.getTopicName().contains(keyword))
                 .map(TopicUIMapper::format).toList();
 
-        model.addAttribute("topiclist", topics);
+        // chua fix
+        model.addAttribute("subList", topics);
         return "components/TopicList/index :: topiclist";
     }
 
@@ -189,5 +186,22 @@ public class TopicUIController {
         System.out.println("Change to " + mode);
         model.addAttribute("mode", mode);
         return "components/TemplateDecoder/index :: changeDecode";
+    }
+
+    @GetMapping("/paginate")
+    public String t (@RequestParam(defaultValue = "0") int page, Model model) throws ExecutionException, InterruptedException {
+        List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
+        List<TopicDetailUI> topics = data.stream()
+                .sorted(Comparator.comparing(TopicDetailResponse::getTopicName))
+                .map(TopicUIMapper::format).toList();
+
+        int pageSize = 8;
+
+        List<TopicDetailUI> subList = ListSlicer.slice(topics, page, pageSize);
+
+        model.addAttribute("subList", subList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", (int) Math.ceil((double) topics.size() / pageSize));
+        return "components/TopicList/index :: topiclist";
     }
 }

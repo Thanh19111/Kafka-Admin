@@ -48,29 +48,35 @@
                     <span style="width: 100%; padding-left: 10px" class="m-widget6__caption">Action</span>
                 </div>
             </div>
-            <div id="topic-list" class="m-widget6__head">
-                <div th:each="topic : ${topics}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr) 0.5fr; align-items: center; color: #27272f;" class="m-widget6__item">
-                    <a th:href="@{/topic/{topicName}(topicName=${topic.topicName})}" style="grid-column: span 5; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr); text-decoration: none;">
-                        <span th:text="${topic.topicName}" style="width: 100%; overflow-wrap: anywhere;" class="m-widget6__caption"></span>
-                        <span th:text="${topic.totalPartition}" style="width: 100%;" class="m-widget6__caption"></span>
-                        <span th:text="${topic.outISR}" style="width: 100%;" class="m-widget6__caption"></span>
-                        <span th:text="${topic.replicaFactorNum}" style="width: 100%;" class="m-widget6__caption"></span>
-                        <span style="width: 100%;" class="m-widget6__caption">?? MB</span>
-                    </a>
-                    <div style="grid-column: span 1;">
-                        <div style="width: 100%;" class="m-widget6__caption">
-                            <button
-                                    th:attr="hx-delete=@{/topic/{name}(name=${topic.topicName})}"
-                                    hx-delete="/account"
-                                    style="padding: 0.5rem 1rem;"
-                                    class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom"
-                                    hx-confirm="Are you sure you wish to delete the topic?">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div id="topicList-container"
+                 hx-get="/topic/paginate"
+                 class="m-widget6__head"
+                 hx-trigger="load"
+                 hx-swap="innerHTML">
             </div>
+<!--            <div id="topic-list" class="m-widget6__head">-->
+<!--                <div th:each="topic : ${topics}" style="font-weight: 300; padding-top: 10px; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr) 0.5fr; align-items: center; color: #27272f;" class="m-widget6__item">-->
+<!--                    <a th:href="@{/topic/{topicName}(topicName=${topic.topicName})}" style="grid-column: span 5; display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr); text-decoration: none;">-->
+<!--                        <span th:text="${topic.topicName}" style="width: 100%; overflow-wrap: anywhere;" class="m-widget6__caption"></span>-->
+<!--                        <span th:text="${topic.totalPartition}" style="width: 100%;" class="m-widget6__caption"></span>-->
+<!--                        <span th:text="${topic.outISR}" style="width: 100%;" class="m-widget6__caption"></span>-->
+<!--                        <span th:text="${topic.replicaFactorNum}" style="width: 100%;" class="m-widget6__caption"></span>-->
+<!--                        <span style="width: 100%;" class="m-widget6__caption">?? MB</span>-->
+<!--                    </a>-->
+<!--                    <div style="grid-column: span 1;">-->
+<!--                        <div style="width: 100%;" class="m-widget6__caption">-->
+<!--                            <button-->
+<!--                                    th:attr="hx-delete=@{/topic/{name}(name=${topic.topicName})}"-->
+<!--                                    hx-delete="/account"-->
+<!--                                    style="padding: 0.5rem 1rem;"-->
+<!--                                    class="btn m-btn&#45;&#45;pill btn-secondary m-btn m-btn&#45;&#45;hover-brand m-btn&#45;&#45;custom"-->
+<!--                                    hx-confirm="Are you sure you wish to delete the topic?">-->
+<!--                                Delete-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </th:block>
 </body>
