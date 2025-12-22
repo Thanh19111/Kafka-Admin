@@ -98,11 +98,11 @@ public class TopicUIController {
         List<TopicDetailResponse> data = iTopicService.getAllTopicDetail();
         List<TopicDetailUI> topics = data.stream()
                 .filter(topic -> topic.getTopicName().contains(keyword))
+                .sorted(Comparator.comparing(TopicDetailResponse::getTopicName))
                 .map(TopicUIMapper::format).toList();
-
-        // chua fix
+        
         model.addAttribute("subList", topics);
-        return "components/TopicList/index :: topiclist";
+        return "components/TopicListFilter/index :: topiclist";
     }
 
     @PostMapping("/create")
