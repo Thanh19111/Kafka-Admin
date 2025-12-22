@@ -31323,10 +31323,10 @@ select.m-select2 {
   -webkit-transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  width: 455px !important;
+  width: 700px !important;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
-  right: -465px; }
+  right: -710px; }
   .m-quick-sidebar.m-quick-sidebar--on {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;

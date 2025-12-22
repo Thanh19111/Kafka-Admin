@@ -100,7 +100,7 @@ public class TopicUIController {
                 .filter(topic -> topic.getTopicName().contains(keyword))
                 .sorted(Comparator.comparing(TopicDetailResponse::getTopicName))
                 .map(TopicUIMapper::format).toList();
-        
+
         model.addAttribute("subList", topics);
         return "components/TopicListFilter/index :: topiclist";
     }

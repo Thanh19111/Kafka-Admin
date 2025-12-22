@@ -81,31 +81,41 @@
                                         <div style="font-size: medium; width: 100%; padding-left: 10px;" class="m-widget6__caption">
                                             Partition Specifications
                                         </div>
-                                        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden; padding-top: 10px">
+                                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0px;">
+                                            <div style="display: flex; flex-wrap: wrap;">
+                                                <div class="m-widget6__caption" style="flex-grow: 1; min-width: 50px;">
+                                                    Partition
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; flex-wrap: wrap;">
+                                                <div style="flex-grow: 1; min-width: 50px;" class="m-widget6__caption">
+                                                    Broker Leader
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; flex-wrap: wrap;">
+                                                <div style="flex-grow: 1; min-width: 200px;" class="m-widget6__caption">
+                                                    Replicas [Broker List]
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; flex-wrap: wrap;">
+                                                <div style="flex-grow: 1; min-width: 200px;" class="m-widget6__caption">
+                                                    ISR [Broker List]
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">
                                             <div th:each="partition : ${partitions}" style="margin: 0px 10px 10px 10px; padding: 10px 10px; border: dashed 1px wheat">
-                                                <div style="padding-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;">
+                                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;">
                                                     <div style="display: flex; flex-wrap: wrap;">
-                                                        <div class="m-widget6__caption" style="flex-grow: 1; min-width: 50px;">
-                                                            Partition:
-                                                        </div>
                                                         <div th:text="${partition.partition}" style="flex-grow: 1; min-width: 50px;" class="example-text-input"></div>
                                                     </div>
                                                     <div style="display: flex; flex-wrap: wrap;">
-                                                        <div style="flex-grow: 1; min-width: 50px;" class="m-widget6__caption">
-                                                            Broker Leader:
-                                                        </div>
                                                         <div th:text="${partition.leader}" style="flex-grow: 1; min-width: 50px;"class="example-text-input"></div>
                                                     </div>
                                                     <div style="display: flex; flex-wrap: wrap;">
-                                                        <div style="flex-grow: 1; min-width: 200px;" class="m-widget6__caption">
-                                                            Replicas [Broker List]:
-                                                        </div>
                                                         <div th:text="${partition.replicas}" style="flex-grow: 1; min-width: 50px;" class="example-text-input"></div>
                                                     </div>
                                                     <div style="display: flex; flex-wrap: wrap;">
-                                                        <div style="flex-grow: 1; min-width: 200px;" class="m-widget6__caption">
-                                                            ISR [Broker List]:
-                                                        </div>
                                                         <div th:text="${partition.isr}" style="flex-grow: 1; min-width: 50px;" class="example-text-input"></div>
                                                     </div>
                                                 </div>
