@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="messageByOffset" th:each="message : ${messages}" class="m-messenger__wrapper">
+    <div class="m-messenger__message m-messenger__message--in">
+        <div class="m-messenger__message-body">
+            <div class="m-messenger__message-content">
+                <div style="display: flex; justify-content: space-between;" class="m-messenger__message-username">
+                    <span>Notifications-0</span>
+                    <span th:text="${message.offset}"></span>
+                </div>
+                <div th:text="${message.message}" class="m-messenger__message-text">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

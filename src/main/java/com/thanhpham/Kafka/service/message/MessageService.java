@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
@@ -62,12 +65,19 @@ public class MessageService implements IMessageService {
 
     @Override
     public List<AvroMessage> readAvroMessageByOffset(String topic, int partition, long startOffset, long endOffset){
-        if(endOffset < startOffset) {
+        if(endOffset < startOffset || (endOffset == 0 && startOffset == 0)) {
             return List.of();
         }
 
-        try (Consumer<String, GenericRecord> consumer = avroFactory.create())
-        {
+        if(endOffset == 0) {
+            endOffset = startOffset;
+        }
+
+        if (startOffset == 0) {
+            startOffset = endOffset;
+        }
+
+        try (Consumer<String, GenericRecord> consumer = avroFactory.create()) {
             TopicPartition topicPartition = new TopicPartition(topic, partition);
             consumer.assign(List.of(topicPartition));
             consumer.seek(topicPartition, startOffset);
@@ -133,4 +143,17 @@ public class MessageService implements IMessageService {
             return List.of();
         }
     }
+
+//    @Override
+//    public List<AvroMessage> readAvroMessageByOffset(String topic, int partition, long startOffset, long endOffset) {
+//        try {
+//            return CompletableFuture
+//                    .supplyAsync(() -> this.hardTask(topic, partition, startOffset, endOffset))
+//                    .get(3, TimeUnit.SECONDS);
+//        } catch (TimeoutException e) {
+//            return List.of();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

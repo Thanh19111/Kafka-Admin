@@ -1,5 +1,6 @@
 package com.thanhpham.Kafka.controller.fe;
 
+import com.thanhpham.Kafka.dto.response.AvroMessage;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.dto.response.Pair;
@@ -7,12 +8,12 @@ import com.thanhpham.Kafka.mapper.ConsumerGroupUIMapper;
 import com.thanhpham.Kafka.service.consumergroup.IGroupConsumerService;
 import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupMemberUI;
 import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupDetailUI;
+import com.thanhpham.Kafka.service.message.IMessageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -22,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 public class ConsumerGroupUIController {
     private final IGroupConsumerService iGroupConsumerService;
+    private final IMessageService iMessageService;
 
     @GetMapping
     public String getConsumerGroupListUI(Model model) throws ExecutionException, InterruptedException {
@@ -114,9 +116,20 @@ public class ConsumerGroupUIController {
     @GetMapping("/{groupId}/latest")
     public String test(@PathVariable("groupId") String groupId, Model model) throws ExecutionException, InterruptedException {
         List<GroupPartitionResponse> groupLags = iGroupConsumerService.checkLagByGroupId(groupId);
-
         model.addAttribute("groupLags", groupLags);
         return "components/GroupPartitionDetail/index :: partitionDetail";
     }
 
+    @PostMapping("/message")
+    public String test1(@RequestParam("startOffset") long startOffset, @RequestParam("endOffset") Long endOffset, Model model) {
+        List<AvroMessage> messages = iMessageService.readAvroMessageByOffset("pageviews", 0, startOffset, endOffset);
+        model.addAttribute("messages", messages);
+        return "components/MessageByOffset/index :: messageByOffset";
+    }
+
+    @PostMapping("/changeOffset")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void test2(@RequestParam("groupId") String groupId, @RequestParam("topic") String topic, @RequestParam("partition") int partition, @RequestParam("offset") long offset) throws ExecutionException, InterruptedException {
+        iGroupConsumerService.changeOffset(groupId, topic, partition, offset);
+    }
 }

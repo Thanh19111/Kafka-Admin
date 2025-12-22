@@ -28,7 +28,7 @@ public class GroupConsumerController {
 
     @PostMapping("/test")
     public void changeOffset(@RequestBody ChangeOffsetRequest request) throws ExecutionException, InterruptedException {
-        iGroupConsumerService.changeOffset(request.getGroupId(), request.getDetail(), request.getOffset());
+        iGroupConsumerService.changeOffset(request.getGroupId(), request.getDetail().getTopic(), request.getDetail().getPartition(), request.getOffset());
     }
 
 }

@@ -77,19 +77,16 @@ public class ConsumerGroupService implements IGroupConsumerService {
     }
 
     @Override
-    public String changeOffset(String groupId, TopicAndPartition detail, long offset) throws ExecutionException, InterruptedException {
+    public void changeOffset(String groupId, String topic, int partition, long offset) throws ExecutionException, InterruptedException {
         Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
         offsets.put(
-                new TopicPartition(detail.getTopic(), detail.getPartition()),
-                new OffsetAndMetadata(offset)
-        );
+                new TopicPartition(topic, partition),
+                new OffsetAndMetadata(offset));
 
         AlterConsumerGroupOffsetsResult result =
                 adminClientPool.get(properties.getBootstrapServer())
                         .alterConsumerGroupOffsets(groupId, offsets);
 
         result.all().get();
-
-        return "Partition: " + detail.getPartition() + " of " + detail.getTopic() + " has bean changed to " + offset;
     }
 }

@@ -12,7 +12,8 @@
         </a>
         <div style="grid-column: span 1;">
             <span style="width: 100%;" class="m-widget6__caption">
-                <button hx-delete="/remove/${topic.topicName}" hx-confirm="Are you sure?" style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button></span>
+                <button th:attr="hx-delete=@{/topic/{topicName}(topicName=${topic.topicName})}"
+                        hx-confirm="Are you sure?" style="padding: 0.5rem 1rem;" type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom">Delete</button></span>
         </div>
     </div>
     <div class="pagination">

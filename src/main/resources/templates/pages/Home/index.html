@@ -19,7 +19,7 @@
         </a>
     </button>
 
-    <div id="m_quick_sidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light m-quick-sidebar--on">
+    <div id="m_quick_sidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light">
         <div class="m-quick-sidebar__content">
             <span id="m_quick_sidebar_close" class="m-quick-sidebar__close"><i class="la la-close"></i></span>
             <ul id="m_quick_sidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
@@ -33,13 +33,14 @@
             <div class="tab-content">
                 <div class="tab-pane active show" id="m_quick_sidebar_tabs_messenger" role="tabpanel">
                     <div class="m-messenger m-messenger--message-arrow m-messenger--skin-light">
-                        <div class="m-messenger__messages m-scrollable m-scroller" style="height: 489px; overflow: auto;">
+                        <div id="parent-div" class="m-messenger__messages m-scrollable m-scroller" style="height: 489px; overflow: auto;">
                             <div class="m-messenger__wrapper">
                                 <div class="m-messenger__message m-messenger__message--in">
                                     <div class="m-messenger__message-body">
                                         <div class="m-messenger__message-content">
-                                            <div class="m-messenger__message-username">
-                                                Notifications-0
+                                            <div style="display: flex; justify-content: space-between;" class="m-messenger__message-username">
+                                                <span>Notifications-0</span>
+                                                <span>423423423</span>
                                             </div>
                                             <div class="m-messenger__message-text">
                                                 Noted. I will prepare it.
@@ -52,11 +53,12 @@
                                 <div class="m-messenger__message m-messenger__message--in">
                                     <div class="m-messenger__message-body">
                                         <div class="m-messenger__message-content">
-                                            <div class="m-messenger__message-username">
-                                                Notifications-0
+                                            <div style="display: flex; justify-content: space-between;" class="m-messenger__message-username">
+                                                <span>Notifications-0</span>
+                                                <span>423423423</span>
                                             </div>
                                             <div class="m-messenger__message-text">
-                                                Noted. I will prepare it.dgdfgddddddddddddddddddddddddddddddddddgdfgdfgdfg
+                                                Noted. I will prepare it.
                                             </div>
                                         </div>
                                     </div>
@@ -64,55 +66,48 @@
                             </div>
                         </div>
                         <div class="m-messenger__seperator"></div>
-                        <div class="m-messenger__form">
+                        <form hx-post="/group/message"
+                              hx-swap="beforeend"
+                              hx-target="#parent-div" class="m-messenger__form">
                             <div style="display: flex;" class="m-messenger__form-controls">
-                                <input type="text" name="" placeholder="Start offset here..." class="m-messenger__form-input">
-                                <input type="text" name="" placeholder="End offset here..." class="m-messenger__form-input">
+                                <input type="number" name="startOffset" placeholder="Start offset here..." class="m-messenger__form-input">
+                                <input type="number" name="endOffset" placeholder="End offset here..." class="m-messenger__form-input">
                             </div>
                             <div class="m-messenger__form-tools">
-                                <a href="" class="m-messenger__form-attachment">
+                                <button type="submit"
+                                        style="border: none;"
+                                   class="m-messenger__form-attachment">
                                     <i class="la la-search"></i>
-                                </a>
+                                </button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="tab-pane" id="m_quick_sidebar_tabs_settings" role="tabpanel">
                     <div class="m-list-settings m-scrollable m-scroller" style="height: 599px; overflow: auto;">
                         <div class="m-list-settings__group">
                             <div class="m-list-settings__heading">Commit Offset Settings</div>
-                            <div style="display: flex; align-items: center; justify-content: start; gap: 16px;" class="m-list-settings__item">
+                            <form hx-post="/group/change"
+                                  hx-swap="none"
+                                  style="display: flex; align-items: center; justify-content: start; gap: 16px;" class="m-list-settings__item">
                                 <span class="m-list-settings__item-label">Topic:  Notifications</span>
                                 <span class="m-list-settings__item-label">Partition: 1 </span>
                                 <label style="padding-top: 5px; font-size: 1rem; font-weight: 400;">
                                     Commited Offset:
-                                    <input type="number" />
+                                    <input name="groupId" type="hidden" value="">
+                                    <input name="topic" type="hidden" value="">
+                                    <input name="partition" type="hidden" value="">
+                                    <input name="offset" type="number" placeholder="Enter commited offset to change"/>
                                 </label>
                                 <span class="m-list-settings__item-control">
                                     <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
                                         <label>
-                                            <button style="padding: 5px 10px;" class="btn btn-accent m-btn m-btn--air m-btn--custom">Change</button>
+                                            <button type="submit" style="padding: 5px 10px;" class="btn btn-accent m-btn m-btn--air m-btn--custom">Change</button>
                                             <span></span>
                                         </label>
                                     </span>
                                 </span>
-                            </div>
-                            <div style="display: flex; align-items: center; justify-content: start; gap: 16px;" class="m-list-settings__item">
-                                <span class="m-list-settings__item-label">Topic:  Notifications</span>
-                                <span class="m-list-settings__item-label">Partition: 1 </span>
-                                <label style="padding-top: 5px; font-size: 1rem; font-weight: 400;">
-                                    Commited Offset:
-                                    <input type="number" />
-                                </label>
-                                <span class="m-list-settings__item-control">
-                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
-                                        <label>
-                                            <button style="padding: 5px 10px;" class="btn btn-accent m-btn m-btn--air m-btn--custom">Change</button>
-                                            <span></span>
-                                        </label>
-                                    </span>
-                                </span>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
