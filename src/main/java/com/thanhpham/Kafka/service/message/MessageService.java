@@ -65,16 +65,8 @@ public class MessageService implements IMessageService {
 
     @Override
     public List<AvroMessage> readAvroMessageByOffset(String topic, int partition, long startOffset, long endOffset){
-        if(endOffset < startOffset || (endOffset == 0 && startOffset == 0)) {
+        if(endOffset < startOffset) {
             return List.of();
-        }
-
-        if(endOffset == 0) {
-            endOffset = startOffset;
-        }
-
-        if (startOffset == 0) {
-            startOffset = endOffset;
         }
 
         try (Consumer<String, GenericRecord> consumer = avroFactory.create()) {
@@ -89,7 +81,7 @@ public class MessageService implements IMessageService {
             while(count > 0) {
                 ConsumerRecords<String, GenericRecord> records = consumer.poll(Duration.ofSeconds(30));
                 System.out.println(">> " + records.count());
-                if(records.count() < count) {
+                if(records.count() <= count) {
                     results.addAll(records.records(topicPartition));
                     count = count - records.count();
                 } else if(records.count() > count) {
@@ -102,7 +94,6 @@ public class MessageService implements IMessageService {
             }
 
             return results.stream().map(AvroMessageMapper::toResponse).toList();
-
         } catch (Exception e) {
             System.out.println("Error to poll message");
             return List.of();
