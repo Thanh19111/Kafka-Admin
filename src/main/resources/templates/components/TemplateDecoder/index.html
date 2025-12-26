@@ -3,7 +3,7 @@
 <body>
 <div th:fragment="changeDecode"
      th:attr="hx-get=@{/topic/messages/{m}(m=${mode})}"
-     hx-trigger="every 3s"
+     hx-trigger="load, every 3s [document.visibilityState=='visible']"
      hx-swap="afterbegin"
      class="m-widget6__head"
      style="padding-left: 10px; max-height: 800px; overflow-y: auto; border: 1px solid #ccc; overflow-x: hidden;">

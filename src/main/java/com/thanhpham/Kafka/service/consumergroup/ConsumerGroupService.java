@@ -33,7 +33,7 @@ public class ConsumerGroupService implements IGroupConsumerService {
         ListGroupsResult result = adminClientPool.get(properties.getBootstrapServer()).listGroups();
 
         List<String> groupNames = result.all().get().stream()
-                .filter(g -> !g.protocol().isBlank() && g.protocol().equals("consumer") && !g.groupId().toLowerCase().contains("reader["))
+                .filter(g -> !g.protocol().isBlank() && g.protocol().equals("consumer"))
                 .map(GroupListing::groupId).toList();
 
         DescribeConsumerGroupsResult desc = adminClientPool.get(properties.getBootstrapServer())

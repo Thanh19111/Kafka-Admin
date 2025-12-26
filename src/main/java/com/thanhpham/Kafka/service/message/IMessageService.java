@@ -10,4 +10,5 @@ public interface IMessageService {
     List<AvroMessage> decodeAvro(String topic);
     List<AvroMessage> readAvroMessageByOffset(String topic, int partition, long startOffset, long endOffset);
     List<JsonMessage> readJsonMessageByOffset(String topic, int partition, long startOffset, long endOffset);
+    void pushJsonMessage();
 }

@@ -1,6 +1,10 @@
 package com.thanhpham.Kafka.service.message;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import com.thanhpham.Kafka.config.JsonProducer;
 import com.thanhpham.Kafka.config.factory.AvroConsumerFactory;
 import com.thanhpham.Kafka.config.factory.JsonConsumerFactory;
 import com.thanhpham.Kafka.config.pool.client.avro.IAvroConsumerPool;
@@ -9,22 +13,23 @@ import com.thanhpham.Kafka.dto.response.AvroMessage;
 import com.thanhpham.Kafka.dto.response.JsonMessage;
 import com.thanhpham.Kafka.mapper.AvroMessageMapper;
 import com.thanhpham.Kafka.mapper.JsonMessageMapper;
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
+import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializerConfig;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -133,6 +138,27 @@ public class MessageService implements IMessageService {
             System.out.println("Error to poll message");
             return List.of();
         }
+    }
+
+    @Override
+    public void pushJsonMessage() {
+        Properties props = new Properties();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSchemaSerializer.class);
+
+        props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+        props.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, true);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode json = mapper.createObjectNode();
+        json.put("id", 1);
+        json.put("name", "Thanh");
+
+        Producer<String, JsonNode> producer = new KafkaProducer<>(props);
+        producer.send(new ProducerRecord<>("thanhp", json));
+        producer.flush();
+        producer.close();
     }
 
 //    @Override

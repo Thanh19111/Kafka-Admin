@@ -11,7 +11,7 @@ import com.thanhpham.Kafka.dto.response.*;
 import com.thanhpham.Kafka.mapper.TopicUIMapper;
 import com.thanhpham.Kafka.service.message.IMessageService;
 import com.thanhpham.Kafka.service.topic.ITopicService;
-import com.thanhpham.Kafka.dto.uiformat.TopicDetailUI;
+import com.thanhpham.Kafka.dto.ui.TopicDetailUI;
 import com.thanhpham.Kafka.util.ListSlicer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -159,7 +159,7 @@ public class TopicUIController {
     public Object getAvroMessage(@PathVariable("topicName") String topicName, Model model) {
         List<AvroMessage> messages = new ArrayList<>();
         try {
-            messages = iMessageService.decodeAvro("pageviews");
+            messages = iMessageService.decodeAvro(topicName);
         } catch (Exception e) {
             System.out.println("Parsing avro message has error");
         }

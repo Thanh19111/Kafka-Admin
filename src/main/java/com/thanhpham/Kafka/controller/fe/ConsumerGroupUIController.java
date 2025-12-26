@@ -6,8 +6,8 @@ import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.mapper.ConsumerGroupUIMapper;
 import com.thanhpham.Kafka.service.consumergroup.IGroupConsumerService;
-import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupMemberUI;
-import com.thanhpham.Kafka.dto.uiformat.ConsumerGroupDetailUI;
+import com.thanhpham.Kafka.dto.ui.ConsumerGroupMemberUI;
+import com.thanhpham.Kafka.dto.ui.ConsumerGroupDetailUI;
 import com.thanhpham.Kafka.service.message.IMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class ConsumerGroupUIController {
     private final IMessageService iMessageService;
 
     @GetMapping
-    public String getConsumerGroupListUI(Model model) throws ExecutionException, InterruptedException {
+    public String getConsumerGroupListUI(Model model, @RequestParam(defaultValue = "none") String searchByName, @RequestParam(defaultValue = "none") String filter) throws ExecutionException, InterruptedException {
         // lay thong tin chung cua cac consumer group
         List<GroupDetailResponse> data = iGroupConsumerService.getAllConsumerGroups();
 
@@ -121,9 +121,11 @@ public class ConsumerGroupUIController {
     }
 
     @PostMapping("/message")
-    public String test1(@RequestParam("startOffset") long startOffset, @RequestParam("endOffset") Long endOffset, Model model) {
-        List<AvroMessage> messages = iMessageService.readAvroMessageByOffset("pageviews", 0, startOffset, endOffset);
+    public String test1(@RequestParam("topic") String topic, @RequestParam("partition") int partition, @RequestParam("startOffset") long startOffset, @RequestParam("endOffset") Long endOffset, Model model) {
+        List<AvroMessage> messages = iMessageService.readAvroMessageByOffset(topic, partition, startOffset, endOffset);
         model.addAttribute("messages", messages);
+        model.addAttribute("topic", topic);
+        model.addAttribute("partition", partition);
         return "components/MessageByOffset/index :: messageByOffset";
     }
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("api/test")
 @RequiredArgsConstructor
 public class TestController {
     private final SchemaRegistry schemaRegistryUtil;
@@ -30,5 +30,11 @@ public class TestController {
     @GetMapping("/schema/{subject}")
     public void get(@PathVariable("subject") String subject) throws RestClientException, IOException {
         schemaRegistryUtil.getSchemaBySubject(subject);
+    }
+
+    @PostMapping("/message")
+    public void t() {
+        System.out.println("OK");
+        iMessageService.pushJsonMessage();
     }
 }

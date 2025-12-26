@@ -82,26 +82,32 @@
                             <div class="m-messenger__seperator"></div>
                             <form hx-post="/group/message"
                                   hx-swap="beforeend"
-                                  hx-target="#parent-div" class="m-messenger__form">
+                                  hx-target="#parent-div"
+                                  hx-indicator="#loading"
+                                  class="m-messenger__form">
                                 <div style="display: flex;" class="m-messenger__form-controls">
-                                    <select name="mode">
-                                        <option value="">-- Chọn --</option>
+                                    <input type="text" name="topic" th:attr="hx-get=@{/infor/users}" hx-target="#partition" placeholder="Topic" class="m-messenger__form-input">
+                                    <select style="width: 120px;" id="partition" class="m-messenger__form-input">
+                                        <option value="">Partition</option>
                                         <option value="0">0</option>
                                         <option value="1">1</option>
-                                        <option value="2">2</option>loca
-
+                                        <option value="2">2</option>
                                     </select>
-                                    <input type="number" name="startOffset" placeholder="Start offset here..." class="m-messenger__form-input">
-                                    <input type="number" name="endOffset" placeholder="End offset here..." class="m-messenger__form-input">
+                                    <input type="number" name="startOffset" placeholder="Start offset" class="m-messenger__form-input">
+                                    <input type="number" name="endOffset" placeholder="End offset" class="m-messenger__form-input">
                                 </div>
                                 <div class="m-messenger__form-tools">
                                     <button type="submit"
+                                            hx-disable
                                             style="border: none;"
                                             class="m-messenger__form-attachment">
                                         <i class="la la-search"></i>
                                     </button>
                                 </div>
                             </form>
+                            <div id="loading" class="htmx-indicator">
+                                Loading...
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane" id="m_quick_sidebar_tabs_settings" role="tabpanel">
