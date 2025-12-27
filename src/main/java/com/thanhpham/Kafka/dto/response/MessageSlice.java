@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class JsonMessage {
+public class MessageSlice {
     private long offset;
     private String message;
 }

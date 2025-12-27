@@ -4,18 +4,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
-import com.thanhpham.Kafka.config.JsonProducer;
 import com.thanhpham.Kafka.config.factory.AvroConsumerFactory;
 import com.thanhpham.Kafka.config.factory.JsonConsumerFactory;
 import com.thanhpham.Kafka.config.pool.client.avro.IAvroConsumerPool;
 import com.thanhpham.Kafka.config.pool.client.json.IJsonConsumerPool;
-import com.thanhpham.Kafka.dto.response.AvroMessage;
-import com.thanhpham.Kafka.dto.response.JsonMessage;
+import com.thanhpham.Kafka.dto.response.MessageSlice;
 import com.thanhpham.Kafka.mapper.AvroMessageMapper;
 import com.thanhpham.Kafka.mapper.JsonMessageMapper;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
-import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializerConfig;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -40,10 +37,10 @@ public class MessageService implements IMessageService {
     private final IJsonConsumerPool jsonPool;
 
     @Override
-    public List<AvroMessage> decodeAvro(String topic) {
+    public List<MessageSlice> decodeAvro(String topic) {
         Consumer<String, GenericRecord> consumer = avroPool.get(topic);
 
-        List<AvroMessage> results = new ArrayList<>();
+        List<MessageSlice> results = new ArrayList<>();
         ConsumerRecords<String, GenericRecord> records = consumer.poll(Duration.ofSeconds(2));
 
         for (var record : records) {
@@ -54,10 +51,10 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public List<JsonMessage> decodeJson(String topic) {
+    public List<MessageSlice> decodeJson(String topic) {
         Consumer<String, JsonNode> consumer = jsonPool.get(topic);
         consumer.subscribe(List.of(topic));
-        List<JsonMessage> results = new ArrayList<>();
+        List<MessageSlice> results = new ArrayList<>();
 
         ConsumerRecords<String, JsonNode> records = consumer.poll(Duration.ofSeconds(2));
 
@@ -69,7 +66,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public List<AvroMessage> readAvroMessageByOffset(String topic, int partition, long startOffset, long endOffset){
+    public List<MessageSlice> readAvroMessageByOffset(String topic, int partition, long startOffset, long endOffset){
         if(endOffset < startOffset) {
             return List.of();
         }
@@ -106,7 +103,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public List<JsonMessage> readJsonMessageByOffset(String topic, int partition, long startOffset, long endOffset){
+    public List<MessageSlice> readJsonMessageByOffset(String topic, int partition, long startOffset, long endOffset){
         if(endOffset < startOffset) {
             return List.of();
         }

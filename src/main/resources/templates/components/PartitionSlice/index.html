@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<option th:fragment="partitionSlice" th:each="partition : ${partitions}" th:value="${partition}" th:text="${partition}">
+</option>
+</body>
+</html>

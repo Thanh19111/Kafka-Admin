@@ -157,7 +157,7 @@ public class TopicUIController {
 
     @GetMapping("/messages/avro/{topicName}")
     public Object getAvroMessage(@PathVariable("topicName") String topicName, Model model) {
-        List<AvroMessage> messages = new ArrayList<>();
+        List<MessageSlice> messages = new ArrayList<>();
         try {
             messages = iMessageService.decodeAvro(topicName);
         } catch (Exception e) {
@@ -170,7 +170,7 @@ public class TopicUIController {
 
     @GetMapping("/messages/json/{topicName}")
     public Object getJsonMessage(@PathVariable("topicName") String topicName, Model model) {
-        List<JsonMessage> messages = new ArrayList<>();
+        List<MessageSlice> messages = new ArrayList<>();
         try {
             messages = iMessageService.decodeJson("pageviews");
         } catch (Exception e) {

@@ -86,12 +86,14 @@
                                   hx-indicator="#loading"
                                   class="m-messenger__form">
                                 <div style="display: flex;" class="m-messenger__form-controls">
-                                    <input type="text" name="topic" th:attr="hx-get=@{/infor/users}" hx-target="#partition" placeholder="Topic" class="m-messenger__form-input">
-                                    <select style="width: 120px;" id="partition" class="m-messenger__form-input">
-                                        <option value="">Partition</option>
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
+                                    <select name="topic" hx-trigger="load" th:attr="hx-get=@{/group/partition/{groupId}(groupId=${group.groupId})}" hx-target="#partition" class="m-messenger__form-input">
+                                        <option th:each="group : ${groupLags}" th:value="${group.topic}" th:text="${group.topic}"></option>
+                                    </select>
+                                    <select name="partition" id="partition" style="width: 120px;" class="m-messenger__form-input">
+                                    </select>
+                                    <select name="format" style="width: 120px;" class="m-messenger__form-input">
+                                        <option value="avro">Avro</option>
+                                        <option value="json">Json</option>
                                     </select>
                                     <input type="number" name="startOffset" placeholder="Start offset" class="m-messenger__form-input">
                                     <input type="number" name="endOffset" placeholder="End offset" class="m-messenger__form-input">

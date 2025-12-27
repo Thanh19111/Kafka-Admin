@@ -1,8 +1,8 @@
 package com.thanhpham.Kafka.controller.fe;
 
-import com.thanhpham.Kafka.dto.response.AvroMessage;
 import com.thanhpham.Kafka.dto.response.GroupDetailResponse;
 import com.thanhpham.Kafka.dto.response.GroupPartitionResponse;
+import com.thanhpham.Kafka.dto.response.MessageSlice;
 import com.thanhpham.Kafka.dto.response.Pair;
 import com.thanhpham.Kafka.mapper.ConsumerGroupUIMapper;
 import com.thanhpham.Kafka.service.consumergroup.IGroupConsumerService;
@@ -121,8 +121,15 @@ public class ConsumerGroupUIController {
     }
 
     @PostMapping("/message")
-    public String test1(@RequestParam("topic") String topic, @RequestParam("partition") int partition, @RequestParam("startOffset") long startOffset, @RequestParam("endOffset") Long endOffset, Model model) {
-        List<AvroMessage> messages = iMessageService.readAvroMessageByOffset(topic, partition, startOffset, endOffset);
+    public String test1(@RequestParam("topic") String topic, @RequestParam("partition") int partition, @RequestParam("format") String format, @RequestParam("startOffset") long startOffset, @RequestParam("endOffset") Long endOffset, Model model) {
+        List<MessageSlice> messages = new ArrayList<>();
+
+        if(format.equals("avro")) {
+            messages = iMessageService.readAvroMessageByOffset(topic, partition, startOffset, endOffset);
+        } else if(format.equals("json")) {
+            messages = iMessageService.readJsonMessageByOffset(topic, partition, startOffset, endOffset);
+        }
+
         model.addAttribute("messages", messages);
         model.addAttribute("topic", topic);
         model.addAttribute("partition", partition);
@@ -133,5 +140,17 @@ public class ConsumerGroupUIController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void test2(@RequestParam("groupId") String groupId, @RequestParam("topic") String topic, @RequestParam("partition") int partition, @RequestParam("offset") long offset) throws ExecutionException, InterruptedException {
         iGroupConsumerService.changeOffset(groupId, topic, partition, offset);
+    }
+
+    @GetMapping("/partition/{groupId}")
+    public String t(@PathVariable("groupId") String groupId, @RequestParam("topic") String topic, Model model) throws ExecutionException, InterruptedException {
+        List<Integer> partitions = iGroupConsumerService.checkLagByGroupId(groupId)
+                .stream()
+                .filter(group -> group.getTopic().equals(topic))
+                .map(GroupPartitionResponse::getPartition)
+                .toList();
+
+        model.addAttribute("partitions", partitions);
+        return "components/PartitionSlice/index :: partitionSlice";
     }
 }
