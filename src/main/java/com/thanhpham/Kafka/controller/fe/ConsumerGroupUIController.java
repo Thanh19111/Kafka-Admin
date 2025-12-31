@@ -150,6 +150,8 @@ public class ConsumerGroupUIController {
                 .map(GroupPartitionResponse::getPartition)
                 .toList();
 
+        System.out.println(partitions.size());
+
         model.addAttribute("partitions", partitions);
         return "components/PartitionSlice/index :: partitionSlice";
     }

@@ -20,7 +20,7 @@ public class CaffeineCacheConfig {
         cacheManager.setCaffeine(
                 Caffeine.newBuilder()
                         .maximumSize(1000)
-                        .expireAfterAccess(10, TimeUnit.SECONDS)
+                        .expireAfterAccess(15, TimeUnit.SECONDS)
                         .removalListener((key, value, cause) -> {
                             if (value instanceof Consumer ac) {
                                 try {

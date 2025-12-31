@@ -86,7 +86,7 @@
                                   hx-indicator="#loading"
                                   class="m-messenger__form">
                                 <div style="display: flex;" class="m-messenger__form-controls">
-                                    <select name="topic" hx-trigger="load" th:attr="hx-get=@{/group/partition/{groupId}(groupId=${group.groupId})}" hx-target="#partition" class="m-messenger__form-input">
+                                    <select hx-swap="innerHTML" name="topic" hx-trigger="load" th:attr="hx-get=@{/group/partition/{groupId}(groupId=${group.groupId})}" hx-target="#partition" class="m-messenger__form-input">
                                         <option th:each="group : ${groupLags}" th:value="${group.topic}" th:text="${group.topic}"></option>
                                     </select>
                                     <select name="partition" id="partition" style="width: 120px;" class="m-messenger__form-input">
@@ -119,21 +119,22 @@
                                 <form hx-post="/group/changeOffset"
                                       hx-swap="none"
                                       style="display: flex; align-items: center; justify-content: start; gap: 16px;" class="m-list-settings__item">
-                                    <span class="m-list-settings__item-label">Topic: pageviews</span>
-                                    <span class="m-list-settings__item-label">Partition: 0</span>
+                                    <select hx-swap="innerHTML"
+                                            name="topic" hx-trigger="load" th:attr="hx-get=@{/group/partition/{groupId}(groupId=${group.groupId})}" hx-target="#partitionSetting">
+                                        <option th:each="group : ${groupLags}" th:value="${group.topic}" th:text="${group.topic}"></option>
+                                    </select>
+                                    <select name="partition" id="partitionSetting"></select>
                                     <label style="padding-top: 5px; font-size: 1rem; font-weight: 400;">
                                         Commited Offset:
-                                        <input name="groupId" type="hidden" value="1a3384d8-22c7-4f1d-b489-f9e50ce0e796">
-                                        <input name="topic" type="hidden" value="pageviews">
-                                        <input name="partition" type="hidden" value="0">
+                                        <input name="groupId" type="hidden" th:value="${group.groupId}" />
                                         <input name="offset" type="number" />
                                     </label>
                                     <span class="m-list-settings__item-control">
                                     <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
                                         <label>
                                             <button type="submit"
-                                                    style="padding: 5px 10px;" class="btn btn-accent m-btn m-btn--air m-btn--custom">Change</button>
-                                            <span></span>
+                                                    style="padding: 5px 10px;"
+                                                    class="btn btn-accent m-btn m-btn--air m-btn--custom">Change</button>
                                         </label>
                                     </span>
                                 </span>

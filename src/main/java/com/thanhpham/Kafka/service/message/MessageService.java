@@ -137,6 +137,7 @@ public class MessageService implements IMessageService {
         }
     }
 
+    // test
     @Override
     public void pushJsonMessage() {
         Properties props = new Properties();
@@ -157,17 +158,4 @@ public class MessageService implements IMessageService {
         producer.flush();
         producer.close();
     }
-
-//    @Override
-//    public List<AvroMessage> readAvroMessageByOffset(String topic, int partition, long startOffset, long endOffset) {
-//        try {
-//            return CompletableFuture
-//                    .supplyAsync(() -> this.hardTask(topic, partition, startOffset, endOffset))
-//                    .get(3, TimeUnit.SECONDS);
-//        } catch (TimeoutException e) {
-//            return List.of();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }
