@@ -13,6 +13,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.Properties;
 
+// test không dùng được
 public class JsonProducer {
     public void t() {
         // init config

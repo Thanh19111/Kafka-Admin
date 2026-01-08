@@ -3,10 +3,11 @@ spring:
     name: Kafka
 
 server:
-  port: 7000
+  port: 7000 # port này của app
 
 kafka:
-  bootstrap-server: localhost:9092
+  bootstrap-server: localhost:9092 # địa chỉ và port của kafka broker
+  jolokia-server: http://localhost:8778/jolokia # địa chỉ này của jolokia agent expose trong kafka broker
 
 schema-registry:
-  url: http://localhost:8081
+  url: http://localhost:8081 # địa chỉ và port của schema registry
