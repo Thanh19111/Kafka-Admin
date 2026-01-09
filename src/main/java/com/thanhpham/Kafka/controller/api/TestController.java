@@ -43,7 +43,7 @@ public class TestController {
     }
 
     @GetMapping("/metric")
-    public void g() throws MalformedObjectNameException, JolokiaException {
-        metricService.t();
+    public void g(@RequestParam("query") String query) throws MalformedObjectNameException, JolokiaException {
+        metricService.t1(query);
     }
 }
